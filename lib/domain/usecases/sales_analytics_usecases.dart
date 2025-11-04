@@ -1,5 +1,6 @@
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
+import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
@@ -29,4 +30,23 @@ class SalesAnalyticsUsecases {
     required String salesid,
   }) async =>
       await repository.postGetOneUser(isLoading: isLoading, salesid: salesid);
+
+  Future<ProductListModel?> postGetProductList({
+    bool isLoading = false,
+    required String category,
+    required int page,
+    required int limit,
+    required String max,
+    required String min,
+    required String search,
+  }) async =>
+      await repository.postGetProductList(
+        isLoading: isLoading,
+        category: category,
+        page: page,
+        limit: limit,
+        max: max,
+        min: min,
+        search: search,
+        );
 }

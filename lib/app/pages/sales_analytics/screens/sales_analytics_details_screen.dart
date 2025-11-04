@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -254,7 +255,7 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                   color: ColorsValue.textFieldBg,
                   borderRadius: BorderRadius.circular(Dimens.ten),
                 ),
-                child: DropdownButton<String>(
+                child: DropdownButton<ProductListDoc>(
                   underline: Container(),
                   isDense: true,
                   isExpanded: true,
@@ -281,11 +282,11 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                     size: Dimens.twenty,
                   ),
                   items:
-                      controller.filterOnboardType.map((option) {
+                      controller.getProductList.map((option) {
                         return DropdownMenuItem(
                           value: option,
                           child: Text(
-                            option,
+                            option.productname,
                             style: Styles.txtBlackColorW50014.copyWith(
                               fontSize:
                                   Utility.isTablet()

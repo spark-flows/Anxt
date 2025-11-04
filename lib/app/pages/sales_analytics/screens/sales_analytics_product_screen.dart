@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -73,7 +74,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                         color: ColorsValue.textFieldBg,
                                         borderRadius: BorderRadius.circular(Dimens.ten),
                                       ),
-                                      child: DropdownButton<String>(
+                                      child: DropdownButton<ProductListDoc>(
                                         underline: Container(),
                                         isDense: true,
                                         isExpanded: true,
@@ -94,11 +95,11 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                         iconEnabledColor: Colors.black,
                                         icon: Icon(Icons.keyboard_arrow_down_rounded, size: Dimens.twenty),
                                         items:
-                                            controller.filterOnboardType.map((option) {
+                                            controller.getProductList.map((option) {
                                               return DropdownMenuItem(
                                                 value: option,
                                                 child: Text(
-                                                  option,
+                                                  option.productname,
                                                   style: Styles.txtBlackColorW50014.copyWith(
                                                     fontSize: Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
                                                   ),
@@ -118,7 +119,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                         color: ColorsValue.textFieldBg,
                                         borderRadius: BorderRadius.circular(Dimens.ten),
                                       ),
-                                      child: DropdownButton<String>(
+                                      child: DropdownButton<ProductListDoc>(
                                         underline: Container(),
                                         isDense: true,
                                         isExpanded: true,
@@ -139,11 +140,11 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                         iconEnabledColor: Colors.black,
                                         icon: Icon(Icons.keyboard_arrow_down_rounded, size: Dimens.twenty),
                                         items:
-                                            controller.filterOnboardType.map((option) {
+                                            controller.getProductList.map((option) {
                                               return DropdownMenuItem(
                                                 value: option,
                                                 child: Text(
-                                                  option,
+                                                  option.productname,
                                                   style: Styles.txtBlackColorW50014.copyWith(
                                                     fontSize: Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
                                                   ),

@@ -187,6 +187,38 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postGetProductList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+    required String min,
+    required String max,
+    required String category,
+    String sortfield = "shortname",
+    int sortoption = 1,
+  }) async {
+    var data = {
+      "page": page,
+    "limit": limit,
+    "search": search,
+    "min": min,
+    "max": max,
+    "category": category,
+    "sortfield": sortfield,
+    "sortoption": sortoption
+    };
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postGetProductList,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postRegisterApi({
     bool isLoading = false,
     required String candidateapplicationid,

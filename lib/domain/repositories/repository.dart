@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getAll_product_model.dart';
 
 import '../../app/app.dart';
 
@@ -216,6 +217,38 @@ class Repository {
         return getOneUserModel;
       } else {
         return getOneUserModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ProductListModel?> postGetProductList({
+    bool isLoading = false,
+    required String category,
+    required int page,
+    required int limit,
+    required String max,
+    required String min,
+    required String search,
+  }) async {
+    try {
+      var response = await _dataRepository.postGetProductList(
+        category: category,
+        page: page,
+        limit: limit,
+        max: max,
+        min: min,
+        search: search,
+        isLoading: isLoading,
+      );
+      var productListModel = productListModelFromJson(response.data);
+      if (productListModel.data != null) {
+        return productListModel;
+      } else {
+        return productListModel;
       }
     } catch (e) {
       Utility.closeDialog();

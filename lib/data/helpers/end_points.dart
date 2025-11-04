@@ -6,4 +6,5 @@ class EndPoints {
   static String postAllUsers = 'api/customer';
   static String postGetOneUsers = 'api/customer/getone';
   static String postAddCustomer = 'api/customer/create';
+  static String postGetProductList = 'api/product';
 }

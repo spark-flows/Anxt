@@ -104,6 +104,19 @@ class DataRepository extends DomainRepository {
   }) async =>
       await connectHelper.postGetOneUser(isLoading: isLoading, salesid: salesid);
 
+  Future<ResponseModel> postGetProductList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String category,
+    required String search,
+    required String max,
+    required String min,
+  }) async =>
+      await connectHelper.postGetProductList(isLoading: isLoading, category: category, limit: limit, page: page, search: search,
+      max: max, min: min,
+      );
+
   Future<ResponseModel> postResetApi({
     bool isLoading = false,
     required String content,

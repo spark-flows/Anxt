@@ -1,6 +1,7 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +11,7 @@ class SalesAnalyticsController extends GetxController {
   final SalesAnalyticsPresenter salesAnalyticsPresenter;
 
   int filterOnboardValue = 0;
-  List<String> filterOnboardType = ['Date'];
+  // List<String> filterOnboardType = ['Date'];
 
   TextEditingController fromOnboardController = TextEditingController();
   TextEditingController toOnboardController = TextEditingController();
@@ -18,7 +19,7 @@ class SalesAnalyticsController extends GetxController {
   DateTime fromOnboardDate = DateTime.now();
   DateTime toOnboardDate = DateTime.now();
 
-  String? selectProduct;
+  ProductListDoc? selectProduct;
   DateTime? nextDate;
   TextEditingController nextDateController = TextEditingController();
 
@@ -90,8 +91,34 @@ class SalesAnalyticsController extends GetxController {
     if (response?.status == 200) {
       getOneUser = response?.data;
       isGetOneUserLoading = false;
+      postGetProductList();
     } else {
       isGetOneUserLoading = false;
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  List<ProductListDoc> getProductList = [];
+  bool isGetProductListLoading = false;
+
+  Future<void> postGetProductList() async {
+    isGetProductListLoading = true;
+    var response = await salesAnalyticsPresenter.postGetProductList(
+      isLoading: true,
+      category: '',
+      page: 1,
+      limit: 20,
+      max: '',
+      min: '',
+      search: '',
+    );
+    getProductList.clear();
+    if (response?.status == 200) {
+      getProductList = response?.data.docs ?? [];
+      isGetProductListLoading = false;
+    } else {
+      isGetProductListLoading = false;
       Utility.errorMessage(response?.message ?? "");
     }
     update();

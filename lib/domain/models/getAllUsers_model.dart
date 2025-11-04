@@ -102,7 +102,7 @@ class GetAllUsesDoc {
   String? managername;
   String? managermobile;
   String? type;
-  bool? status;
+  String? status;
   DateTime? createdAt;
   GetAllUsesAssignby? salesperson;
   GetAllUsesAssignby? assignby;

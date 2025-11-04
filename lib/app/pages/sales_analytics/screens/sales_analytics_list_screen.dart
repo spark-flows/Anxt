@@ -196,7 +196,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                         runAlignment:
                                                             WrapAlignment.start,
                                                         children:
-                                                            controller.filterOnboardType.asMap().entries.map((
+                                                            controller.getProductList.asMap().entries.map((
                                                               e,
                                                             ) {
                                                               var index = e.key;
@@ -236,7 +236,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                     ),
                                                                     child: Text(
                                                                       controller
-                                                                          .filterOnboardType[index],
+                                                                          .getProductList[index].productname,
                                                                       style: Styles.txtBlackColorW70016.copyWith(
                                                                         fontSize:
                                                                             Utility.isTablet()
