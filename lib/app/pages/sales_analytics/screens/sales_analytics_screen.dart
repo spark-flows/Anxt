@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,11 @@ class SalesAnalyticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
+      initState: (_) {
+        final controller = Get.find<SalesAnalyticsController>();
+        final argument = Get.arguments;
+        controller.initCustomer(customer: argument);
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
@@ -21,7 +27,14 @@ class SalesAnalyticsScreen extends StatelessWidget {
           bottomNavigationBar: Padding(
             padding: Dimens.edgeInsets20,
             child: CustomButton(
-              onPressed: () {},
+              onPressed: () {
+                if (controller.salesKey.currentState!.validate()) {
+                GetOneUserData? argument = Get.arguments;
+                  controller.postCreateCustomer(
+                    customerId: argument != null ? argument.id : '',
+                  );
+                }
+              },
               text: "Save",
               textStyle: Styles.whiteColorW60016,
               backgroundColor: ColorsValue.appColor,

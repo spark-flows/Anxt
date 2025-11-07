@@ -1,5 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,9 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
             actions: [
               GestureDetector(
                 onTap: () {
-                  RouteManagement.goToSalesAnalyticsScreen();
+                  RouteManagement.goToSalesAnalyticsScreen(
+                    customerDetail: user,
+                  );
                 },
                 child: Padding(
                   padding: Dimens.edgeInsetsRight16,
@@ -41,17 +42,17 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
             padding: Dimens.edgeInsets20,
             child: Row(
               children: [
-                Expanded(
-                  child: CustomButton(
-                    heightBtn: Dimens.fifty,
-                    radius: Dimens.zero,
-                    onPressed: () {},
-                    text: 'Save',
-                    textStyle: Styles.whiteColorW60016,
-                    backgroundColor: ColorsValue.appColor,
-                  ),
-                ),
-                Dimens.boxWidth20,
+                // Expanded(
+                //   child: CustomButton(
+                //     heightBtn: Dimens.fifty,
+                //     radius: Dimens.zero,
+                //     onPressed: () {},
+                //     text: 'Save',
+                //     textStyle: Styles.whiteColorW60016,
+                //     backgroundColor: ColorsValue.appColor,
+                //   ),
+                // ),
+                // Dimens.boxWidth20,
                 Expanded(
                   child: CustomButton(
                     heightBtn: Dimens.fifty,
@@ -74,27 +75,54 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
             padding: Dimens.edgeInsets20_10_20_20,
             physics: ClampingScrollPhysics(),
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: Dimens.fifty,
-                      color: ColorsValue.appColor,
-                      alignment: Alignment.center,
-                      child: Text("Store In", style: Styles.whiteColorW70016),
+              if (user?.status != 'completed' ||
+                  user?.status != null ||
+                  user!.status!.isNotEmpty)
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.postSalesCreate(
+                            storeInDate: DateTime.now(),
+                            mode: 'storeIn',
+                          );
+                          controller.update();
+                        },
+                        child: Container(
+                          height: Dimens.fifty,
+                          color: ColorsValue.appColor,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Store In",
+                            style: Styles.whiteColorW70016,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Dimens.boxWidth20,
-                  Expanded(
-                    child: Container(
-                      height: Dimens.fifty,
-                      color: ColorsValue.appColor,
-                      alignment: Alignment.center,
-                      child: Text("Store Out", style: Styles.whiteColorW70016),
+                    Dimens.boxWidth20,
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.postSalesCreate(
+                            storeOutDate: DateTime.now(),
+                            mode: 'storeOut',
+                          );
+                          controller.update();
+                        },
+                        child: Container(
+                          height: Dimens.fifty,
+                          color: ColorsValue.appColor,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Store Out",
+                            style: Styles.whiteColorW70016,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
               Dimens.boxHeight20,
               Container(
                 padding: Dimens.edgeInsets20,
@@ -247,57 +275,57 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                 ),
               ),
               Dimens.boxHeight20,
-              Container(
-                padding: Dimens.edgeInsets20_00_20_00,
-                height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: ColorsValue.textFieldBg,
-                  borderRadius: BorderRadius.circular(Dimens.ten),
-                ),
-                child: DropdownButton<ProductListDoc>(
-                  underline: Container(),
-                  isDense: true,
-                  isExpanded: true,
-                  onChanged: (value) {
-                    controller.selectProduct = value!;
-                    controller.update();
-                  },
-                  hint: Text(
-                    'Product'.tr,
-                    style: Styles.txtGreyColorW50012.copyWith(
-                      fontSize:
-                          Utility.isTablet()
-                              ? Dimens.eighteen
-                              : Dimens.fourteen,
-                    ),
-                  ),
-                  focusColor: Colors.white,
-                  dropdownColor: ColorsValue.whiteColor,
-                  value: controller.selectProduct,
-                  style: Styles.txtBlackColorW50014,
-                  iconEnabledColor: Colors.black,
-                  icon: Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: Dimens.twenty,
-                  ),
-                  items:
-                      controller.getProductList.map((option) {
-                        return DropdownMenuItem(
-                          value: option,
-                          child: Text(
-                            option.productname,
-                            style: Styles.txtBlackColorW50014.copyWith(
-                              fontSize:
-                                  Utility.isTablet()
-                                      ? Dimens.twenty
-                                      : Dimens.fourteen,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                ),
-              ),
+              // Container(
+              //   padding: Dimens.edgeInsets20_00_20_00,
+              //   height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
+              //   alignment: Alignment.center,
+              //   decoration: BoxDecoration(
+              //     color: ColorsValue.textFieldBg,
+              //     borderRadius: BorderRadius.circular(Dimens.ten),
+              //   ),
+              //   child: DropdownButton<ProductListDoc>(
+              //     underline: Container(),
+              //     isDense: true,
+              //     isExpanded: true,
+              //     onChanged: (value) {
+              //       controller.selectProduct = value!;
+              //       controller.update();
+              //     },
+              //     hint: Text(
+              //       'Product'.tr,
+              //       style: Styles.txtGreyColorW50012.copyWith(
+              //         fontSize:
+              //             Utility.isTablet()
+              //                 ? Dimens.eighteen
+              //                 : Dimens.fourteen,
+              //       ),
+              //     ),
+              //     focusColor: Colors.white,
+              //     dropdownColor: ColorsValue.whiteColor,
+              //     value: controller.selectProduct,
+              //     style: Styles.txtBlackColorW50014,
+              //     iconEnabledColor: Colors.black,
+              //     icon: Icon(
+              //       Icons.keyboard_arrow_down_rounded,
+              //       size: Dimens.twenty,
+              //     ),
+              //     items:
+              //         controller.getProductList.map((option) {
+              //           return DropdownMenuItem(
+              //             value: option,
+              //             child: Text(
+              //               option.productname,
+              //               style: Styles.txtBlackColorW50014.copyWith(
+              //                 fontSize:
+              //                     Utility.isTablet()
+              //                         ? Dimens.twenty
+              //                         : Dimens.fourteen,
+              //               ),
+              //             ),
+              //           );
+              //         }).toList(),
+              //   ),
+              // ),
             ],
           ),
         );

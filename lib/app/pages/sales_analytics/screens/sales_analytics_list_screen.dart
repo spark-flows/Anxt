@@ -196,7 +196,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                         runAlignment:
                                                             WrapAlignment.start,
                                                         children:
-                                                            controller.getProductList.asMap().entries.map((
+                                                            controller.filterList.asMap().entries.map((
                                                               e,
                                                             ) {
                                                               var index = e.key;
@@ -236,7 +236,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                     ),
                                                                     child: Text(
                                                                       controller
-                                                                          .getProductList[index].productname,
+                                                                          .filterList[index],
                                                                       style: Styles.txtBlackColorW70016.copyWith(
                                                                         fontSize:
                                                                             Utility.isTablet()
@@ -570,9 +570,47 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           Get.back();
                                                           Utility.isFilter =
                                                               true;
-                                                          // controller
-                                                          //     .customersProPagingController
-                                                          //     .refresh();
+                                                          controller.scrollController.addListener(() async {
+                                                            if (controller
+                                                                    .scrollController
+                                                                    .position
+                                                                    .pixels ==
+                                                                controller
+                                                                    .scrollController
+                                                                    .position
+                                                                    .maxScrollExtent) {
+                                                              if (controller
+                                                                      .isLoading ==
+                                                                  false) {
+                                                                controller
+                                                                        .isLoading =
+                                                                    true;
+                                                                controller
+                                                                    .update();
+                                                                if (controller
+                                                                        .isLastPage ==
+                                                                    false) {
+                                                                  await controller.postAllUserList(
+                                                                    controller
+                                                                        .pageCount,
+                                                                    fromDate:
+                                                                        controller
+                                                                            .fromOnboardController
+                                                                            .text,
+                                                                    toDate:
+                                                                        controller
+                                                                            .toOnboardController
+                                                                            .text,
+                                                                  );
+                                                                }
+                                                                controller
+                                                                        .isLoading =
+                                                                    false;
+                                                                controller
+                                                                    .update();
+                                                              }
+                                                            }
+                                                          });
                                                           controller.update();
                                                         },
                                                         child: Container(

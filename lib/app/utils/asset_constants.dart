@@ -8,6 +8,7 @@
 /// Will be ignored for test since all are static values and would not change.
 abstract class AssetConstants {
   static const String app_update_lottie = "assets/json/app_update_lottie.json";
+  static const String app_icon = "assets/image/app_icon.png";
   static const String back_arrow = "assets/svg/back_arrow.svg";
   static const String usera = "assets/image/usera.png";
   static const String placeholder = "assets/image/placeholder.jpeg";

@@ -10,8 +10,11 @@ class SplashScreen extends StatelessWidget {
     return GetBuilder<SplashController>(
       builder: (context) {
         return Scaffold(
-          backgroundColor: ColorsValue.appColor,
-          body: Center(child: Text("ANXT", style: Styles.whiteColorW60016)),
+          backgroundColor: ColorsValue.whiteColor,
+          body: Center(
+            child: Image.asset(AssetConstants.app_icon, width: 230),
+            // Text("ANXT", style: Styles.whiteColorW60016)
+          ),
         );
       },
     );

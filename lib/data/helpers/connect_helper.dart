@@ -187,6 +187,94 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postCreateCustomer({
+    bool isLoading = false,
+    required String customerId,
+    required String name,
+    required String mobile,
+    required String email,
+    required String address,
+    required String state,
+    required String city,
+    required String area,
+    required String zipcode,
+    required String ownername,
+    required String ownermobile,
+    required String managername,
+    required String managermobile,
+  }) async {
+    var data = {
+      "customerid": customerId,
+      "name": name,
+      "mobile": mobile,
+      "email": email,
+      "address": address,
+      "state": state,
+      "city": city,
+      "area": area,
+      "zipcode": zipcode,
+      "ownername": ownername,
+      "ownermobile": ownermobile,
+      "managername": managername,
+      "managermobile": managermobile,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCreateCustomer,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postSalesCreate({
+    bool isLoading = false,
+    required String salesPersonId,
+    required List<AddProductModel> product,
+    required String nextDate,
+    required String customerId,
+    required String storeIn,
+    required String storeOut,
+    required String status,
+    required String piliStatus,
+    required String weight,
+    required String duration,
+    required String customerNeeds,
+    required String nextPurchase,
+    required String customerReason,
+    required String customerFeedback,
+    required String customerCategory,
+  }) async {
+    var data = {
+      "salesid": "",
+      "salespersonid": salesPersonId,
+      "product": product,
+      "nextdate": nextDate,
+      "customerid": customerId,
+      "storein": storeIn,
+      "storeout": storeOut,
+      "status": status,
+      "attempt": [],
+      "pilistatus": piliStatus,
+      "weight": weight,
+      "duration": duration,
+      "customerneeds": customerNeeds,
+      "nextpurchase": nextPurchase,
+      "customerreason": customerReason,
+      "customerfeedback": customerFeedback,
+      "customercategory": customerCategory,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCreateSales,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postGetProductList({
     bool isLoading = false,
     required int page,
@@ -200,19 +288,30 @@ class ConnectHelper {
   }) async {
     var data = {
       "page": page,
-    "limit": limit,
-    "search": search,
-    "min": min,
-    "max": max,
-    "category": category,
-    "sortfield": sortfield,
-    "sortoption": sortoption
+      "limit": limit,
+      "search": search,
+      "min": min,
+      "max": max,
+      "category": category,
+      "sortfield": sortfield,
+      "sortoption": sortoption,
     };
 
     var response = await apiWrapper.makeRequest(
       EndPoints.postGetProductList,
       Request.post,
       data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> getProfileApi({bool isLoading = false}) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.getProfileApi,
+      Request.get,
+      null,
       isLoading,
       Utility.commonHeader(),
     );
@@ -316,5 +415,16 @@ class SearchModel {
       "assignby": assignby,
       "salesperson": salesperson,
     };
+  }
+}
+
+class AddProductModel {
+  AddProductModel({required this.productID, required this.weight});
+
+  String productID;
+  int weight;
+
+  Map<String, dynamic> toJson() {
+    return {'productID': productID, 'weight': weight};
   }
 }

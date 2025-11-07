@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/create_customer_model.dart';
+import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/getProfile_model.dart';
 
 import '../../app/app.dart';
 
@@ -225,6 +228,102 @@ class Repository {
     }
   }
 
+  Future<CreateCustomerModel?> postCreateCustomer({
+    bool isLoading = false,
+    required String customerId,
+    required String name,
+    required String mobile,
+    required String email,
+    required String address,
+    required String state,
+    required String city,
+    required String area,
+    required String zipcode,
+    required String ownername,
+    required String ownermobile,
+    required String managername,
+    required String managermobile,
+  }) async {
+    try {
+      var response = await _dataRepository.postCreateCustomer(
+        isLoading: isLoading,
+        customerId: customerId,
+        name: name,
+        mobile: mobile,
+        email: email,
+        address: address,
+        state: state,
+        city: city,
+        area: area,
+        zipcode: zipcode,
+        ownername: ownername,
+        ownermobile: ownermobile,
+        managername: managername,
+        managermobile: managermobile,
+      );
+      var createCustomerModel = createCustomerModelFromJson(response.data);
+      if (createCustomerModel.data != null) {
+        return createCustomerModel;
+      } else {
+        return createCustomerModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<CreateSalesModel?> postSalesCreate({
+    bool isLoading = false,
+    required String salesPersonId,
+    required List<AddProductModel> product,
+    required String nextDate,
+    required String customerId,
+    required String storeIn,
+    required String storeOut,
+    required String status,
+    required String piliStatus,
+    required String weight,
+    required String duration,
+    required String customerNeeds,
+    required String nextPurchase,
+    required String customerReason,
+    required String customerFeedback,
+    required String customerCategory,
+  }) async {
+    try {
+      var response = await _dataRepository.postSalesCreate(
+        isLoading: isLoading,
+        salesPersonId: salesPersonId,
+        product: product,
+        nextDate: nextDate,
+        customerId: customerId,
+        storeIn: storeIn,
+        storeOut: storeOut,
+        status: status,
+        piliStatus: piliStatus,
+        weight: weight,
+        duration: duration,
+        customerNeeds: customerNeeds,
+        nextPurchase: nextPurchase,
+        customerReason: customerReason,
+        customerFeedback: customerFeedback,
+        customerCategory: customerCategory,
+      );
+      var createSalesModel = createSalesModelFromJson(response.data);
+      if (createSalesModel.data != null) {
+        return createSalesModel;
+      } else {
+        return createSalesModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<ProductListModel?> postGetProductList({
     bool isLoading = false,
     required String category,
@@ -271,6 +370,22 @@ class Repository {
         isLoading: isLoading,
       );
       return response;
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetProfileModel?> getProfileApi({bool isLoading = false}) async {
+    try {
+      var response = await _dataRepository.getProfileApi(isLoading: isLoading);
+      var getProfileModel = getProfileModelFromJson(response.data);
+      if (getProfileModel.data != null) {
+        return getProfileModel;
+      } else {
+        return getProfileModel;
+      }
     } catch (_) {
       Utility.closeDialog();
       UnimplementedError();

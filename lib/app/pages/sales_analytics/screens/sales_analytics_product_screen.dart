@@ -11,17 +11,25 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
-      initState: (state) {
-      },
+      initState: (state) {},
       builder: (controller) {
+        final user = controller.getOneUser;
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
           appBar: AppBarWidget(
             onTapBack: () {
               Get.back();
             },
-            title: "Sagar Miyani (Product)",
+            title: user?.name ?? " - ",
             isCenter: true,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  showAddOrEditProductDialog(context, controller: controller);
+                },
+                child: Text("Add Product", style: Styles.appColorW50016),
+              ),
+            ],
           ),
           bottomNavigationBar: Padding(
             padding: Dimens.edgeInsets20,
@@ -45,154 +53,228 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                 width: double.maxFinite,
                                 decoration: BoxDecoration(
                                   color: ColorsValue.whiteColor,
-                                  borderRadius: BorderRadius.circular(Dimens.ten),
+                                  borderRadius: BorderRadius.circular(
+                                    Dimens.ten,
+                                  ),
                                 ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Sagar Miyani", style: Styles.txtBlackColorW60016),
+                                        Text(
+                                          user?.name ?? " - ",
+                                          style: Styles.txtBlackColorW60016,
+                                        ),
                                         GestureDetector(
                                           onTap: () {
                                             Get.back();
                                           },
-                                          child: SvgPicture.asset(AssetConstants.ic_close),
+                                          child: SvgPicture.asset(
+                                            AssetConstants.ic_close,
+                                          ),
                                         ),
                                       ],
                                     ),
                                     Dimens.boxHeight10,
-                                    Text("Status", style: Styles.txtBlackColorW70014),
+                                    Text(
+                                      "Status",
+                                      style: Styles.txtBlackColorW70014,
+                                    ),
                                     Dimens.boxHeight4,
                                     Container(
                                       padding: Dimens.edgeInsets20_00_20_00,
-                                      height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
+                                      height:
+                                          Utility.isTablet()
+                                              ? Dimens.sixtyFive
+                                              : Dimens.fifty,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: ColorsValue.textFieldBg,
-                                        borderRadius: BorderRadius.circular(Dimens.ten),
+                                        borderRadius: BorderRadius.circular(
+                                          Dimens.ten,
+                                        ),
                                       ),
-                                      child: DropdownButton<ProductListDoc>(
+                                      child: DropdownButton<String>(
                                         underline: Container(),
                                         isDense: true,
                                         isExpanded: true,
                                         onChanged: (value) {
-                                          controller.selectProduct = value!;
+                                          controller.selectStatus = value!;
                                           controller.update();
+                                          setState(() {});
                                         },
                                         hint: Text(
                                           'Select Status'.tr,
-                                          style: Styles.txtGreyColorW50012.copyWith(
-                                            fontSize: Utility.isTablet() ? Dimens.eighteen : Dimens.fourteen,
-                                          ),
+                                          style: Styles.txtGreyColorW50012
+                                              .copyWith(
+                                                fontSize:
+                                                    Utility.isTablet()
+                                                        ? Dimens.eighteen
+                                                        : Dimens.fourteen,
+                                              ),
                                         ),
                                         focusColor: Colors.white,
                                         dropdownColor: ColorsValue.whiteColor,
-                                        value: controller.selectProduct,
+                                        value: controller.selectStatus,
                                         style: Styles.txtBlackColorW50014,
                                         iconEnabledColor: Colors.black,
-                                        icon: Icon(Icons.keyboard_arrow_down_rounded, size: Dimens.twenty),
+                                        icon: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          size: Dimens.twenty,
+                                        ),
                                         items:
-                                            controller.getProductList.map((option) {
+                                            controller.statusList.map((option) {
                                               return DropdownMenuItem(
                                                 value: option,
                                                 child: Text(
-                                                  option.productname,
-                                                  style: Styles.txtBlackColorW50014.copyWith(
-                                                    fontSize: Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
-                                                  ),
+                                                  option,
+                                                  style: Styles
+                                                      .txtBlackColorW50014
+                                                      .copyWith(
+                                                        fontSize:
+                                                            Utility.isTablet()
+                                                                ? Dimens.twenty
+                                                                : Dimens
+                                                                    .fourteen,
+                                                      ),
                                                 ),
                                               );
                                             }).toList(),
                                       ),
                                     ),
                                     Dimens.boxHeight10,
-                                    Text("Pili Status", style: Styles.txtBlackColorW70014),
-                                    Dimens.boxHeight4,
-                                    Container(
-                                      padding: Dimens.edgeInsets20_00_20_00,
-                                      height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: ColorsValue.textFieldBg,
-                                        borderRadius: BorderRadius.circular(Dimens.ten),
+                                    if (controller.selectStatus == 'pili') ...[
+                                      Text(
+                                        "Pili Status",
+                                        style: Styles.txtBlackColorW70014,
                                       ),
-                                      child: DropdownButton<ProductListDoc>(
-                                        underline: Container(),
-                                        isDense: true,
-                                        isExpanded: true,
-                                        onChanged: (value) {
-                                          controller.selectProduct = value!;
-                                          controller.update();
-                                        },
-                                        hint: Text(
-                                          'Select Pili Status'.tr,
-                                          style: Styles.txtGreyColorW50012.copyWith(
-                                            fontSize: Utility.isTablet() ? Dimens.eighteen : Dimens.fourteen,
+                                      Dimens.boxHeight4,
+                                      Container(
+                                        padding: Dimens.edgeInsets20_00_20_00,
+                                        height:
+                                            Utility.isTablet()
+                                                ? Dimens.sixtyFive
+                                                : Dimens.fifty,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: ColorsValue.textFieldBg,
+                                          borderRadius: BorderRadius.circular(
+                                            Dimens.ten,
                                           ),
                                         ),
-                                        focusColor: Colors.white,
-                                        dropdownColor: ColorsValue.whiteColor,
-                                        value: controller.selectProduct,
-                                        style: Styles.txtBlackColorW50014,
-                                        iconEnabledColor: Colors.black,
-                                        icon: Icon(Icons.keyboard_arrow_down_rounded, size: Dimens.twenty),
-                                        items:
-                                            controller.getProductList.map((option) {
-                                              return DropdownMenuItem(
-                                                value: option,
-                                                child: Text(
-                                                  option.productname,
-                                                  style: Styles.txtBlackColorW50014.copyWith(
-                                                    fontSize: Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
-                                                  ),
-                                                ),
-                                              );
-                                            }).toList(),
-                                      ),
-                                    ),
-                                    Dimens.boxHeight10,
-                                    CustomTextFormField(
-                                      controller: controller.nextDateController,
-                                      isTitle: true,
-                                      title: "Next Date",
-                                      titleStyle: Styles.txtBlackColorW70014,
-                                      hintText: 'Enter Next Date',
-                                      hintStyle: Styles.txtGreyColorW50012,
-                                      filled: true,
-                                      fillColor: ColorsValue.textFieldBg,
-                                      textInputAction: TextInputAction.next,
-                                      keyboardType: TextInputType.datetime,
-                                      suffixIcon: Padding(
-                                        padding: Dimens.edgeInsets10,
-                                        child: InkWell(
-                                          onTap: () async {
-                                            controller.nextDate = null;
-                                            controller.nextDate = await showDatePicker(
-                                              context: context,
-                                              initialDate: controller.nextDate,
-                                              firstDate: DateTime(1920),
-                                              lastDate: DateTime(2100),
-                                              initialEntryMode: DatePickerEntryMode.calendarOnly,
-                                            );
-                                            if (controller.nextDate != null) {
-                                              controller.nextDateController.text = DateFormat(
-                                                "yyyy-MM-dd",
-                                              ).format(controller.nextDate ?? DateTime.now());
-                                              controller.update();
-                                            }
+                                        child: DropdownButton<String>(
+                                          underline: Container(),
+                                          isDense: true,
+                                          isExpanded: true,
+                                          onChanged: (value) {
+                                            controller.selectPiliStatus =
+                                                value!;
+                                            controller.update();
+                                            setState(() {});
                                           },
-                                          child: SvgPicture.asset(AssetConstants.ic_date),
+                                          hint: Text(
+                                            'Select Pili Status'.tr,
+                                            style: Styles.txtGreyColorW50012
+                                                .copyWith(
+                                                  fontSize:
+                                                      Utility.isTablet()
+                                                          ? Dimens.eighteen
+                                                          : Dimens.fourteen,
+                                                ),
+                                          ),
+                                          focusColor: Colors.white,
+                                          dropdownColor: ColorsValue.whiteColor,
+                                          value: controller.selectPiliStatus,
+                                          style: Styles.txtBlackColorW50014,
+                                          iconEnabledColor: Colors.black,
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            size: Dimens.twenty,
+                                          ),
+                                          items:
+                                              controller.piliStatus.map((
+                                                option,
+                                              ) {
+                                                return DropdownMenuItem(
+                                                  value: option,
+                                                  child: Text(
+                                                    option,
+                                                    style: Styles
+                                                        .txtBlackColorW50014
+                                                        .copyWith(
+                                                          fontSize:
+                                                              Utility.isTablet()
+                                                                  ? Dimens
+                                                                      .twenty
+                                                                  : Dimens
+                                                                      .fourteen,
+                                                        ),
+                                                  ),
+                                                );
+                                              }).toList(),
                                         ),
                                       ),
-                                    ),
-                                    Dimens.boxHeight20,
+                                      Dimens.boxHeight10,
+                                      CustomTextFormField(
+                                        controller:
+                                            controller.nextDateController,
+                                        isTitle: true,
+                                        readOnly: true,
+                                        title: "Next Date",
+                                        titleStyle: Styles.txtBlackColorW70014,
+                                        hintText: 'Enter Next Date',
+                                        hintStyle: Styles.txtGreyColorW50012,
+                                        filled: true,
+                                        fillColor: ColorsValue.textFieldBg,
+                                        textInputAction: TextInputAction.next,
+                                        keyboardType: TextInputType.datetime,
+                                        suffixIcon: Padding(
+                                          padding: Dimens.edgeInsets10,
+                                          child: InkWell(
+                                            onTap: () async {
+                                              controller.nextDate = null;
+                                              controller.nextDate =
+                                                  await showDatePicker(
+                                                    context: context,
+                                                    initialDate:
+                                                        controller.nextDate,
+                                                    firstDate: DateTime(1920),
+                                                    lastDate: DateTime(2100),
+                                                    initialEntryMode:
+                                                        DatePickerEntryMode
+                                                            .calendarOnly,
+                                                  );
+                                              if (controller.nextDate != null) {
+                                                controller
+                                                    .nextDateController
+                                                    .text = DateFormat(
+                                                  "yyyy-MM-dd",
+                                                ).format(
+                                                  controller.nextDate ??
+                                                      DateTime.now(),
+                                                );
+                                                controller.update();
+                                              }
+                                            },
+                                            child: SvgPicture.asset(
+                                              AssetConstants.ic_date,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Dimens.boxHeight20,
+                                    ],
                                     CustomButton(
                                       heightBtn: Dimens.fifty,
                                       radius: Dimens.zero,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        controller.update();
+                                        controller.postSalesCreate(mode: "all");
+                                      },
                                       text: 'Save',
                                       textStyle: Styles.whiteColorW60016,
                                       backgroundColor: ColorsValue.appColor,
@@ -227,25 +309,35 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                       child: Container(
                         color: ColorsValue.lightAppColor,
                         alignment: Alignment.center,
-                        child: Text("Product", style: Styles.txtBlackColorW60014),
+                        child: Text(
+                          "Product",
+                          style: Styles.txtBlackColorW60014,
+                        ),
                       ),
                     ),
-                    Container(width: Dimens.one, height: Dimens.fourty, color: ColorsValue.greyD9D9D9),
+                    Container(
+                      width: Dimens.one,
+                      height: Dimens.fourty,
+                      color: ColorsValue.greyD9D9D9,
+                    ),
                     Expanded(
                       child: Container(
                         color: ColorsValue.lightAppColor,
                         alignment: Alignment.center,
-                        child: Text("Weight", style: Styles.txtBlackColorW60014),
+                        child: Text(
+                          "Weight",
+                          style: Styles.txtBlackColorW60014,
+                        ),
                       ),
                     ),
-                    Container(height: Dimens.fourty, width: Dimens.one, color: ColorsValue.greyD9D9D9),
-                    Expanded(
-                      child: Container(
-                        color: ColorsValue.lightAppColor,
-                        alignment: Alignment.center,
-                        child: Text("Status", style: Styles.txtBlackColorW60014),
-                      ),
-                    ),
+                    // Container(height: Dimens.fourty, width: Dimens.one, color: ColorsValue.greyD9D9D9),
+                    // Expanded(
+                    //   child: Container(
+                    //     color: ColorsValue.lightAppColor,
+                    //     alignment: Alignment.center,
+                    //     child: Text("Status", style: Styles.txtBlackColorW60014),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -253,8 +345,9 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
+                itemCount: controller.productList.length,
                 itemBuilder: (context, index) {
+                  final element = controller.productList[index];
                   return SizedBox(
                     height: Dimens.fourty,
                     child: Row(
@@ -263,34 +356,235 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                           child: Container(
                             color: ColorsValue.textFieldBg,
                             alignment: Alignment.center,
-                            child: Text("Product", style: Styles.txtBlackColorW60014),
+                            child: Text(
+                              element.productName ?? "Product",
+                              style: Styles.txtBlackColorW60014,
+                            ),
                           ),
                         ),
-                        Container(width: Dimens.one, height: Dimens.fourty, color: ColorsValue.greyD9D9D9),
+                        Container(
+                          width: Dimens.one,
+                          height: Dimens.fourty,
+                          color: ColorsValue.greyD9D9D9,
+                        ),
                         Expanded(
-                          child: Container(
-                            color: ColorsValue.textFieldBg,
-                            alignment: Alignment.center,
-                            child: Text("Weight", style: Styles.txtBlackColorW60014),
+                          child: GestureDetector(
+                            onTap: () {
+                              showAddOrEditProductDialog(
+                                context,
+                                controller: controller,
+                                editIndex: index,
+                              );
+                              controller.update();
+                            },
+                            child: Container(
+                              color: ColorsValue.textFieldBg,
+                              alignment: Alignment.center,
+                              child: Text(
+                                element.weight.toString() ?? "Weight",
+                                style: Styles.txtBlackColorW60014,
+                              ),
+                            ),
                           ),
                         ),
-                        Container(height: Dimens.fourty, width: Dimens.one, color: ColorsValue.greyD9D9D9),
-                        Expanded(
-                          child: Container(
-                            color: ColorsValue.textFieldBg,
-                            alignment: Alignment.center,
-                            child: Text("Status", style: Styles.txtBlackColorW60014),
-                          ),
-                        ),
+                        // Container(height: Dimens.fourty, width: Dimens.one, color: ColorsValue.greyD9D9D9),
+                        // Expanded(
+                        //   child: Container(
+                        //     color: ColorsValue.textFieldBg,
+                        //     alignment: Alignment.center,
+                        //     child: Text("Status", style: Styles.txtBlackColorW60014),
+                        //   ),
+                        // ),
                       ],
                     ),
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Divider(color: ColorsValue.greyD9D9D9, height: Dimens.one);
+                  return Divider(
+                    color: ColorsValue.greyD9D9D9,
+                    height: Dimens.one,
+                  );
                 },
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showAddOrEditProductDialog(
+    BuildContext context, {
+    int? editIndex,
+    required SalesAnalyticsController controller,
+  }) {
+    final isEdit = editIndex != null;
+
+    if (isEdit) {
+      final product = controller.productList[editIndex];
+      controller.selectProduct = controller.getProductList.firstWhere(
+        (p) => p.productname == product.productName,
+        orElse: () => controller.getProductList.first,
+      );
+      controller.weightController.text = product.weight.toString();
+    } else {
+      controller.selectProduct = null;
+      controller.weightController.clear();
+    }
+
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return Material(
+          color: ColorsValue.transparent,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: Dimens.edgeInsets20,
+                    padding: Dimens.edgeInsets20,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      color: ColorsValue.whiteColor,
+                      borderRadius: BorderRadius.circular(Dimens.ten),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              isEdit ? "Edit Product" : "Add Product",
+                              style: Styles.txtBlackColorW60016,
+                            ),
+                            GestureDetector(
+                              onTap: () => Get.back(),
+                              child: SvgPicture.asset(AssetConstants.ic_close),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: Dimens.edgeInsets20_00_20_00,
+                          height:
+                              Utility.isTablet()
+                                  ? Dimens.sixtyFive
+                                  : Dimens.fifty,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: ColorsValue.textFieldBg,
+                            borderRadius: BorderRadius.circular(Dimens.ten),
+                          ),
+                          child: DropdownButton<ProductListDoc>(
+                            underline: Container(),
+                            isDense: true,
+                            isExpanded: true,
+                            onChanged: (value) {
+                              controller.selectProduct = value!;
+                              controller.update();
+                              setState(() {});
+                            },
+                            hint: Text(
+                              'Product'.tr,
+                              style: Styles.txtGreyColorW50012.copyWith(
+                                fontSize:
+                                    Utility.isTablet()
+                                        ? Dimens.eighteen
+                                        : Dimens.fourteen,
+                              ),
+                            ),
+                            focusColor: Colors.white,
+                            dropdownColor: ColorsValue.whiteColor,
+                            value: controller.selectProduct,
+                            style: Styles.txtBlackColorW50014,
+                            iconEnabledColor: Colors.black,
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              size: Dimens.twenty,
+                            ),
+                            items:
+                                controller.getProductList.map((option) {
+                                  return DropdownMenuItem(
+                                    value: option,
+                                    child: Text(
+                                      option.productname,
+                                      style: Styles.txtBlackColorW50014
+                                          .copyWith(
+                                            fontSize:
+                                                Utility.isTablet()
+                                                    ? Dimens.twenty
+                                                    : Dimens.fourteen,
+                                          ),
+                                    ),
+                                  );
+                                }).toList(),
+                          ),
+                        ),
+                        CustomTextFormField(
+                          controller: controller.weightController,
+                          isTitle: true,
+                          title: "Add Weight",
+                          titleStyle: Styles.txtBlackColorW70014,
+                          hintText: 'Enter Weight',
+                          hintStyle: Styles.txtGreyColorW50012,
+                          filled: true,
+                          fillColor: ColorsValue.textFieldBg,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
+                        ),
+                        Dimens.boxHeight20,
+                        CustomButton(
+                          heightBtn: Dimens.fifty,
+                          radius: Dimens.zero,
+                          onPressed: () {
+                            if (isEdit) {
+                              controller.productList[editIndex] = ProductModel(
+                                productName:
+                                    controller.selectProduct?.productname ?? '',
+                                weight:
+                                    int.tryParse(
+                                      controller.weightController.text,
+                                    ) ??
+                                    0,
+                                productID: controller.selectProduct?.id ?? '',
+                              );
+                            } else {
+                              // Add new product
+                              controller.productList.add(
+                                ProductModel(
+                                  productName:
+                                      controller.selectProduct?.productname ??
+                                      '',
+                                  weight:
+                                      int.tryParse(
+                                        controller.weightController.text,
+                                      ) ??
+                                      0,
+                                  productID: controller.selectProduct?.id ?? '',
+                                ),
+                              );
+                            }
+
+                            controller.weightController.clear();
+                            controller.selectProduct = null;
+                            controller.update();
+                            Get.back();
+                          },
+                          text: isEdit ? 'Update' : 'Save',
+                          textStyle: Styles.whiteColorW60016,
+                          backgroundColor: ColorsValue.appColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         );
       },

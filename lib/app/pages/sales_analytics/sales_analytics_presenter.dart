@@ -1,5 +1,8 @@
+import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_controller.dart';
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/create_customer_model.dart';
+import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 
 class SalesAnalyticsPresenter {
@@ -29,6 +32,74 @@ class SalesAnalyticsPresenter {
   }) async => await salesAnalyticsUsecases.postGetOneUser(
     isLoading: isLoading,
     salesid: salesid,
+  );
+
+  Future<CreateCustomerModel?> postCreateCustomer({
+    bool isLoading = false,
+    required String customerId,
+    required String name,
+    required String mobile,
+    required String email,
+    required String address,
+    required String state,
+    required String city,
+    required String area,
+    required String zipcode,
+    required String ownername,
+    required String ownermobile,
+    required String managername,
+    required String managermobile,
+  }) async => await salesAnalyticsUsecases.postCreateCustomer(
+    isLoading: isLoading,
+    customerId: customerId,
+    name: name,
+    mobile: mobile,
+    email: email,
+    address: address,
+    state: state,
+    city: city,
+    area: area,
+    zipcode: zipcode,
+    ownername: ownername,
+    ownermobile: ownermobile,
+    managername: managername,
+    managermobile: managermobile,
+  );
+
+  Future<CreateSalesModel?> postSalesCreate({
+    bool isLoading = false,
+    required String salesPersonId,
+    required List<AddProductModel> product,
+    required String nextDate,
+    required String customerId,
+    required String storeIn,
+    required String storeOut,
+    required String status,
+    required String piliStatus,
+    required String weight,
+    required String duration,
+    required String customerNeeds,
+    required String nextPurchase,
+    required String customerReason,
+    required String customerFeedback,
+    required String customerCategory,
+  }) async => await salesAnalyticsUsecases.postSalesCreate(
+    isLoading: isLoading,
+    salesPersonId: salesPersonId,
+    product: product,
+    nextDate: nextDate,
+    customerId: customerId,
+    storeIn: storeIn,
+    storeOut: storeOut,
+    status: status,
+    piliStatus: piliStatus,
+    weight: weight,
+    duration: duration,
+    customerNeeds: customerNeeds,
+    nextPurchase: nextPurchase,
+    customerReason: customerReason,
+    customerFeedback: customerFeedback,
+    customerCategory: customerCategory,
   );
 
   Future<ProductListModel?> postGetProductList({

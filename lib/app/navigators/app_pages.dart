@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/pages/pages.dart';
+import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:get/get.dart';
 
 part 'app_routes.dart';
@@ -76,6 +77,14 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: SalesAnalyticsProductScreen.new,
       binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<ProfileScreen>(
+      name: _Paths.profileScreen,
+      transitionDuration: transitionDuration,
+      page: ProfileScreen.new,
+      binding: ProfileBindings(),
       transition: Transition.fadeIn,
     ),
   ];

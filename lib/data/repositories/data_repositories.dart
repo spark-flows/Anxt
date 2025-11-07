@@ -101,8 +101,78 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> postGetOneUser({
     bool isLoading = false,
     required String salesid,
-  }) async =>
-      await connectHelper.postGetOneUser(isLoading: isLoading, salesid: salesid);
+  }) async => await connectHelper.postGetOneUser(
+    isLoading: isLoading,
+    salesid: salesid,
+  );
+
+  Future<ResponseModel> postCreateCustomer({
+    bool isLoading = false,
+    required String customerId,
+    required String name,
+    required String mobile,
+    required String email,
+    required String address,
+    required String state,
+    required String city,
+    required String area,
+    required String zipcode,
+    required String ownername,
+    required String ownermobile,
+    required String managername,
+    required String managermobile,
+  }) async => await connectHelper.postCreateCustomer(
+    isLoading: isLoading,
+    customerId: customerId,
+    name: name,
+    mobile: mobile,
+    email: email,
+    address: address,
+    state: state,
+    city: city,
+    area: area,
+    zipcode: zipcode,
+    ownername: ownername,
+    ownermobile: ownermobile,
+    managername: managername,
+    managermobile: managermobile,
+  );
+
+  Future<ResponseModel> postSalesCreate({
+    bool isLoading = false,
+    required String salesPersonId,
+    required List<AddProductModel> product,
+    required String nextDate,
+    required String customerId,
+    required String storeIn,
+    required String storeOut,
+    required String status,
+    required String piliStatus,
+    required String weight,
+    required String duration,
+    required String customerNeeds,
+    required String nextPurchase,
+    required String customerReason,
+    required String customerFeedback,
+    required String customerCategory,
+  }) async => await connectHelper.postSalesCreate(
+    isLoading: isLoading,
+    customerId: customerId,
+    duration: duration,
+    nextDate: nextDate,
+    customerNeeds: customerNeeds,
+    nextPurchase: nextPurchase,
+    customerReason: customerReason,
+    customerFeedback: customerFeedback,
+    customerCategory: customerCategory,
+    piliStatus: piliStatus,
+    salesPersonId: salesPersonId,
+    status: status,
+    storeIn: storeIn,
+    storeOut: storeOut,
+    weight: weight,
+    product: product,
+  );
 
   Future<ResponseModel> postGetProductList({
     bool isLoading = false,
@@ -112,10 +182,18 @@ class DataRepository extends DomainRepository {
     required String search,
     required String max,
     required String min,
-  }) async =>
-      await connectHelper.postGetProductList(isLoading: isLoading, category: category, limit: limit, page: page, search: search,
-      max: max, min: min,
-      );
+  }) async => await connectHelper.postGetProductList(
+    isLoading: isLoading,
+    category: category,
+    limit: limit,
+    page: page,
+    search: search,
+    max: max,
+    min: min,
+  );
+
+  Future<ResponseModel> getProfileApi({bool isLoading = false}) async =>
+      await connectHelper.getProfileApi(isLoading: isLoading);
 
   Future<ResponseModel> postResetApi({
     bool isLoading = false,

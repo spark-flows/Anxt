@@ -12,9 +12,21 @@ class HomeScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
-          appBar: PreferredSize(
-            preferredSize: Size(double.infinity, Dimens.zero),
-            child: AppBar(),
+          appBar: AppBar(
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  onTap: () {
+                    RouteManagement.goToProfileScreen();
+                  },
+                  child: Image.asset(
+                    AssetConstants.usera,
+                    height: Utility.isTablet() ? Dimens.sixty : Dimens.fourty,
+                  ),
+                ),
+              ),
+            ],
           ),
           body: GridView.builder(
             padding: Dimens.edgeInsets20_30_20_50,

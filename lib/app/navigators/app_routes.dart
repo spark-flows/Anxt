@@ -11,6 +11,7 @@ abstract class Routes {
   static const salesAnalyticsDetailsScreen = _Paths.salesAnalyticsDetailsScreen;
   static const salesAnalyticsListScreen = _Paths.salesAnalyticsListScreen;
   static const salesAnalyticsProductScreen = _Paths.salesAnalyticsProductScreen;
+  static const profileScreen = _Paths.profileScreen;
 }
 
 abstract class _Paths {
@@ -24,4 +25,5 @@ abstract class _Paths {
   static const salesAnalyticsDetailsScreen = '/salesAnalyticsDetailsScreen';
   static const salesAnalyticsListScreen = '/salesAnalyticsListScreen';
   static const salesAnalyticsProductScreen = '/salesAnalyticsProductScreen';
+  static const profileScreen = '/ProfileScreen';
 }
