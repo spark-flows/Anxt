@@ -37,8 +37,12 @@ class SalesAnalyticsController extends GetxController {
   int filterOnboardValue = 0;
   // List<String> filterOnboardType = ['Date'];
 
-  TextEditingController fromOnboardController = TextEditingController();
-  TextEditingController toOnboardController = TextEditingController();
+  TextEditingController fromOnboardController = TextEditingController(
+    text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  );
+  TextEditingController toOnboardController = TextEditingController(
+    text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  );
 
   DateTime fromOnboardDate = DateTime.now();
   DateTime toOnboardDate = DateTime.now();
@@ -74,7 +78,7 @@ class SalesAnalyticsController extends GetxController {
     isLoading = true;
     var response = await salesAnalyticsPresenter.postAllUserList(
       page: pageKey,
-      limit: 20,
+      limit: 1000,
       search: SearchModel(),
       fromDate: fromDate ?? '',
       toDate: toDate ?? '',

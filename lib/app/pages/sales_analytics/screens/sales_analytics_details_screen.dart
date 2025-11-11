@@ -108,6 +108,7 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                             storeOutDate: DateTime.now(),
                             mode: 'storeOut',
                           );
+                          
                           controller.update();
                         },
                         child: Container(

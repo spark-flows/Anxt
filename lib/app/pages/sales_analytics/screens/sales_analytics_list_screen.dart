@@ -13,7 +13,11 @@ class SalesAnalyticsListScreen extends StatelessWidget {
     return GetBuilder<SalesAnalyticsController>(
       initState: (state) {
         var controller = Get.find<SalesAnalyticsController>();
-        controller.postAllUserList(1);
+        controller.postAllUserList(
+          1,
+          fromDate: controller.fromOnboardController.text,
+          toDate: controller.toOnboardController.text,
+        );
         controller.scrollController.addListener(() async {
           if (controller.scrollController.position.pixels ==
               controller.scrollController.position.maxScrollExtent) {
@@ -21,7 +25,11 @@ class SalesAnalyticsListScreen extends StatelessWidget {
               controller.isLoading = true;
               controller.update();
               if (controller.isLastPage == false) {
-                await controller.postAllUserList(controller.pageCount);
+                await controller.postAllUserList(
+                  controller.pageCount,
+                  fromDate: controller.fromOnboardController.text,
+                  toDate: controller.toOnboardController.text,
+                );
               }
               controller.isLoading = false;
               controller.update();
@@ -507,6 +515,44 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           Utility.isFilter =
                                                               false;
                                                           controller
+                                                              .postAllUserList(
+                                                                1,
+                                                              );
+                                                          controller.scrollController.addListener(() async {
+                                                            if (controller
+                                                                    .scrollController
+                                                                    .position
+                                                                    .pixels ==
+                                                                controller
+                                                                    .scrollController
+                                                                    .position
+                                                                    .maxScrollExtent) {
+                                                              if (controller
+                                                                      .isLoading ==
+                                                                  false) {
+                                                                controller
+                                                                        .isLoading =
+                                                                    true;
+                                                                controller
+                                                                    .update();
+                                                                if (controller
+                                                                        .isLastPage ==
+                                                                    false) {
+                                                                  await controller
+                                                                      .postAllUserList(
+                                                                        controller
+                                                                            .pageCount,
+                                                                      );
+                                                                }
+                                                                controller
+                                                                        .isLoading =
+                                                                    false;
+                                                                controller
+                                                                    .update();
+                                                              }
+                                                            }
+                                                          });
+                                                          controller
                                                               .toOnboardController
                                                               .clear();
                                                           controller
@@ -516,9 +562,6 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           controller
                                                               .filterOnboardValue = 0;
                                                           controller.update();
-                                                          // controller
-                                                          //     .customersProPagingController
-                                                          //     .refresh();
                                                           Get.back();
                                                         },
                                                         child: Container(
@@ -570,47 +613,59 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           Get.back();
                                                           Utility.isFilter =
                                                               true;
-                                                          controller.scrollController.addListener(() async {
-                                                            if (controller
-                                                                    .scrollController
-                                                                    .position
-                                                                    .pixels ==
-                                                                controller
-                                                                    .scrollController
-                                                                    .position
-                                                                    .maxScrollExtent) {
-                                                              if (controller
-                                                                      .isLoading ==
-                                                                  false) {
-                                                                controller
-                                                                        .isLoading =
-                                                                    true;
-                                                                controller
-                                                                    .update();
-                                                                if (controller
-                                                                        .isLastPage ==
-                                                                    false) {
-                                                                  await controller.postAllUserList(
+                                                          await controller
+                                                              .postAllUserList(
+                                                                1,
+                                                                fromDate:
                                                                     controller
-                                                                        .pageCount,
-                                                                    fromDate:
-                                                                        controller
-                                                                            .fromOnboardController
-                                                                            .text,
-                                                                    toDate:
-                                                                        controller
-                                                                            .toOnboardController
-                                                                            .text,
-                                                                  );
-                                                                }
-                                                                controller
-                                                                        .isLoading =
-                                                                    false;
-                                                                controller
-                                                                    .update();
-                                                              }
-                                                            }
-                                                          });
+                                                                        .fromOnboardController
+                                                                        .text,
+                                                                toDate:
+                                                                    controller
+                                                                        .toOnboardController
+                                                                        .text,
+                                                              );
+                                                          // controller.scrollController.addListener(() async {
+                                                          //   if (controller
+                                                          //           .scrollController
+                                                          //           .position
+                                                          //           .pixels ==
+                                                          //       controller
+                                                          //           .scrollController
+                                                          //           .position
+                                                          //           .maxScrollExtent) {
+                                                          //     if (controller
+                                                          //             .isLoading ==
+                                                          //         false) {
+                                                          //       controller
+                                                          //               .isLoading =
+                                                          //           true;
+                                                          //       controller
+                                                          //           .update();
+                                                          //       if (controller
+                                                          //               .isLastPage ==
+                                                          //           false) {
+                                                          //         await controller.postAllUserList(
+                                                          //           controller
+                                                          //               .pageCount,
+                                                          //           fromDate:
+                                                          //               controller
+                                                          //                   .fromOnboardController
+                                                          //                   .text,
+                                                          //           toDate:
+                                                          //               controller
+                                                          //                   .toOnboardController
+                                                          //                   .text,
+                                                          //         );
+                                                          //       }
+                                                          //       controller
+                                                          //               .isLoading =
+                                                          //           false;
+                                                          //       controller
+                                                          //           .update();
+                                                          //     }
+                                                          //   }
+                                                          // });
                                                           controller.update();
                                                         },
                                                         child: Container(
