@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/app/pages/profile_screen/profile_controller.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
@@ -69,6 +70,7 @@ class SalesAnalyticsController extends GetxController {
 
   Future<void> postAllUserList(
     int pageKey, {
+      String ? salesPersonId,
     String? fromDate,
     String? toDate,
   }) async {
@@ -80,6 +82,7 @@ class SalesAnalyticsController extends GetxController {
       page: pageKey,
       limit: 1000,
       search: SearchModel(),
+      salesPersonId: salesPersonId ?? "",
       fromDate: fromDate ?? '',
       toDate: toDate ?? '',
       isLoading: false,
@@ -125,6 +128,16 @@ class SalesAnalyticsController extends GetxController {
     if (response?.status == 200) {
       getOneUser = response?.data;
       isGetOneUserLoading = false;
+      productList = response?.data?.sales?.first.product
+              ?.map(
+                (e) => ProductModel(
+                  productName: e.product.productname ?? '',
+                  productID: e.product.id ?? '',
+                  weight: e.weight ?? 0,
+                ),
+              )
+              .toList() ??
+          [];
       postGetProductList();
     } else {
       isGetOneUserLoading = false;
@@ -199,7 +212,6 @@ class SalesAnalyticsController extends GetxController {
     update();
   }
 
-  //// Create Sales ///
   Future<void> postSalesCreate({
     DateTime? storeInDate,
     DateTime? storeOutDate,
@@ -222,43 +234,35 @@ class SalesAnalyticsController extends GetxController {
             )
             .toList();
 
-    final totalWeight = productList.fold<int>(
+    final totalWeight = productList.fold<num>(
       0,
       (previousValue, element) => previousValue + element.weight,
     );
 
-    switch (mode) {
-      case 'storeIn':
-        body['storeIn'] = storeDate;
-        break;
-
-      case 'storeOut':
-        body['storeOut'] = storeOut;
-        break;
-
-      default:
-        body.addAll({
-          'customerId': getOneUser?.id ?? '',
-          'salesPersonId': getOneUser?.sales?.first.salesperson?.id ?? '',
-          'product': addProductList,
-          'nextDate':
-              nextDate != null
-                  ? DateFormat('yyyy-MM-dd').format(nextDate!)
-                  : '',
-          'status': selectStatus ?? '',
-          'piliStatus': selectPiliStatus ?? '',
-          'weight': totalWeight.toString(),
-          'duration': '',
-          'customerNeeds': '',
-          'nextPurchase': '',
-          'customerReason': '',
-          'customerFeedback': '',
-          'customerCategory': '',
-        });
-    }
+    body.addAll({
+      'storeIn' : storeDate,
+      'storeOut':storeOut,
+      'customerId': getOneUser?.id ?? '',
+      'salesPersonId': getOneUser?.sales?.first.salesperson?.id ?? '',
+      'product': addProductList,
+      'nextDate':
+      nextDate != null
+          ? DateFormat('yyyy-MM-dd').format(nextDate!)
+          : '',
+      'status': selectStatus ?? '',
+      'piliStatus': selectPiliStatus ?? '',
+      'weight': totalWeight.toString(),
+      'duration': '',
+      'customerNeeds': '',
+      'nextPurchase': '',
+      'customerReason': '',
+      'customerFeedback': '',
+      'customerCategory': '',
+    });
 
     var response = await salesAnalyticsPresenter.postSalesCreate(
       isLoading: true,
+      salesId: getOneUser?.sales?.first.id ?? '',
       customerId: body['customerId'] ?? '',
       salesPersonId: body['salesPersonId'],
       // getOneUser?.sales?.first.salesperson?.id ?? '',
@@ -316,5 +320,5 @@ class ProductModel {
 
   String productName;
   String productID;
-  int weight;
+  num weight;
 }

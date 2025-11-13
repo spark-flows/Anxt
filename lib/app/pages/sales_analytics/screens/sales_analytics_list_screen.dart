@@ -1,5 +1,8 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
+import 'package:a_nxt/domain/repositories/local_storage_keys.dart';
+import 'package:a_nxt/domain/repositories/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -11,12 +14,16 @@ class SalesAnalyticsListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
-      initState: (state) {
+      initState: (state) async {
         var controller = Get.find<SalesAnalyticsController>();
+        final salesPersonId = Get.find<Repository>().getSecureValue(
+          LocalKeys.salesPersonId,
+        );
         controller.postAllUserList(
           1,
           fromDate: controller.fromOnboardController.text,
           toDate: controller.toOnboardController.text,
+          salesPersonId: await salesPersonId,
         );
         controller.scrollController.addListener(() async {
           if (controller.scrollController.position.pixels ==
@@ -29,6 +36,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                   controller.pageCount,
                   fromDate: controller.fromOnboardController.text,
                   toDate: controller.toOnboardController.text,
+                  salesPersonId: await salesPersonId,
                 );
               }
               controller.isLoading = false;
@@ -38,6 +46,9 @@ class SalesAnalyticsListScreen extends StatelessWidget {
         });
       },
       builder: (controller) {
+        final salesPersonId = Get.find<Repository>().getSecureValue(
+          LocalKeys.salesPersonId,
+        );
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
           appBar: AppBarWidget(
@@ -515,8 +526,28 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           Utility.isFilter =
                                                               false;
                                                           controller
+                                                              .toOnboardController
+                                                              .text = DateFormat(
+                                                            "yyyy-MM-dd",
+                                                          ).format(
+                                                            DateTime.now(),
+                                                          );
+                                                          controller
+                                                              .fromOnboardController
+                                                              .text = DateFormat(
+                                                            "yyyy-MM-dd",
+                                                          ).format(
+                                                            DateTime.now(),
+                                                          );
+                                                          controller
                                                               .postAllUserList(
                                                                 1,
+                                                                salesPersonId:
+                                                                    await salesPersonId,
+                                                            fromDate: controller
+                                                                .toOnboardController.text,
+                                                            toDate: controller
+                                                                .fromOnboardController.text
                                                               );
                                                           controller.scrollController.addListener(() async {
                                                             if (controller
@@ -538,11 +569,12 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                 if (controller
                                                                         .isLastPage ==
                                                                     false) {
-                                                                  await controller
-                                                                      .postAllUserList(
-                                                                        controller
-                                                                            .pageCount,
-                                                                      );
+                                                                  await controller.postAllUserList(
+                                                                    controller
+                                                                        .pageCount,
+                                                                    salesPersonId:
+                                                                        await salesPersonId,
+                                                                  );
                                                                 }
                                                                 controller
                                                                         .isLoading =
@@ -552,12 +584,6 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                               }
                                                             }
                                                           });
-                                                          controller
-                                                              .toOnboardController
-                                                              .clear();
-                                                          controller
-                                                              .fromOnboardController
-                                                              .clear();
 
                                                           controller
                                                               .filterOnboardValue = 0;
@@ -613,18 +639,19 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           Get.back();
                                                           Utility.isFilter =
                                                               true;
-                                                          await controller
-                                                              .postAllUserList(
-                                                                1,
-                                                                fromDate:
-                                                                    controller
-                                                                        .fromOnboardController
-                                                                        .text,
-                                                                toDate:
-                                                                    controller
-                                                                        .toOnboardController
-                                                                        .text,
-                                                              );
+                                                          await controller.postAllUserList(
+                                                            1,
+                                                            fromDate:
+                                                                controller
+                                                                    .fromOnboardController
+                                                                    .text,
+                                                            toDate:
+                                                                controller
+                                                                    .toOnboardController
+                                                                    .text,
+                                                            salesPersonId:
+                                                                await salesPersonId,
+                                                          );
                                                           // controller.scrollController.addListener(() async {
                                                           //   if (controller
                                                           //           .scrollController
@@ -753,74 +780,77 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                 Expanded(
                   child:
                       !controller.isLoading
-                          ? ListView.builder(
-                            itemCount: controller.getAllUserList.length,
-                            itemBuilder: (context, index) {
-                              final element = controller.getAllUserList[index];
-                              return CustomerCard(element: element);
-                              // return GestureDetector(
-                              //   onTap: () {
-                              //     RouteManagement.goToSalesAnalyticsDetailsScreen(element.id);
-                              //   },
-                              //   child: Container(
-                              //     color: ColorsValue.textFieldBg,
-                              //     padding: Dimens.edgeInsets20_00_20_10,
-                              //     margin: Dimens.edgeInsetsBottom10,
-                              //     child: Column(
-                              //       crossAxisAlignment: CrossAxisAlignment.start,
-                              //       children: [
-                              //         ListTile(
-                              //           dense: true,
-                              //           visualDensity: VisualDensity(vertical: Dimens.zero, horizontal: Dimens.zero),
-                              //           contentPadding: Dimens.edgeInsets0,
-                              //           minVerticalPadding: Dimens.zero,
-                              //           title: Row(
-                              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //             children: [
-                              //               Text(element.name ?? "Sagar Miyani", style: Styles.txtBlackColorW70018),
-                              //               Container(
-                              //                 padding: Dimens.edgeInsets06_04_06_04,
-                              //                 decoration: BoxDecoration(
-                              //                   color: ColorsValue.appColorEBBD87,
-                              //                   borderRadius: BorderRadius.circular(Dimens.four),
-                              //                 ),
-                              //                 child: Text(element.status.toString(), style: Styles.whiteColorW50010),
-                              //               ),
-                              //             ],
-                              //           ),
-                              //           subtitle: Padding(
-                              //             padding: Dimens.edgeInsetsTop05,
-                              //             child: Row(
-                              //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Row(
-                              //                   crossAxisAlignment: CrossAxisAlignment.start,
-                              //                   children: [
-                              //                     Text("Mobile Number :- ", style: Styles.txtBlackColorW60014),
-                              //                     Text(
-                              //                       element.mobile ?? " - ",
-                              //                       style: Styles.txtBlackColorW40014,
-                              //                     ),
-                              //                   ],
-                              //                 ),
-                              //                 Container(
-                              //                   padding: Dimens.edgeInsets06_04_06_04,
-                              //                   decoration: BoxDecoration(
-                              //                     color: ColorsValue.appColor,
-                              //                     borderRadius: BorderRadius.circular(Dimens.four),
-                              //                   ),
-                              //                   child: Text("ATT :- 12", style: Styles.whiteColorW50010),
-                              //                 ),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // );
-                            },
-                          )
+                          ? controller.getAllUserList.isEmpty
+                              ? Center(child: Text('Data Not Found...'))
+                              : ListView.builder(
+                                itemCount: controller.getAllUserList.length,
+                                itemBuilder: (context, index) {
+                                  final element =
+                                      controller.getAllUserList[index];
+                                  return CustomerCard(element: element);
+                                  // return GestureDetector(
+                                  //   onTap: () {
+                                  //     RouteManagement.goToSalesAnalyticsDetailsScreen(element.id);
+                                  //   },
+                                  //   child: Container(
+                                  //     color: ColorsValue.textFieldBg,
+                                  //     padding: Dimens.edgeInsets20_00_20_10,
+                                  //     margin: Dimens.edgeInsetsBottom10,
+                                  //     child: Column(
+                                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         ListTile(
+                                  //           dense: true,
+                                  //           visualDensity: VisualDensity(vertical: Dimens.zero, horizontal: Dimens.zero),
+                                  //           contentPadding: Dimens.edgeInsets0,
+                                  //           minVerticalPadding: Dimens.zero,
+                                  //           title: Row(
+                                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //             children: [
+                                  //               Text(element.name ?? "Sagar Miyani", style: Styles.txtBlackColorW70018),
+                                  //               Container(
+                                  //                 padding: Dimens.edgeInsets06_04_06_04,
+                                  //                 decoration: BoxDecoration(
+                                  //                   color: ColorsValue.appColorEBBD87,
+                                  //                   borderRadius: BorderRadius.circular(Dimens.four),
+                                  //                 ),
+                                  //                 child: Text(element.status.toString(), style: Styles.whiteColorW50010),
+                                  //               ),
+                                  //             ],
+                                  //           ),
+                                  //           subtitle: Padding(
+                                  //             padding: Dimens.edgeInsetsTop05,
+                                  //             child: Row(
+                                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //               children: [
+                                  //                 Row(
+                                  //                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  //                   children: [
+                                  //                     Text("Mobile Number :- ", style: Styles.txtBlackColorW60014),
+                                  //                     Text(
+                                  //                       element.mobile ?? " - ",
+                                  //                       style: Styles.txtBlackColorW40014,
+                                  //                     ),
+                                  //                   ],
+                                  //                 ),
+                                  //                 Container(
+                                  //                   padding: Dimens.edgeInsets06_04_06_04,
+                                  //                   decoration: BoxDecoration(
+                                  //                     color: ColorsValue.appColor,
+                                  //                     borderRadius: BorderRadius.circular(Dimens.four),
+                                  //                   ),
+                                  //                   child: Text("ATT :- 12", style: Styles.whiteColorW50010),
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // );
+                                },
+                              )
                           : Center(child: CircularProgressIndicator()),
                 ),
               ],
@@ -883,12 +913,16 @@ class CustomerCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  element.name ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    color: Colors.black87,
+                Expanded(
+                  child: Text(
+                    element.name ?? '',
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
                 if (element.pilistatus?.isNotEmpty ??

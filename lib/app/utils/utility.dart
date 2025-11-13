@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 abstract class Utility {
   static bool isFilter = false;
+  static GetProfileData? profileData;
 
   static Future<bool> isNetworkAvailable() async {
     var connectivityResult = await Connectivity().checkConnectivity();

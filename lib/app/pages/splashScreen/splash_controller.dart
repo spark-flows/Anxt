@@ -9,6 +9,16 @@ class SplashController extends GetxController {
 
   final SplashPresenter splashPresenter;
 
+  Future<void> getProfileApi() async {
+    var response = await splashPresenter.getProfileApi(isLoading: false);
+    Utility.profileData = null;
+    if (response?.data != null) {
+      Utility.profileData = response!.data;
+      Get.find<Repository>().saveSecureValue(LocalKeys.salesPersonId, response.data?.userData?.id ?? "");
+      update();
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();

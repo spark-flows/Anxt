@@ -89,11 +89,13 @@ class DataRepository extends DomainRepository {
     required SearchModel search,
     required String fromDate,
     required String todate,
+    required String salesPersonId,
   }) async => await connectHelper.postAllUserList(
     isLoading: isLoading,
     limit: limit,
     page: page,
     search: search,
+    salesPersonId: salesPersonId,
     fromDate: fromDate,
     todate: todate,
   );
@@ -143,6 +145,7 @@ class DataRepository extends DomainRepository {
     required String salesPersonId,
     required List<AddProductModel> product,
     required String nextDate,
+    required String salesId,
     required String customerId,
     required String storeIn,
     required String storeOut,
@@ -157,6 +160,7 @@ class DataRepository extends DomainRepository {
     required String customerCategory,
   }) async => await connectHelper.postSalesCreate(
     isLoading: isLoading,
+    salesId: salesId,
     customerId: customerId,
     duration: duration,
     nextDate: nextDate,

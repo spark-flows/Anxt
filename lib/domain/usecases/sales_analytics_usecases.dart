@@ -17,12 +17,15 @@ class SalesAnalyticsUsecases {
     required int page,
     required int limit,
     required SearchModel search,
+    required String salesPersonId,
+
     required String fromDate,
     required String toDate,
   }) async => await repository.postAllUserList(
     isLoading: isLoading,
     page: page,
     limit: limit,
+    salesPersonId: salesPersonId,
     search: search,
     fromDate: fromDate,
     toDate: toDate,
@@ -82,10 +85,12 @@ class SalesAnalyticsUsecases {
     required String nextPurchase,
     required String customerReason,
     required String customerFeedback,
+    required String salesId,
     required String customerCategory,
   }) async =>
       await repository.postSalesCreate(
         isLoading: isLoading,
+        salesId: salesId,
         salesPersonId: salesPersonId,
         product: product,
         nextDate: nextDate,

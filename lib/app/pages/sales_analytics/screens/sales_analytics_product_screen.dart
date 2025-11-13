@@ -561,7 +561,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                       controller.selectProduct?.productname ??
                                       '',
                                   weight:
-                                      int.tryParse(
+                                      num.tryParse(
                                         controller.weightController.text,
                                       ) ??
                                       0,

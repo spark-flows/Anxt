@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/app/pages/profile_screen/profile_controller.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

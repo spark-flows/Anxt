@@ -136,6 +136,7 @@ class ConnectHelper {
     required int page,
     required int limit,
     required SearchModel search,
+    required String salesPersonId,
     required String fromDate,
     required String todate,
   }) async {
@@ -156,7 +157,8 @@ class ConnectHelper {
       "zipcode": "",
       "assignby": "",
       "salesperson": "",
-      "type": "",
+      "type": "assign",
+      "salespersonid": salesPersonId,
       "sortfield": "name",
       "sortoption": 1,
     };
@@ -230,6 +232,7 @@ class ConnectHelper {
 
   Future<ResponseModel> postSalesCreate({
     bool isLoading = false,
+    required String salesId,
     required String salesPersonId,
     required List<AddProductModel> product,
     required String nextDate,
@@ -247,7 +250,7 @@ class ConnectHelper {
     required String customerCategory,
   }) async {
     var data = {
-      "salesid": "",
+      "salesid": salesId,
       "salespersonid": salesPersonId,
       "product": product,
       "nextdate": nextDate,
@@ -422,9 +425,9 @@ class AddProductModel {
   AddProductModel({required this.productID, required this.weight});
 
   String productID;
-  int weight;
+  num weight;
 
   Map<String, dynamic> toJson() {
-    return {'productID': productID, 'weight': weight};
+    return {'productid': productID, 'weight': weight};
   }
 }

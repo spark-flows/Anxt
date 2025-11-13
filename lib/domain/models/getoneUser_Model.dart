@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 GetOneUser getOneUserFromJson(String str) => GetOneUser.fromJson(json.decode(str));
-
 String getOneUserToJson(GetOneUser data) => json.encode(data.toJson());
 
 class GetOneUser {
@@ -19,7 +18,9 @@ class GetOneUser {
 
     factory GetOneUser.fromJson(Map<String, dynamic> json) => GetOneUser(
         message: json["Message"],
-        data: json["Data"] == null ? null : GetOneUserData.fromJson(json["Data"]),
+        data: json["Data"] == null
+            ? null
+            : GetOneUserData.fromJson(json["Data"]),
         status: json["Status"],
         isSuccess: json["IsSuccess"],
     );
@@ -111,14 +112,25 @@ class GetOneUserData {
         limits: json["limits"],
         status: json["status"],
         custcategory: json["custcategory"],
-        bankkycdetail: json["bankkycdetail"] == null ? null : GetOneUserBankkycdetail.fromJson(json["bankkycdetail"]),
-        createdBy: json["createdBy"] == null ? null : GetOneUserCreatedBy.fromJson(json["createdBy"]),
-        updatedBy: json["updatedBy"],
+        bankkycdetail: json["bankkycdetail"] == null
+            ? null
+            : GetOneUserBankkycdetail.fromJson(json["bankkycdetail"]),
+        createdBy: json["createdBy"] == null
+            ? null
+            : GetOneUserCreatedBy.fromJson(json["createdBy"]),
+        updatedBy: json["updatedBy"]?.toString() ?? "",
         isDeleted: json["isDeleted"],
-        deletedBy: json["deletedBy"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        sales: json["sales"] == null ? [] : List<GetOneUserSale>.from(json["sales"]!.map((x) => GetOneUserSale.fromJson(x))),
+        deletedBy: json["deletedBy"]?.toString() ?? "",
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        sales: json["sales"] == null
+            ? []
+            : List<GetOneUserSale>.from(
+            json["sales"].map((x) => GetOneUserSale.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -148,7 +160,9 @@ class GetOneUserData {
         "deletedBy": deletedBy,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-        "sales": sales == null ? [] : List<dynamic>.from(sales!.map((x) => x.toJson())),
+        "sales": sales == null
+            ? []
+            : List<dynamic>.from(sales!.map((x) => x.toJson())),
     };
 }
 
@@ -175,17 +189,20 @@ class GetOneUserBankkycdetail {
         this.cancelcheque,
     });
 
-    factory GetOneUserBankkycdetail.fromJson(Map<String, dynamic> json) => GetOneUserBankkycdetail(
-        bankname: json["bankname"],
-        acno: json["acno"],
-        acholdername: json["acholdername"],
-        ifsccode: json["ifsccode"],
-        adharcard: json["adharcard"] == null ? null : GetOneUserAdharcard.fromJson(json["adharcard"]),
-        pancard: json["pancard"],
-        gstno: json["gstno"],
-        gstcertificate: json["gstcertificate"],
-        cancelcheque: json["cancelcheque"],
-    );
+    factory GetOneUserBankkycdetail.fromJson(Map<String, dynamic> json) =>
+        GetOneUserBankkycdetail(
+            bankname: json["bankname"],
+            acno: json["acno"],
+            acholdername: json["acholdername"],
+            ifsccode: json["ifsccode"],
+            adharcard: json["adharcard"] == null
+                ? null
+                : GetOneUserAdharcard.fromJson(json["adharcard"]),
+            pancard: json["pancard"],
+            gstno: json["gstno"],
+            gstcertificate: json["gstcertificate"],
+            cancelcheque: json["cancelcheque"],
+        );
 
     Map<String, dynamic> toJson() => {
         "bankname": bankname,
@@ -204,53 +221,43 @@ class GetOneUserAdharcard {
     String? front;
     String? back;
 
-    GetOneUserAdharcard({
-        this.front,
-        this.back,
-    });
+    GetOneUserAdharcard({this.front, this.back});
 
-    factory GetOneUserAdharcard.fromJson(Map<String, dynamic> json) => GetOneUserAdharcard(
-        front: json["front"],
-        back: json["back"],
-    );
+    factory GetOneUserAdharcard.fromJson(Map<String, dynamic> json) =>
+        GetOneUserAdharcard(
+            front: json["front"],
+            back: json["back"],
+        );
 
-    Map<String, dynamic> toJson() => {
-        "front": front,
-        "back": back,
-    };
+    Map<String, dynamic> toJson() => {"front": front, "back": back};
 }
 
 class GetOneUserCreatedBy {
     String? id;
     String? name;
 
-    GetOneUserCreatedBy({
-        this.id,
-        this.name,
-    });
+    GetOneUserCreatedBy({this.id, this.name});
 
-    factory GetOneUserCreatedBy.fromJson(Map<String, dynamic> json) => GetOneUserCreatedBy(
-        id: json["_id"],
-        name: json["name"],
-    );
+    factory GetOneUserCreatedBy.fromJson(Map<String, dynamic> json) =>
+        GetOneUserCreatedBy(
+            id: json["_id"],
+            name: json["name"],
+        );
 
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
-    };
+    Map<String, dynamic> toJson() => {"_id": id, "name": name};
 }
 
 class GetOneUserSale {
     String? id;
     String? salespersonid;
     GetOneUserCreatedBy? salesperson;
-    List<GetOneUserProduct>? product;
+    List<GetOneUserProductElement>? product;
     String? storein;
     String? storeout;
     String? duration;
     String? status;
     String? pilistatus;
-    int? weight;
+    num? weight; // ✅ allows int or double
     String? customerneeds;
     String? customerreason;
     String? customerfeedback;
@@ -292,33 +299,52 @@ class GetOneUserSale {
     factory GetOneUserSale.fromJson(Map<String, dynamic> json) => GetOneUserSale(
         id: json["_id"],
         salespersonid: json["salespersonid"],
-        salesperson: json["salesperson"] == null ? null : GetOneUserCreatedBy.fromJson(json["salesperson"]),
-        product: json["product"] == null ? [] : List<GetOneUserProduct>.from(json["product"]!.map((x) => GetOneUserProduct.fromJson(x))),
+        salesperson: json["salesperson"] == null
+            ? null
+            : GetOneUserCreatedBy.fromJson(json["salesperson"]),
+        product: json["product"] == null
+            ? []
+            : List<GetOneUserProductElement>.from(json["product"]
+            .map((x) => GetOneUserProductElement.fromJson(x))),
         storein: json["storein"],
         storeout: json["storeout"],
         duration: json["duration"],
         status: json["status"],
         pilistatus: json["pilistatus"],
-        weight: json["weight"],
+        weight: json["weight"] is num
+            ? json["weight"]
+            : num.tryParse(json["weight"].toString()) ?? 0,
         customerneeds: json["customerneeds"],
         customerreason: json["customerreason"],
         customerfeedback: json["customerfeedback"],
         customercategory: json["customercategory"],
-        nextdate: json["nextdate"] == null ? null : DateTime.parse(json["nextdate"]),
-        nextpurchase: json["nextpurchase"] == null ? null : DateTime.parse(json["nextpurchase"]),
-        attempt: json["attempt"] == null ? [] : List<GetOneUserAttempt>.from(json["attempt"]!.map((x) => GetOneUserAttempt.fromJson(x))),
+        nextdate: json["nextdate"] == null
+            ? null
+            : DateTime.parse(json["nextdate"]),
+        nextpurchase: json["nextpurchase"] == null
+            ? null
+            : DateTime.parse(json["nextpurchase"]),
+        attempt: json["attempt"] == null
+            ? []
+            : List<GetOneUserAttempt>.from(
+            json["attempt"].map((x) => GetOneUserAttempt.fromJson(x))),
         isDeleted: json["isDeleted"],
-        createdBy: json["createdBy"],
-        updatedBy: json["updatedBy"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        createdBy: json["createdBy"]?.toString(),
+        updatedBy: json["updatedBy"]?.toString() ?? "",
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "salespersonid": salespersonid,
         "salesperson": salesperson?.toJson(),
-        "product": product == null ? [] : List<dynamic>.from(product!.map((x) => x.toJson())),
+        "product":
+        product == null ? [] : product!.map((x) => x.toJson()).toList(),
         "storein": storein,
         "storeout": storeout,
         "duration": duration,
@@ -331,7 +357,9 @@ class GetOneUserSale {
         "customercategory": customercategory,
         "nextdate": nextdate?.toIso8601String(),
         "nextpurchase": nextpurchase?.toIso8601String(),
-        "attempt": attempt == null ? [] : List<dynamic>.from(attempt!.map((x) => x.toJson())),
+        "attempt": attempt == null
+            ? []
+            : attempt!.map((x) => x.toJson()).toList(),
         "isDeleted": isDeleted,
         "createdBy": createdBy,
         "updatedBy": updatedBy,
@@ -345,45 +373,69 @@ class GetOneUserAttempt {
     DateTime? date;
     String? id;
 
-    GetOneUserAttempt({
-        this.count,
-        this.date,
-        this.id,
-    });
+    GetOneUserAttempt({this.count, this.date, this.id});
 
-    factory GetOneUserAttempt.fromJson(Map<String, dynamic> json) => GetOneUserAttempt(
-        count: json["count"],
-        date: json["date"] == null ? null : DateTime.parse(json["date"]),
-        id: json["_id"],
-    );
+    factory GetOneUserAttempt.fromJson(Map<String, dynamic> json) =>
+        GetOneUserAttempt(
+            count: json["count"],
+            date:
+            json["date"] == null ? null : DateTime.parse(json["date"]),
+            id: json["_id"],
+        );
 
-    Map<String, dynamic> toJson() => {
-        "count": count,
-        "date": date?.toIso8601String(),
-        "_id": id,
-    };
+    Map<String, dynamic> toJson() =>
+        {"count": count, "date": date?.toIso8601String(), "_id": id};
 }
 
-class GetOneUserProduct {
-    String? productid;
-    int? weight;
-    String? id;
+class GetOneUserProductElement {
+    final String productid;
+    final num weight; // ✅ supports int or double
+    final String id;
+    final GetOneUserProductProduct product;
 
-    GetOneUserProduct({
-        this.productid,
-        this.weight,
-        this.id,
+    GetOneUserProductElement({
+        required this.productid,
+        required this.weight,
+        required this.id,
+        required this.product,
     });
 
-    factory GetOneUserProduct.fromJson(Map<String, dynamic> json) => GetOneUserProduct(
-        productid: json["productid"],
-        weight: json["weight"],
-        id: json["_id"],
-    );
+    factory GetOneUserProductElement.fromJson(Map<String, dynamic> json) =>
+        GetOneUserProductElement(
+            productid: json["productid"],
+            weight: json["weight"] is num
+                ? json["weight"]
+                : num.tryParse(json["weight"].toString()) ?? 0,
+            id: json["_id"],
+            product: GetOneUserProductProduct.fromJson(json["product"]),
+        );
 
     Map<String, dynamic> toJson() => {
         "productid": productid,
         "weight": weight,
         "_id": id,
+        "product": product.toJson(),
     };
+}
+
+class GetOneUserProductProduct {
+    final String id;
+    final String shortname;
+    final String productname;
+
+    GetOneUserProductProduct({
+        required this.id,
+        required this.shortname,
+        required this.productname,
+    });
+
+    factory GetOneUserProductProduct.fromJson(Map<String, dynamic> json) =>
+        GetOneUserProductProduct(
+            id: json["_id"],
+            shortname: json["shortname"],
+            productname: json["productname"],
+        );
+
+    Map<String, dynamic> toJson() =>
+        {"_id": id, "shortname": shortname, "productname": productname};
 }

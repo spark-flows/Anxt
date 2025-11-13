@@ -181,6 +181,8 @@ class Repository {
     required int page,
     required int limit,
     required SearchModel search,
+    required String salesPersonId,
+
     required String fromDate,
     required String toDate,
   }) async {
@@ -190,6 +192,7 @@ class Repository {
         limit: limit,
         search: search,
         isLoading: isLoading,
+        salesPersonId: salesPersonId,
         fromDate: fromDate,
         todate: toDate,
       );
@@ -290,11 +293,13 @@ class Repository {
     required String nextPurchase,
     required String customerReason,
     required String customerFeedback,
+    required String salesId,
     required String customerCategory,
   }) async {
     try {
       var response = await _dataRepository.postSalesCreate(
         isLoading: isLoading,
+        salesId: salesId,
         salesPersonId: salesPersonId,
         product: product,
         nextDate: nextDate,

@@ -166,7 +166,8 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           child: Text(
-                            user?.status.toString() ?? "Pending",
+                              user?.status != "" ?
+                            user?.status.toString() ?? "Pending" : 'Pending',
                             style: Styles.whiteColorW50010,
                           ),
                         ),

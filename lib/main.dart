@@ -9,6 +9,9 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
+// anishjain.as@gmail.com
+// ANISH@aangit
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initServices();

@@ -5,4 +5,5 @@ abstract class LocalKeys {
   static String isThemeDarkMode = "isThemeDarkMode";
   static String authToken = "authToken";
   static String branchid = "branchid";
+  static String salesPersonId = "salesPersonId";
 }
