@@ -1,5 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
 import 'package:a_nxt/domain/repositories/local_storage_keys.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
@@ -539,16 +538,19 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                           ).format(
                                                             DateTime.now(),
                                                           );
-                                                          controller
-                                                              .postAllUserList(
-                                                                1,
-                                                                salesPersonId:
-                                                                    await salesPersonId,
-                                                            fromDate: controller
-                                                                .toOnboardController.text,
-                                                            toDate: controller
-                                                                .fromOnboardController.text
-                                                              );
+                                                          controller.postAllUserList(
+                                                            1,
+                                                            salesPersonId:
+                                                                await salesPersonId,
+                                                            fromDate:
+                                                                controller
+                                                                    .toOnboardController
+                                                                    .text,
+                                                            toDate:
+                                                                controller
+                                                                    .fromOnboardController
+                                                                    .text,
+                                                          );
                                                           controller.scrollController.addListener(() async {
                                                             if (controller
                                                                     .scrollController
@@ -652,47 +654,6 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                             salesPersonId:
                                                                 await salesPersonId,
                                                           );
-                                                          // controller.scrollController.addListener(() async {
-                                                          //   if (controller
-                                                          //           .scrollController
-                                                          //           .position
-                                                          //           .pixels ==
-                                                          //       controller
-                                                          //           .scrollController
-                                                          //           .position
-                                                          //           .maxScrollExtent) {
-                                                          //     if (controller
-                                                          //             .isLoading ==
-                                                          //         false) {
-                                                          //       controller
-                                                          //               .isLoading =
-                                                          //           true;
-                                                          //       controller
-                                                          //           .update();
-                                                          //       if (controller
-                                                          //               .isLastPage ==
-                                                          //           false) {
-                                                          //         await controller.postAllUserList(
-                                                          //           controller
-                                                          //               .pageCount,
-                                                          //           fromDate:
-                                                          //               controller
-                                                          //                   .fromOnboardController
-                                                          //                   .text,
-                                                          //           toDate:
-                                                          //               controller
-                                                          //                   .toOnboardController
-                                                          //                   .text,
-                                                          //         );
-                                                          //       }
-                                                          //       controller
-                                                          //               .isLoading =
-                                                          //           false;
-                                                          //       controller
-                                                          //           .update();
-                                                          //     }
-                                                          //   }
-                                                          // });
                                                           controller.update();
                                                         },
                                                         child: Container(
@@ -868,7 +829,7 @@ class CustomerCard extends StatelessWidget {
   const CustomerCard({super.key, required this.element});
 
   Color getStatusColor() {
-    switch (element.pilistatus.toString().toLowerCase()) {
+    switch (element.salestatus.toString().toLowerCase()) {
       case 'pending':
         return const Color(0xFFE8C08C);
       case 'pipeline':
@@ -886,6 +847,21 @@ class CustomerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? nextdateStr = element.nextdate;
+
+    DateTime? parsed;
+
+    if (nextdateStr != null && nextdateStr.isNotEmpty) {
+      try {
+        parsed = DateTime.parse(nextdateStr);
+      } catch (e) {
+        parsed = null;
+      }
+    }
+
+    final nextDate =
+        parsed != null ? DateFormat("yyyy-MM-dd").format(parsed) : "";
+
     return GestureDetector(
       onTap: () {
         RouteManagement.goToSalesAnalyticsDetailsScreen(
@@ -925,8 +901,8 @@ class CustomerCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (element.pilistatus?.isNotEmpty ??
-                    false || element.pilistatus != null)
+                if (element.salestatus?.isNotEmpty ??
+                    false || element.salestatus != null)
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -937,7 +913,7 @@ class CustomerCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      element.pilistatus ?? '',
+                      element.salestatus ?? '',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -947,51 +923,90 @@ class CustomerCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 6),
-            if ((element.mobile?.isNotEmpty ?? false) || element.mobile != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "Mobile Number :- ",
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+            Dimens.boxHeight6,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Dimens.boxHeight0,
+                    if ((element.mobile?.isNotEmpty ?? false) ||
+                        element.mobile != "")
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: "Mobile Number :- ",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                            ),
+                            TextSpan(
+                              text: element.mobile ?? '',
+                              style: const TextStyle(
+                                color: Color(0xFF748CA0),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        element.mobile ?? '',
+                    if ((nextDate.isNotEmpty) || nextDate != "")
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: "Next Date :- ",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                            ),
+                            TextSpan(
+                              text: nextDate,
+                              style: const TextStyle(
+                                color: Color(0xFF748CA0),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFD9B787),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        "ATT:- ${element.attempt}",
                         style: const TextStyle(
-                          color: Color(0xFF748CA0),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
                         ),
                       ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD9B787),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      "ATT:- ${element.attempt}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -97,17 +97,22 @@ class GetAllUsesDoc {
   String? city;
   String? area;
   String? zipcode;
+  GetAllUsesAssignby? assignby;
+  GetAllUsesAssignby? salesperson;
   String? ownername;
   String? ownermobile;
   String? managername;
   String? managermobile;
   String? type;
+  String? refinside;
+  String? refoutside;
+  String? custcategory;
+  String? limits;
   String? status;
   DateTime? createdAt;
-  GetAllUsesAssignby? salesperson;
-  GetAllUsesAssignby? assignby;
   int? attempt;
-  String? pilistatus;
+  String? salestatus;
+  String? nextdate;
 
   GetAllUsesDoc({
     this.id,
@@ -120,17 +125,22 @@ class GetAllUsesDoc {
     this.city,
     this.area,
     this.zipcode,
+    this.assignby,
+    this.salesperson,
     this.ownername,
     this.ownermobile,
     this.managername,
     this.managermobile,
     this.type,
+    this.refinside,
+    this.refoutside,
+    this.custcategory,
+    this.limits,
     this.status,
     this.createdAt,
-    this.salesperson,
-    this.assignby,
     this.attempt,
-    this.pilistatus,
+    this.salestatus,
+    this.nextdate,
   });
 
   factory GetAllUsesDoc.fromJson(Map<String, dynamic> json) => GetAllUsesDoc(
@@ -144,24 +154,29 @@ class GetAllUsesDoc {
     city: json["city"],
     area: json["area"],
     zipcode: json["zipcode"],
+    assignby:
+        json["assignby"] == null
+            ? null
+            : GetAllUsesAssignby.fromJson(json["assignby"]),
+    salesperson:
+        json["salesperson"] == null
+            ? null
+            : GetAllUsesAssignby.fromJson(json["salesperson"]),
     ownername: json["ownername"],
     ownermobile: json["ownermobile"],
     managername: json["managername"],
     managermobile: json["managermobile"],
     type: json["type"],
+    refinside: json["refinside"],
+    refoutside: json["refoutside"],
+    custcategory: json["custcategory"],
+    limits: json["limits"],
     status: json["status"],
     createdAt:
         json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    salesperson:
-        json["salesperson"] == null
-            ? null
-            : GetAllUsesAssignby.fromJson(json["salesperson"]),
-    assignby:
-        json["assignby"] == null
-            ? null
-            : GetAllUsesAssignby.fromJson(json["assignby"]),
     attempt: json["attempt"],
-    pilistatus: json["pilistatus"],
+    salestatus: json["salestatus"],
+    nextdate: json["nextdate"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -175,17 +190,22 @@ class GetAllUsesDoc {
     "city": city,
     "area": area,
     "zipcode": zipcode,
+    "assignby": assignby?.toJson(),
+    "salesperson": salesperson?.toJson(),
     "ownername": ownername,
     "ownermobile": ownermobile,
     "managername": managername,
     "managermobile": managermobile,
     "type": type,
+    "refinside": refinside,
+    "refoutside": refoutside,
+    "custcategory": custcategory,
+    "limits": limits,
     "status": status,
     "createdAt": createdAt?.toIso8601String(),
-    "salesperson": salesperson?.toJson(),
-    "assignby": assignby?.toJson(),
-    "attempt": attempt ?? 0,
-    "pilistatus": pilistatus,
+    "attempt": attempt,
+    "salestatus": salestatus,
+    "nextdate": nextdate,
   };
 }
 

@@ -108,7 +108,6 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                             storeOutDate: DateTime.now(),
                             mode: 'storeOut',
                           );
-                          
                           controller.update();
                         },
                         child: Container(
@@ -166,168 +165,120 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           child: Text(
-                              user?.status != "" ?
-                            user?.status.toString() ?? "Pending" : 'Pending',
+                            user?.sales?.first.status != ""
+                                ? user?.sales?.first.status.toString() ??
+                                    "Pending"
+                                : 'Pending',
                             style: Styles.whiteColorW50010,
                           ),
                         ),
                       ],
                     ),
-                    Dimens.boxHeight10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Mobile Number",
-                          style: Styles.txtBlackColorW40012,
-                        ),
-                        Text("Email", style: Styles.txtBlackColorW40012),
-                      ],
-                    ),
-                    Dimens.boxHeight6,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          spacing: Dimens.six,
-                          children: [
-                            SvgPicture.asset(
-                              AssetConstants.ic_date,
-                              height: Dimens.twelve,
+                    if ((user?.mobile?.isNotEmpty ?? user?.mobile != "") ||
+                        (user?.email!.isNotEmpty ?? user?.email != "")) ...[
+                      Dimens.boxHeight10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.mobile?.isNotEmpty ?? user?.mobile != "")
+                            Text(
+                              "Mobile Number",
+                              style: Styles.txtBlackColorW40012,
                             ),
+                          if (user?.email?.isNotEmpty ?? user?.email != "")
+                            Text("Email", style: Styles.txtBlackColorW40012),
+                        ],
+                      ),
+                      Dimens.boxHeight6,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.mobile?.isNotEmpty ?? user?.mobile != "")
                             Text(
                               user?.mobile ?? " - ",
                               style: Styles.txtBlackColorW60012,
                             ),
-                          ],
-                        ),
-                        Text(
-                          user?.email ?? " - ",
-                          style: Styles.txtBlackColorW60012,
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("State", style: Styles.txtBlackColorW40012),
-                        Text("City", style: Styles.txtBlackColorW40012),
-                      ],
-                    ),
-                    Dimens.boxHeight6,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          spacing: Dimens.six,
-                          children: [
-                            SvgPicture.asset(
-                              AssetConstants.ic_date,
-                              height: Dimens.twelve,
+                          if (user?.email?.isNotEmpty ?? user?.email != "")
+                            Text(
+                              user?.email ?? " - ",
+                              style: Styles.txtBlackColorW60012,
                             ),
+                        ],
+                      ),
+                    ],
+
+                    if ((user?.state?.isNotEmpty ?? user?.state != "") ||
+                        (user?.city?.isNotEmpty ?? user?.city != "")) ...[
+                      Dimens.boxHeight10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.state?.isNotEmpty ?? user?.state != "")
+                            Text("State", style: Styles.txtBlackColorW40012),
+                          if (user?.city?.isNotEmpty ?? user?.city != "")
+                            Text("City", style: Styles.txtBlackColorW40012),
+                        ],
+                      ),
+                      Dimens.boxHeight6,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.state?.isNotEmpty ?? user?.state != "")
                             Text(
                               user?.state ?? "Gujarat",
                               style: Styles.txtBlackColorW60012,
                             ),
-                          ],
-                        ),
-                        Text("Surat", style: Styles.txtBlackColorW60012),
-                      ],
-                    ),
-                    Dimens.boxHeight10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Area", style: Styles.txtBlackColorW40012),
-                        Text("Zip Code", style: Styles.txtBlackColorW40012),
-                      ],
-                    ),
-                    Dimens.boxHeight6,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          spacing: Dimens.six,
-                          children: [
-                            SvgPicture.asset(
-                              AssetConstants.ic_date,
-                              height: Dimens.twelve,
-                            ),
+                          if (user?.city?.isNotEmpty ?? user?.city != "")
                             Text(
-                              user?.address ?? ' - ',
+                              user?.city ?? '',
                               style: Styles.txtBlackColorW60012,
                             ),
-                          ],
-                        ),
-                        Text(
-                          user?.zipcode ?? " - ",
-                          style: Styles.txtBlackColorW60012,
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight10,
-                    Text("Store Address", style: Styles.txtBlackColorW40012),
-                    Dimens.boxHeight6,
-                    Text(
-                      user?.address ?? " - ",
-                      style: Styles.txtBlackColorW60012,
-                    ),
+                        ],
+                      ),
+                    ],
+                    if ((user?.area?.isNotEmpty ?? user?.area != "") ||
+                        (user?.zipcode?.isNotEmpty ?? user?.zipcode != "")) ...[
+                      Dimens.boxHeight10,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.area?.isNotEmpty ?? user?.area != "")
+                            Text("Area", style: Styles.txtBlackColorW40012),
+                          if (user?.zipcode?.isNotEmpty ?? user?.zipcode != "")
+                            Text("Zip Code", style: Styles.txtBlackColorW40012),
+                        ],
+                      ),
+                      Dimens.boxHeight6,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (user?.area?.isNotEmpty ?? user?.area != "")
+                            Text(
+                              user?.area ?? ' - ',
+                              style: Styles.txtBlackColorW60012,
+                            ),
+                          if (user?.zipcode?.isNotEmpty ?? user?.zipcode != "")
+                            Text(
+                              user?.zipcode ?? " - ",
+                              style: Styles.txtBlackColorW60012,
+                            ),
+                        ],
+                      ),
+                    ],
+
+                    if (user?.address?.isNotEmpty ?? user?.address != "") ...[
+                      Dimens.boxHeight10,
+                      Text("Store Address", style: Styles.txtBlackColorW40012),
+                      Dimens.boxHeight6,
+                      Text(
+                        user?.address ?? " - ",
+                        style: Styles.txtBlackColorW60012,
+                      ),
+                    ],
                   ],
                 ),
               ),
               Dimens.boxHeight20,
-              // Container(
-              //   padding: Dimens.edgeInsets20_00_20_00,
-              //   height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
-              //   alignment: Alignment.center,
-              //   decoration: BoxDecoration(
-              //     color: ColorsValue.textFieldBg,
-              //     borderRadius: BorderRadius.circular(Dimens.ten),
-              //   ),
-              //   child: DropdownButton<ProductListDoc>(
-              //     underline: Container(),
-              //     isDense: true,
-              //     isExpanded: true,
-              //     onChanged: (value) {
-              //       controller.selectProduct = value!;
-              //       controller.update();
-              //     },
-              //     hint: Text(
-              //       'Product'.tr,
-              //       style: Styles.txtGreyColorW50012.copyWith(
-              //         fontSize:
-              //             Utility.isTablet()
-              //                 ? Dimens.eighteen
-              //                 : Dimens.fourteen,
-              //       ),
-              //     ),
-              //     focusColor: Colors.white,
-              //     dropdownColor: ColorsValue.whiteColor,
-              //     value: controller.selectProduct,
-              //     style: Styles.txtBlackColorW50014,
-              //     iconEnabledColor: Colors.black,
-              //     icon: Icon(
-              //       Icons.keyboard_arrow_down_rounded,
-              //       size: Dimens.twenty,
-              //     ),
-              //     items:
-              //         controller.getProductList.map((option) {
-              //           return DropdownMenuItem(
-              //             value: option,
-              //             child: Text(
-              //               option.productname,
-              //               style: Styles.txtBlackColorW50014.copyWith(
-              //                 fontSize:
-              //                     Utility.isTablet()
-              //                         ? Dimens.twenty
-              //                         : Dimens.fourteen,
-              //               ),
-              //             ),
-              //           );
-              //         }).toList(),
-              //   ),
-              // ),
             ],
           ),
         );

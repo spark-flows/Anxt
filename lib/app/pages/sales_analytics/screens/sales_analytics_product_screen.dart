@@ -357,7 +357,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                             color: ColorsValue.textFieldBg,
                             alignment: Alignment.center,
                             child: Text(
-                              element.productName ?? "Product",
+                              element.productName,
                               style: Styles.txtBlackColorW60014,
                             ),
                           ),
@@ -381,7 +381,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                               color: ColorsValue.textFieldBg,
                               alignment: Alignment.center,
                               child: Text(
-                                element.weight.toString() ?? "Weight",
+                                element.weight.toString(),
                                 style: Styles.txtBlackColorW60014,
                               ),
                             ),
@@ -469,6 +469,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Dimens.boxHeight10,
                         Container(
                           padding: Dimens.edgeInsets20_00_20_00,
                           height:
@@ -525,6 +526,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                 }).toList(),
                           ),
                         ),
+                        Dimens.boxHeight20,
                         CustomTextFormField(
                           controller: controller.weightController,
                           isTitle: true,
@@ -542,6 +544,35 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                           heightBtn: Dimens.fifty,
                           radius: Dimens.zero,
                           onPressed: () {
+                            if (controller.selectProduct == null) {
+                              Utility.snacBar(
+                                'Please select a product',
+                                ColorsValue.appColor,
+                              );
+                              return;
+                            }
+
+                            if (controller.weightController.text
+                                .trim()
+                                .isEmpty) {
+                              Utility.snacBar(
+                                'Please enter weight',
+                                ColorsValue.appColor,
+                              );
+                              return;
+                            }
+
+                            final weight = num.tryParse(
+                              controller.weightController.text.trim(),
+                            );
+                            if (weight == null || weight <= 0) {
+                              Utility.snacBar(
+                                'Please enter a valid weight',
+                                ColorsValue.appColor,
+                              );
+                              return;
+                            }
+
                             if (isEdit) {
                               controller.productList[editIndex] = ProductModel(
                                 productName:
@@ -554,7 +585,6 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                                 productID: controller.selectProduct?.id ?? '',
                               );
                             } else {
-                              // Add new product
                               controller.productList.add(
                                 ProductModel(
                                   productName:

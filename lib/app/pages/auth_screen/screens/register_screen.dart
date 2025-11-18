@@ -47,7 +47,7 @@ class RegisterScreen extends StatelessWidget {
                       style: Styles.txtGreyColorW40014,
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Log In',
+                          text: 'Sign In',
                           style: Styles.appColorW70016,
                           recognizer:
                               TapGestureRecognizer()

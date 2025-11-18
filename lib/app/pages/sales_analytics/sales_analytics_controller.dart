@@ -1,5 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/app/pages/profile_screen/profile_controller.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
@@ -70,7 +69,7 @@ class SalesAnalyticsController extends GetxController {
 
   Future<void> postAllUserList(
     int pageKey, {
-      String ? salesPersonId,
+    String? salesPersonId,
     String? fromDate,
     String? toDate,
   }) async {
@@ -128,7 +127,8 @@ class SalesAnalyticsController extends GetxController {
     if (response?.status == 200) {
       getOneUser = response?.data;
       isGetOneUserLoading = false;
-      productList = response?.data?.sales?.first.product
+      productList =
+          response?.data?.sales?.first.product
               ?.map(
                 (e) => ProductModel(
                   productName: e.product.productname ?? '',
@@ -240,15 +240,13 @@ class SalesAnalyticsController extends GetxController {
     );
 
     body.addAll({
-      'storeIn' : storeDate,
-      'storeOut':storeOut,
+      'storeIn': storeDate,
+      'storeOut': storeOut,
       'customerId': getOneUser?.id ?? '',
       'salesPersonId': getOneUser?.sales?.first.salesperson?.id ?? '',
       'product': addProductList,
       'nextDate':
-      nextDate != null
-          ? DateFormat('yyyy-MM-dd').format(nextDate!)
-          : '',
+          nextDate != null ? DateFormat('yyyy-MM-dd').format(nextDate!) : '',
       'status': selectStatus ?? '',
       'piliStatus': selectPiliStatus ?? '',
       'weight': totalWeight.toString(),
