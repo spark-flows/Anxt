@@ -181,18 +181,18 @@ class ProductListDoc {
         );
 
     factory ProductListDoc.fromJson(Map<String, dynamic> json) => ProductListDoc(
-        id: json["_id"],
+        id: json["_id"]??"",
         category: json["category"] == null ? null : ProductListCategory.fromJson(json["category"]),
-        shortname: json["shortname"],
-        productname: json["productname"],
-        image: json["image"],
-        tagno: json["tagno"],
-        gwt: json["gwt"],
-        nwt: json["nwt"],
-        dwt: json["dwt"],
-        status: json["status"],
+        shortname: json["shortname"]??"",
+        productname: json["productname"]??"",
+        image: json["image"]??"",
+        tagno: json["tagno"]??"",
+        gwt: json["gwt"] ?? 0,
+        nwt: json["nwt"] ?? 0,
+        dwt: json["dwt"]??0,
+        status: json["status"]?? false,
         createdAt: DateTime.parse(json["createdAt"]),
-        docId: json["id"],
+        docId: json["id"] ?? "",
     );
 
     Map<String, dynamic> toJson() => {

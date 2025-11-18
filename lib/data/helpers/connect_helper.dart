@@ -192,9 +192,10 @@ class ConnectHelper {
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
+    required String salesperson,
     required String name,
     required String mobile,
-    required String email,
+    required String email, 
     required String address,
     required String state,
     required String city,
@@ -206,6 +207,7 @@ class ConnectHelper {
     required String managermobile,
   }) async {
     var data = {
+      "salesperson" : salesperson,
       "customerid": customerId,
       "name": name,
       "mobile": mobile,

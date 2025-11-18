@@ -131,9 +131,9 @@ class SalesAnalyticsController extends GetxController {
           response?.data?.sales?.first.product
               ?.map(
                 (e) => ProductModel(
-                  productName: e.product.productname ?? '',
-                  productID: e.product.id ?? '',
-                  weight: e.weight ?? 0,
+                  productName: e.product?.productname ?? "",
+                  productID: e.product?.id ?? "",
+                  weight: e.weight,
                 ),
               )
               .toList() ??
@@ -187,6 +187,7 @@ class SalesAnalyticsController extends GetxController {
   Future<void> postCreateCustomer({String? customerId}) async {
     var response = await salesAnalyticsPresenter.postCreateCustomer(
       isLoading: true,
+      salesperson: getOneUser?.sales?.first.salesperson?.id ?? '',
       customerId: customerId ?? '',
       name: nameController.text,
       mobile: mobileController.text,

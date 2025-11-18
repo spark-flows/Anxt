@@ -12,6 +12,10 @@ import 'package:upgrader/upgrader.dart';
 // anishjain.as@gmail.com
 // ANISH@aangit
 
+
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initServices();
@@ -69,6 +73,7 @@ class MyApp extends StatelessWidget {
             dialogStyle: UpgradeDialogStyle.material,
             upgrader: upgrader,
             child: GetMaterialApp(
+              scaffoldMessengerKey: rootScaffoldMessengerKey,
               locale: const Locale('en'),
               debugShowCheckedModeBanner: false,
               title: StringConstants.appName,

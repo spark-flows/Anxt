@@ -391,6 +391,20 @@ abstract class Utility {
     );
   }
 
+  static void showTopSnack(String message, Color color) {
+  Get.showSnackbar(
+    GetSnackBar(
+      message: message,
+      backgroundColor: color,
+      snackPosition: SnackPosition.TOP,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      borderRadius: 12,
+      duration: const Duration(seconds: 2),
+    ),
+  );
+}
+
+
   // Error Message
   static errorMessage(String message) async {
     return Get.rawSnackbar(

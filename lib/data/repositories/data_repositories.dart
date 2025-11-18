@@ -111,6 +111,7 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
+    required String salesperson,
     required String name,
     required String mobile,
     required String email,
@@ -125,6 +126,7 @@ class DataRepository extends DomainRepository {
     required String managermobile,
   }) async => await connectHelper.postCreateCustomer(
     isLoading: isLoading,
+    salesperson: salesperson,
     customerId: customerId,
     name: name,
     mobile: mobile,

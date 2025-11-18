@@ -257,7 +257,7 @@ class GetOneUserSale {
     String? duration;
     String? status;
     String? pilistatus;
-    num? weight; // ✅ allows int or double
+    num? weight;
     String? customerneeds;
     String? customerreason;
     String? customerfeedback;
@@ -388,35 +388,39 @@ class GetOneUserAttempt {
 }
 
 class GetOneUserProductElement {
-    final String productid;
-    final num weight; // ✅ supports int or double
-    final String id;
-    final GetOneUserProductProduct product;
+  final String productid;
+  final num weight;
+  final String id;
+  final GetOneUserProductProduct? product;
 
-    GetOneUserProductElement({
-        required this.productid,
-        required this.weight,
-        required this.id,
-        required this.product,
-    });
+  GetOneUserProductElement({
+    required this.productid,
+    required this.weight,
+    required this.id,
+    this.product,
+  });
 
-    factory GetOneUserProductElement.fromJson(Map<String, dynamic> json) =>
-        GetOneUserProductElement(
-            productid: json["productid"],
-            weight: json["weight"] is num
-                ? json["weight"]
-                : num.tryParse(json["weight"].toString()) ?? 0,
-            id: json["_id"],
-            product: GetOneUserProductProduct.fromJson(json["product"]),
-        );
+  factory GetOneUserProductElement.fromJson(Map<String, dynamic> json) {
+    return GetOneUserProductElement(
+      productid: json["productid"] ?? "",
+      weight: json["weight"] is num
+          ? json["weight"]
+          : num.tryParse(json["weight"].toString()) ?? 0,
+      id: json["_id"] ?? "",
+      product: json["product"] != null
+          ? GetOneUserProductProduct.fromJson(json["product"])
+          : null,
+    );
+  }
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "productid": productid,
         "weight": weight,
         "_id": id,
-        "product": product.toJson(),
-    };
+        "product": product?.toJson(),
+      };
 }
+
 
 class GetOneUserProductProduct {
     final String id;

@@ -40,6 +40,7 @@ class SalesAnalyticsUsecases {
   Future<CreateCustomerModel?> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
+    required String salesperson,
     required String name,
     required String mobile,
     required String email,
@@ -53,7 +54,9 @@ class SalesAnalyticsUsecases {
     required String managername,
     required String managermobile,
   }) async =>
-      await repository.postCreateCustomer(isLoading: isLoading,
+      await repository.postCreateCustomer(
+        isLoading: isLoading,
+        salesperson:salesperson,
         customerId: customerId,
         name: name,
         mobile: mobile,
