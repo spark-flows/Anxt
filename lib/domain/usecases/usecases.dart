@@ -8,3 +8,4 @@ export 'sales_analytics_usecases.dart';
 export 'home_usecases.dart';
 export 'auth_usecases.dart';
 export 'common_usecases.dart';
+export 'trip_usecases.dart';

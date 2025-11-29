@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           body: GridView.builder(
-            padding: Dimens.edgeInsets20_30_20_50,
+            padding: Dimens.edgeInsets20_10_20_50,
             itemCount: controller.homeList.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

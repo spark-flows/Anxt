@@ -12,7 +12,6 @@ import 'package:upgrader/upgrader.dart';
 // anishjain.as@gmail.com
 // ANISH@aangit
 
-
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 

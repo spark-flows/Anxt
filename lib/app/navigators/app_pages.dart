@@ -87,5 +87,33 @@ class AppPages {
       binding: ProfileBindings(),
       transition: Transition.fadeIn,
     ),
+    GetPage<TripScreen>(
+      name: _Paths.tripscreen,
+      transitionDuration: transitionDuration,
+      page: TripScreen.new,
+      binding: TripBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<TripDetailsScreen>(
+      name: _Paths.tripDetailsScreen,
+      transitionDuration: transitionDuration,
+      page: TripDetailsScreen.new,
+      binding: TripBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<AddExpenseTripScreen>(
+      name: _Paths.addExpenseTripScreen,
+      transitionDuration: transitionDuration,
+      page: AddExpenseTripScreen.new,
+      binding: TripBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<AddTripScreen>(
+      name: _Paths.addTripScreen,
+      transitionDuration: transitionDuration,
+      page: AddTripScreen.new,
+      binding: TripBinding(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }

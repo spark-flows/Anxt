@@ -14,6 +14,11 @@ class HomeController extends GetxController {
       icon: AssetConstants.ic_sales_analytics,
       activeIcon: AssetConstants.ic_fill_sales_analytics,
     ),
+    HomeModel(
+      name: "Trip",
+      icon: AssetConstants.ic_trip,
+      activeIcon: AssetConstants.ic_fill_trip,
+    ),
   ];
 
   void onTapItem(String selectItem) {
@@ -21,9 +26,11 @@ class HomeController extends GetxController {
       case "Sales Analytics":
         RouteManagement.goToSalesAnalyticsListScreen();
         break;
+      case "Trip":
+        RouteManagement.goToTripScreen();
+        break;
       default:
         RouteManagement.goToSalesAnalyticsListScreen();
-        break;
     }
   }
 }

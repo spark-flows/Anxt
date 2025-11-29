@@ -443,221 +443,6 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
       controller.weightController.clear();
     }
 
-    // Get.dialog(
-    //   // barrierDismissible: false,
-    //   // context: context,
-    //   // builder: (context) {
-    //     // return
-    //     Material(
-    //       color: ColorsValue.transparent,
-    //       child: StatefulBuilder(
-    //         builder: (context, setState) {
-    //           return Column(
-    //             mainAxisSize: MainAxisSize.min,
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               Container(
-    //                 margin: Dimens.edgeInsets20,
-    //                 padding: Dimens.edgeInsets20,
-    //                 width: double.maxFinite,
-    //                 decoration: BoxDecoration(
-    //                   color: ColorsValue.whiteColor,
-    //                   borderRadius: BorderRadius.circular(Dimens.ten),
-    //                 ),
-    //                 child: Column(
-    //                   mainAxisSize: MainAxisSize.min,
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   children: [
-    //                     Row(
-    //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                       children: [
-    //                         Text(
-    //                           isEdit ? "Edit Product" : "Add Product",
-    //                           style: Styles.txtBlackColorW60016,
-    //                         ),
-    //                         GestureDetector(
-    //                           onTap: () => Get.back(),
-    //                           child: SvgPicture.asset(AssetConstants.ic_close),
-    //                         ),
-    //                       ],
-    //                     ),
-    //                     Dimens.boxHeight10,
-    //                     Container(
-    //                       padding: Dimens.edgeInsets20_00_20_00,
-    //                       height:
-    //                           Utility.isTablet()
-    //                               ? Dimens.sixtyFive
-    //                               : Dimens.fifty,
-    //                       alignment: Alignment.center,
-    //                       decoration: BoxDecoration(
-    //                         color: ColorsValue.textFieldBg,
-    //                         borderRadius: BorderRadius.circular(Dimens.ten),
-    //                       ),
-    //                       child: DropdownButton<ProductListDoc>(
-    //                         underline: Container(),
-    //                         isDense: true,
-    //                         isExpanded: true,
-    //                         onChanged: (value) {
-    //                           controller.selectProduct = value!;
-    //                           controller.update();
-    //                           setState(() {});
-    //                         },
-    //                         hint: Text(
-    //                           'Product'.tr,
-    //                           style: Styles.txtGreyColorW50012.copyWith(
-    //                             fontSize:
-    //                                 Utility.isTablet()
-    //                                     ? Dimens.eighteen
-    //                                     : Dimens.fourteen,
-    //                           ),
-    //                         ),
-    //                         focusColor: Colors.white,
-    //                         dropdownColor: ColorsValue.whiteColor,
-    //                         value: controller.selectProduct,
-    //                         style: Styles.txtBlackColorW50014,
-    //                         iconEnabledColor: Colors.black,
-    //                         icon: Icon(
-    //                           Icons.keyboard_arrow_down_rounded,
-    //                           size: Dimens.twenty,
-    //                         ),
-    //                         items:
-    //                             controller.getProductList.map((option) {
-    //                               return DropdownMenuItem(
-    //                                 value: option,
-    //                                 child: Text(
-    //                                   option.productname,
-    //                                   style: Styles.txtBlackColorW50014
-    //                                       .copyWith(
-    //                                         fontSize:
-    //                                             Utility.isTablet()
-    //                                                 ? Dimens.twenty
-    //                                                 : Dimens.fourteen,
-    //                                       ),
-    //                                 ),
-    //                               );
-    //                             }).toList(),
-    //                       ),
-    //                     ),
-    //                     Dimens.boxHeight20,
-    //                     CustomTextFormField(
-    //                       controller: controller.weightController,
-    //                       isTitle: true,
-    //                       title: "Add Weight",
-    //                       titleStyle: Styles.txtBlackColorW70014,
-    //                       hintText: 'Enter Weight',
-    //                       hintStyle: Styles.txtGreyColorW50012,
-    //                       filled: true,
-    //                       fillColor: ColorsValue.textFieldBg,
-    //                       textInputAction: TextInputAction.next,
-    //                       keyboardType: TextInputType.number,
-    //                     ),
-    //                     Dimens.boxHeight20,
-    //                     CustomButton(
-    //                       heightBtn: Dimens.fifty,
-    //                       radius: Dimens.zero,
-    //                       onPressed: () {
-    //                         if (controller.selectProduct == null) {
-    //                           rootScaffoldMessengerKey.currentState
-    //                               ?.showSnackBar(
-    //                                 SnackBar(
-    //                                   behavior: SnackBarBehavior.floating,
-    //                                   margin: const EdgeInsets.only(
-    //                                     top: 10,
-    //                                     left: 16,
-    //                                     right: 16,
-    //                                   ),
-    //                                   content: Text('Please select a product'),
-    //                                   backgroundColor: ColorsValue.appBg,
-    //                                 ),
-    //                               );
-    //                           return;
-    //                         }
-
-    //                         if (controller.weightController.text
-    //                             .trim()
-    //                             .isEmpty) {
-    //                           rootScaffoldMessengerKey.currentState
-    //                               ?.showSnackBar(
-    //                                 SnackBar(
-    //                                   content: Text('Please enter weight'),
-    //                                   backgroundColor: ColorsValue.appColor,
-    //                                 ),
-    //                               );
-    //                           // Utility.snacBar(
-    //                           //   'Please enter weight',
-    //                           //   ColorsValue.appColor,
-    //                           // );
-    //                           return;
-    //                         }
-
-    //                         final weight = num.tryParse(
-    //                           controller.weightController.text.trim(),
-    //                         );
-    //                         if (weight == null || weight <= 0) {
-    //                           rootScaffoldMessengerKey.currentState
-    //                               ?.showSnackBar(
-    //                                 SnackBar(
-    //                                   content: Text(
-    //                                     'Please enter a valid weight',
-    //                                   ),
-    //                                   backgroundColor: ColorsValue.appColor,
-    //                                 ),
-    //                               );
-
-    //                           // Utility.snacBar(
-    //                           //   'Please enter a valid weight',
-    //                           //   ColorsValue.appColor,
-    //                           // );
-    //                           return;
-    //                         }
-
-    //                         if (isEdit) {
-    //                           controller.productList[editIndex] = ProductModel(
-    //                             productName:
-    //                                 controller.selectProduct?.productname ?? '',
-    //                             weight:
-    //                                 int.tryParse(
-    //                                   controller.weightController.text,
-    //                                 ) ??
-    //                                 0,
-    //                             productID: controller.selectProduct?.id ?? '',
-    //                           );
-    //                         } else {
-    //                           controller.productList.add(
-    //                             ProductModel(
-    //                               productName:
-    //                                   controller.selectProduct?.productname ??
-    //                                   '',
-    //                               weight:
-    //                                   num.tryParse(
-    //                                     controller.weightController.text,
-    //                                   ) ??
-    //                                   0,
-    //                               productID: controller.selectProduct?.id ?? '',
-    //                             ),
-    //                           );
-    //                         }
-
-    //                         controller.weightController.clear();
-    //                         controller.selectProduct = null;
-    //                         controller.update();
-    //                         Get.back();
-    //                       },
-    //                       text: isEdit ? 'Update' : 'Save',
-    //                       textStyle: Styles.whiteColorW60016,
-    //                       backgroundColor: ColorsValue.appColor,
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ],
-    //           );
-    //         },
-    //       ),
-    //     )
-    //   // },
-    // );
-
     Get.dialog(
       Material(
         color: ColorsValue.transparent,
@@ -679,7 +464,6 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ---------- Header ----------
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -693,10 +477,7 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       Dimens.boxHeight10,
-
-                      // ---------- Dropdown ----------
                       Container(
                         padding: Dimens.edgeInsets20_00_20_00,
                         height:
@@ -717,98 +498,150 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
                             controller.update();
                             setState(() {});
                           },
-                          hint: Text('Product'.tr),
+                          hint: Text(
+                            'Product'.tr,
+                            style: Styles.txtGreyColorW50012.copyWith(
+                              fontSize:
+                                  Utility.isTablet()
+                                      ? Dimens.eighteen
+                                      : Dimens.fourteen,
+                            ),
+                          ),
+                          focusColor: Colors.white,
+                          dropdownColor: ColorsValue.whiteColor,
                           value: controller.selectProduct,
+                          style: Styles.txtBlackColorW50014,
+                          iconEnabledColor: Colors.black,
+                          icon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            size: Dimens.twenty,
+                          ),
                           items:
                               controller.getProductList.map((option) {
                                 return DropdownMenuItem(
                                   value: option,
-                                  child: Text(option.productname),
+                                  child: Text(
+                                    option.productname,
+                                    style: Styles.txtBlackColorW50014.copyWith(
+                                      fontSize:
+                                          Utility.isTablet()
+                                              ? Dimens.twenty
+                                              : Dimens.fourteen,
+                                    ),
+                                  ),
                                 );
                               }).toList(),
                         ),
                       ),
-
                       Dimens.boxHeight20,
-
-                      // ---------- Weight ----------
                       CustomTextFormField(
                         controller: controller.weightController,
                         isTitle: true,
                         title: "Add Weight",
+                        titleStyle: Styles.txtBlackColorW70014,
                         hintText: 'Enter Weight',
+                        hintStyle: Styles.txtGreyColorW50012,
                         filled: true,
                         fillColor: ColorsValue.textFieldBg,
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                       ),
-
                       Dimens.boxHeight20,
-
-                      // ---------- Save Button ----------
                       CustomButton(
                         heightBtn: Dimens.fifty,
+                        radius: Dimens.zero,
                         onPressed: () {
-                          // ---------------- Validation ----------------
                           if (controller.selectProduct == null) {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
                               SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                margin: const EdgeInsets.only(
+                                  top: 10,
+                                  left: 16,
+                                  right: 16,
+                                ),
                                 content: Text(
                                   'Please select a product',
-                                  style: Styles.whiteColorW50014,
+                                  style: Styles.appColorW50012.copyWith(
+                                    color: ColorsValue.whiteColor,
+                                  ),
                                 ),
-                                backgroundColor: Colors.red,
-                                dismissDirection: DismissDirection.up,
+                                backgroundColor: ColorsValue.redColor,
                               ),
                             );
-                            // Utility.showTopSnack(
-                            //   "Error",
-                            //   "Please select a product",
-                            //   snackPosition: SnackPosition.TOP,
-                            //   backgroundColor: Colors.red,
-                            // );
                             return;
                           }
-
                           if (controller.weightController.text.trim().isEmpty) {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
                               SnackBar(
                                 content: Text(
                                   'Please enter weight',
-                                  style: Styles.whiteColorW50014,
+                                  style: Styles.appColorW50012.copyWith(
+                                    color: ColorsValue.whiteColor,
+                                  ),
                                 ),
-                                backgroundColor: Colors.red,
-                                dismissDirection: DismissDirection.up,
+                                backgroundColor: ColorsValue.redColor,
                               ),
                             );
+                            // Utility.snacBar(
+                            //   'Please enter weight',
+                            //   ColorsValue.appColor,
+                            // );
                             return;
                           }
-
                           final weight = num.tryParse(
                             controller.weightController.text.trim(),
                           );
-
                           if (weight == null || weight <= 0) {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
                               SnackBar(
                                 content: Text(
                                   'Please enter a valid weight',
-                                  style: Styles.whiteColorW50014,
+                                  style: Styles.appColorW50012.copyWith(
+                                    color: ColorsValue.whiteColor,
+                                  ),
                                 ),
-                                backgroundColor: Colors.red,
-                                dismissDirection: DismissDirection.up,
+                                backgroundColor: ColorsValue.redColor,
                               ),
                             );
+                            // Utility.snacBar(
+                            //   'Please enter a valid weight',
+                            //   ColorsValue.appColor,
+                            // );
                             return;
                           }
-
-                          // SAVE / UPDATE LOGIC...
-
+                          if (isEdit) {
+                            controller.productList[editIndex] = ProductModel(
+                              productName:
+                                  controller.selectProduct?.productname ?? '',
+                              weight:
+                                  int.tryParse(
+                                    controller.weightController.text,
+                                  ) ??
+                                  0,
+                              productID: controller.selectProduct?.id ?? '',
+                            );
+                          } else {
+                            controller.productList.add(
+                              ProductModel(
+                                productName:
+                                    controller.selectProduct?.productname ?? '',
+                                weight:
+                                    num.tryParse(
+                                      controller.weightController.text,
+                                    ) ??
+                                    0,
+                                productID: controller.selectProduct?.id ?? '',
+                              ),
+                            );
+                          }
                           controller.weightController.clear();
                           controller.selectProduct = null;
                           controller.update();
                           Get.back();
                         },
                         text: isEdit ? 'Update' : 'Save',
+                        textStyle: Styles.whiteColorW60016,
                         backgroundColor: ColorsValue.appColor,
                       ),
                     ],
@@ -819,7 +652,171 @@ class SalesAnalyticsProductScreen extends StatelessWidget {
           },
         ),
       ),
-      barrierDismissible: false,
+      // },
     );
+
+    // Get.dialog(
+    //   Material(
+    //     color: ColorsValue.transparent,
+    //     child: StatefulBuilder(
+    //       builder: (context, setState) {
+    //         return Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: [
+    //             Container(
+    //               margin: Dimens.edgeInsets20,
+    //               padding: Dimens.edgeInsets20,
+    //               width: double.maxFinite,
+    //               decoration: BoxDecoration(
+    //                 color: ColorsValue.whiteColor,
+    //                 borderRadius: BorderRadius.circular(Dimens.ten),
+    //               ),
+    //               child: Column(
+    //                 mainAxisSize: MainAxisSize.min,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   // ---------- Header ----------
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                     children: [
+    //                       Text(
+    //                         isEdit ? "Edit Product" : "Add Product",
+    //                         style: Styles.txtBlackColorW60016,
+    //                       ),
+    //                       GestureDetector(
+    //                         onTap: () => Get.back(),
+    //                         child: SvgPicture.asset(AssetConstants.ic_close),
+    //                       ),
+    //                     ],
+    //                   ),
+
+    //                   Dimens.boxHeight10,
+
+    //                   // ---------- Dropdown ----------
+    //                   Container(
+    //                     padding: Dimens.edgeInsets20_00_20_00,
+    //                     height:
+    //                         Utility.isTablet()
+    //                             ? Dimens.sixtyFive
+    //                             : Dimens.fifty,
+    //                     alignment: Alignment.center,
+    //                     decoration: BoxDecoration(
+    //                       color: ColorsValue.textFieldBg,
+    //                       borderRadius: BorderRadius.circular(Dimens.ten),
+    //                     ),
+    //                     child: DropdownButton<ProductListDoc>(
+    //                       underline: Container(),
+    //                       isDense: true,
+    //                       isExpanded: true,
+    //                       onChanged: (value) {
+    //                         controller.selectProduct = value!;
+    //                         controller.update();
+    //                         setState(() {});
+    //                       },
+    //                       hint: Text('Product'.tr),
+    //                       value: controller.selectProduct,
+    //                       items:
+    //                           controller.getProductList.map((option) {
+    //                             return DropdownMenuItem(
+    //                               value: option,
+    //                               child: Text(option.productname),
+    //                             );
+    //                           }).toList(),
+    //                     ),
+    //                   ),
+
+    //                   Dimens.boxHeight20,
+
+    //                   // ---------- Weight ----------
+    //                   CustomTextFormField(
+    //                     controller: controller.weightController,
+    //                     isTitle: true,
+    //                     title: "Add Weight",
+    //                     hintText: 'Enter Weight',
+    //                     filled: true,
+    //                     fillColor: ColorsValue.textFieldBg,
+    //                     keyboardType: TextInputType.number,
+    //                   ),
+
+    //                   Dimens.boxHeight20,
+
+    //                   // ---------- Save Button ----------
+    //                   CustomButton(
+    //                     heightBtn: Dimens.fifty,
+    //                     onPressed: () {
+    //                       // ---------------- Validation ----------------
+    //                       if (controller.selectProduct == null) {
+    //                         rootScaffoldMessengerKey.currentState?.showSnackBar(
+    //                           SnackBar(
+    //                             content: Text(
+    //                               'Please select a product',
+    //                               style: Styles.whiteColorW50014,
+    //                             ),
+    //                             backgroundColor: Colors.red,
+    //                             dismissDirection: DismissDirection.up,
+    //                           ),
+    //                         );
+    //                         // Utility.showTopSnack(
+    //                         //   "Error",
+    //                         //   "Please select a product",
+    //                         //   snackPosition: SnackPosition.TOP,
+    //                         //   backgroundColor: Colors.red,
+    //                         // );
+    //                         return;
+    //                       }
+
+    //                       if (controller.weightController.text.trim().isEmpty) {
+    //                         rootScaffoldMessengerKey.currentState?.showSnackBar(
+    //                           SnackBar(
+    //                             content: Text(
+    //                               'Please enter weight',
+    //                               style: Styles.whiteColorW50014,
+    //                             ),
+    //                             backgroundColor: Colors.red,
+    //                             dismissDirection: DismissDirection.up,
+    //                           ),
+    //                         );
+    //                         return;
+    //                       }
+
+    //                       final weight = num.tryParse(
+    //                         controller.weightController.text.trim(),
+    //                       );
+
+    //                       if (weight == null || weight <= 0) {
+    //                         rootScaffoldMessengerKey.currentState?.showSnackBar(
+    //                           SnackBar(
+    //                             content: Text(
+    //                               'Please enter a valid weight',
+    //                               style: Styles.whiteColorW50014,
+    //                             ),
+    //                             backgroundColor: Colors.red,
+    //                             dismissDirection: DismissDirection.up,
+    //                           ),
+    //                         );
+    //                         return;
+    //                       }
+
+    //                       // SAVE / UPDATE LOGIC...
+
+    //                       controller.weightController.clear();
+    //                       controller.selectProduct = null;
+    //                       controller.update();
+    //                       Get.back();
+    //                     },
+    //                     text: isEdit ? 'Update' : 'Save',
+    //                     backgroundColor: ColorsValue.appColor,
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //     ),
+    //   ),
+    //   barrierDismissible: false,
+    // );
   }
 }

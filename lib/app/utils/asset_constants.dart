@@ -25,5 +25,10 @@ abstract class AssetConstants {
   static const String ic_close = "assets/svg/ic_close.svg";
   static const String ic_date = "assets/svg/ic_date.svg";
   static const String ic_edit = "assets/svg/ic_edit.svg";
+  static const String ic_fill_trip = "assets/svg/ic_fill_trip.svg";
+  static const String ic_trip = "assets/svg/ic_trip.svg";
+  static const String ic_delete = "assets/svg/ic_delete.svg";
+  static const String ic_view = "assets/svg/ic_view.svg";
+  static const String ic_export = "assets/svg/ic_export.svg";
   static const String ssss = "";
 }

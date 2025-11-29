@@ -12,6 +12,10 @@ abstract class Routes {
   static const salesAnalyticsListScreen = _Paths.salesAnalyticsListScreen;
   static const salesAnalyticsProductScreen = _Paths.salesAnalyticsProductScreen;
   static const profileScreen = _Paths.profileScreen;
+  static const tripscreen = _Paths.tripscreen;
+  static const tripDetailsScreen = _Paths.tripDetailsScreen;
+  static const addTripScreen = _Paths.addTripScreen;
+  static const addExpenseTripScreen = _Paths.addExpenseTripScreen;
 }
 
 abstract class _Paths {
@@ -26,4 +30,8 @@ abstract class _Paths {
   static const salesAnalyticsListScreen = '/salesAnalyticsListScreen';
   static const salesAnalyticsProductScreen = '/salesAnalyticsProductScreen';
   static const profileScreen = '/ProfileScreen';
+  static const tripscreen = '/tripscreen';
+  static const tripDetailsScreen = '/tripDetailsScreen';
+  static const addTripScreen = '/addTripScreen';
+  static const addExpenseTripScreen = '/addExpenseTripScreen';
 }
