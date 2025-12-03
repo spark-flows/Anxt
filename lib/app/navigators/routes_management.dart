@@ -20,7 +20,7 @@ abstract class RouteManagement {
       Get.toNamed<void>(Routes.salesAnalyticsProductScreen);
   static void goToProfileScreen() => Get.toNamed<void>(Routes.profileScreen);
   static void goToTripScreen() => Get.toNamed<void>(Routes.tripscreen);
-  static void goToTripDetailsScreen() => Get.toNamed<void>(Routes.tripDetailsScreen);
+  static void goToTripDetailsScreen({required String tripid}) => Get.toNamed<void>(Routes.tripDetailsScreen,arguments: tripid);
   static void goToAddExpenseTripScreen() => Get.toNamed<void>(Routes.addExpenseTripScreen);
   static void goToAddTripScreen() => Get.toNamed<void>(Routes.addTripScreen);
 }

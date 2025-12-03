@@ -189,6 +189,34 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> getExpenseCategory({
+    bool isLoading = false,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      '${EndPoints.getExpenseCategory}?page=1&limit=10&search',
+      Request.get,
+      {},
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> getOneExpense({
+    bool isLoading = false,
+    required String expenseCatid,
+  }) async {
+    var data = {"expense_catid": expenseCatid};
+    var response = await apiWrapper.makeRequest(
+      EndPoints.getGetOneExpense,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -304,6 +332,50 @@ class ConnectHelper {
 
     var response = await apiWrapper.makeRequest(
       EndPoints.postGetProductList,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postGetAllTripList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String location,
+    required String search,
+  }) async {
+    var data = {
+      "page": page,
+      "limit": limit,
+      "location" : location,
+      "search" : search,
+      "sortfield" : 'start',
+      "sortoption" : 1,
+    };
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postGetAllTrips,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postGetOneTripDetail({
+    bool isLoading = false,
+    required String tripId,
+  }) async {
+    var data = {
+      'tripid': tripId,
+    };
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postGetOneTrips,
       Request.post,
       data,
       isLoading,

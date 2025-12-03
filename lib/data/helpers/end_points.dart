@@ -10,4 +10,8 @@ class EndPoints {
   static String postCreateCustomer = 'api/customer/create';
   static String postCreateSales = 'api/sales/create';
   static String getProfileApi = 'api/auth/profile';
+  static String postGetAllTrips = 'api/trip';
+  static String postGetOneTrips = 'api/trip/getone';
+  static String getExpenseCategory = 'api/expensecategory';
+  static String getGetOneExpense = 'api/expensecategory/getone';
 }

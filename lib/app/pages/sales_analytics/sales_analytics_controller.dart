@@ -107,7 +107,7 @@ class SalesAnalyticsController extends GetxController {
       }
     } else {
       isLoading = false;
-      Utility.errorMessage(response?.message ?? 'show Error like Check Error');
+      Utility.errorMessage(response?.message ?? 'Getting error while fetching data');
     }
     update();
   }

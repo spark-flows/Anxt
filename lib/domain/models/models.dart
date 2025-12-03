@@ -5,3 +5,5 @@ export 'response_model.dart';
 export 'forgot_model.dart';
 export 'getAllUsers_model.dart';
 export 'getoneUser_Model.dart';
+export 'get_all_tripe_model.dart';
+export 'get_one_tripe_model.dart';

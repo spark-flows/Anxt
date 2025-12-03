@@ -4,6 +4,7 @@ import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 
 class SalesAnalyticsPresenter {
   SalesAnalyticsPresenter(this.salesAnalyticsUsecases);

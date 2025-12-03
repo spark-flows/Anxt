@@ -108,6 +108,20 @@ class DataRepository extends DomainRepository {
     salesid: salesid,
   );
 
+  Future<ResponseModel> getExpenseCategory({
+    bool isLoading = false,
+  }) async => await connectHelper.getExpenseCategory(
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> getOneExpense({
+    bool isLoading = false,
+    required String expenseCatid,
+  }) async => await connectHelper.getOneExpense(
+    isLoading: isLoading,
+    expenseCatid: expenseCatid,
+  );
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -196,6 +210,28 @@ class DataRepository extends DomainRepository {
     search: search,
     max: max,
     min: min,
+  );
+
+  Future<ResponseModel> postGetAllTripList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String location,
+    required String search,
+  }) async => await connectHelper.postGetAllTripList(
+    isLoading: isLoading,
+    limit: limit,
+    page: page,
+    location: location,
+    search: search,
+  );
+
+  Future<ResponseModel> postGetOneTripDetail({
+    bool isLoading = false,
+    required String tripId,
+  }) async => await connectHelper.postGetOneTripDetail(
+    isLoading: isLoading,
+    tripId: tripId,
   );
 
   Future<ResponseModel> getProfileApi({bool isLoading = false}) async =>

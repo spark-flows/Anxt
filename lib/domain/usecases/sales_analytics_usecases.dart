@@ -4,6 +4,7 @@ import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
@@ -37,6 +38,10 @@ class SalesAnalyticsUsecases {
   }) async =>
       await repository.postGetOneUser(isLoading: isLoading, salesid: salesid);
 
+  Future<GetAllProductTypeModel?> getExpenseCategory({
+    bool isLoading = false,
+  }) async => await repository.getExpenseCategory(isLoading: isLoading);
+
   Future<CreateCustomerModel?> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -53,24 +58,23 @@ class SalesAnalyticsUsecases {
     required String ownermobile,
     required String managername,
     required String managermobile,
-  }) async =>
-      await repository.postCreateCustomer(
-        isLoading: isLoading,
-        salesperson:salesperson,
-        customerId: customerId,
-        name: name,
-        mobile: mobile,
-        email: email,
-        address: address,
-        state: state,
-        city: city,
-        area: area,
-        zipcode: zipcode,
-        ownername: ownername,
-        ownermobile: ownermobile,
-        managername: managername,
-        managermobile: managermobile,
-      );
+  }) async => await repository.postCreateCustomer(
+    isLoading: isLoading,
+    salesperson: salesperson,
+    customerId: customerId,
+    name: name,
+    mobile: mobile,
+    email: email,
+    address: address,
+    state: state,
+    city: city,
+    area: area,
+    zipcode: zipcode,
+    ownername: ownername,
+    ownermobile: ownermobile,
+    managername: managername,
+    managermobile: managermobile,
+  );
 
   Future<CreateSalesModel?> postSalesCreate({
     bool isLoading = false,
@@ -90,26 +94,25 @@ class SalesAnalyticsUsecases {
     required String customerFeedback,
     required String salesId,
     required String customerCategory,
-  }) async =>
-      await repository.postSalesCreate(
-        isLoading: isLoading,
-        salesId: salesId,
-        salesPersonId: salesPersonId,
-        product: product,
-        nextDate: nextDate,
-        customerId: customerId,
-        storeIn: storeIn,
-        storeOut: storeOut,
-        status: status,
-        piliStatus: piliStatus,
-        weight: weight,
-        duration: duration,
-        customerNeeds: customerNeeds,
-        nextPurchase: nextPurchase,
-        customerReason: customerReason,
-        customerFeedback: customerFeedback,
-        customerCategory: customerCategory,
-      );
+  }) async => await repository.postSalesCreate(
+    isLoading: isLoading,
+    salesId: salesId,
+    salesPersonId: salesPersonId,
+    product: product,
+    nextDate: nextDate,
+    customerId: customerId,
+    storeIn: storeIn,
+    storeOut: storeOut,
+    status: status,
+    piliStatus: piliStatus,
+    weight: weight,
+    duration: duration,
+    customerNeeds: customerNeeds,
+    nextPurchase: nextPurchase,
+    customerReason: customerReason,
+    customerFeedback: customerFeedback,
+    customerCategory: customerCategory,
+  );
 
   Future<ProductListModel?> postGetProductList({
     bool isLoading = false,
@@ -119,14 +122,13 @@ class SalesAnalyticsUsecases {
     required String max,
     required String min,
     required String search,
-  }) async =>
-      await repository.postGetProductList(
-        isLoading: isLoading,
-        category: category,
-        page: page,
-        limit: limit,
-        max: max,
-        min: min,
-        search: search,
-        );
+  }) async => await repository.postGetProductList(
+    isLoading: isLoading,
+    category: category,
+    page: page,
+    limit: limit,
+    max: max,
+    min: min,
+    search: search,
+  );
 }

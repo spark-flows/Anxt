@@ -1,12 +1,15 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_one_expences.dart';
+import 'package:a_nxt/domain/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TripController extends GetxController {
-  TripController(this.bottomBarPresenter);
+  TripController(this.tripPresenter);
 
-  final TripPresenter bottomBarPresenter;
+  final TripPresenter tripPresenter;
 
   DateTime fromDate = DateTime.now();
   DateTime toDate = DateTime.now();
@@ -79,9 +82,108 @@ class TripController extends GetxController {
       //   ],
       //   isLoading: true,
       // );
-
       update();
     }
+  }
+
+  List<GetAllTripDoc> getAllTripList = [];
+  int pageCount = 1;
+  bool isLastPage = false;
+  bool isLoading = false;
+  final ScrollController scrollController = ScrollController();
+
+  Future<void> postGetAllTripList(
+    int pageKey, {
+    String? location,
+    String? search,
+  }) async {
+    if (pageKey == 1) {
+      pageCount = 1;
+    }
+    isLoading = true;
+    var response = await tripPresenter.postGetAllTripList(
+      page: 1,
+      limit: 50,
+      location: location ?? "",
+      search: search ?? "",
+      isLoading: true,
+    );
+    getAllTripList.clear();
+    if (response?.data != null) {
+      isLoading = false;
+      if (pageKey == 1) {
+        isLastPage = false;
+        getAllTripList.clear();
+      }
+      if ((response?.data.docs.length ?? 0) < 20) {
+        isLastPage = true;
+        getAllTripList.addAll(response?.data.docs ?? []);
+      } else {
+        pageCount++;
+        getAllTripList.addAll(response?.data.docs ?? []);
+      }
+      if (pageKey == 1) {
+        if (scrollController.positions.isNotEmpty) {
+          scrollController.jumpTo(0);
+        }
+      }
+    } else {
+      isLoading = false;
+      Utility.errorMessage(
+        response?.message ?? 'Getting error while fetching data',
+      );
+    }
+    update();
+  }
+
+  GetOneTripData? getOneTripData;
+  bool isGetOneTripDetail = false;
+
+  Future<void> postGetOneTripDetail({required String tripId}) async {
+    isGetOneTripDetail = true;
+    getOneTripData = null;
+    var response = await tripPresenter.postGetOneTripDetail(
+      isLoading: true,
+      tripId: tripId,
+    );
+    if (response?.status == 200) {
+      getOneTripData = response?.data;
+    } else {
+      isGetOneTripDetail = false;
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  List<GetAllProductDatum> expanceCategoryList = [];
+
+  Future<void> getExpenseCategory() async {
+    var response = await tripPresenter.getExpenseCategory(isLoading: true);
+    expanceCategoryList.clear();
+    if (response?.status == 200) {
+      expanceCategoryList = response?.data.data ?? [];
+    } else {
+      isGetOneTripDetail = false;
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  GetOneExpenseData? getOneExpenseData;
+
+  Future<void> getOneExpense({required String expenseCatid}) async {
+    var response = await tripPresenter.getOneExpense(
+      isLoading: true,
+      expenseCatid: expenseCatid,
+    );
+    getOneExpenseData = null;
+    if (response?.status == 200) {
+      getOneExpenseData = response?.data;
+    } else {
+      isGetOneTripDetail = false;
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
   }
 }
 

@@ -10,6 +10,12 @@ class TripDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TripController>(
+      initState: (state) {
+        final controller = Get.find<TripController>();
+        final tripId = Get.arguments;
+        controller.postGetOneTripDetail(tripId: tripId);
+        controller.getExpenseCategory();
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
@@ -152,7 +158,11 @@ class TripDetailsScreen extends StatelessWidget {
                                   width: Dimens.twelve,
                                 ),
                                 Text(
-                                  "27-05-2002",
+                                  Utility.getFormatedTime(
+                                    controller.getOneTripData?.createdAt
+                                        .toString(),
+                                    'dd-MM-yyyy',
+                                  ),
                                   style: Styles.txtBlackColorW60012,
                                 ),
                               ],
@@ -174,7 +184,7 @@ class TripDetailsScreen extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                "Pending",
+                                controller.getOneTripData?.status ?? "Pending",
                                 style: Styles.whiteColorW50010,
                               ),
                             ),
@@ -205,7 +215,10 @@ class TripDetailsScreen extends StatelessWidget {
                                   width: Dimens.twelve,
                                 ),
                                 Text(
-                                  "27-05-2002",
+                                  Utility.getFormatedTime(
+                                    controller.getOneTripData?.start.toString(),
+                                    'dd-MM-yyyy',
+                                  ),
                                   style: Styles.txtBlackColorW60012,
                                 ),
                               ],
@@ -227,7 +240,10 @@ class TripDetailsScreen extends StatelessWidget {
                                   width: Dimens.twelve,
                                 ),
                                 Text(
-                                  "27-05-2002",
+                                  Utility.getFormatedTime(
+                                    controller.getOneTripData?.end.toString(),
+                                    'dd-MM-yyyy',
+                                  ),
                                   style: Styles.txtBlackColorW60012,
                                 ),
                               ],
@@ -249,7 +265,11 @@ class TripDetailsScreen extends StatelessWidget {
                               "E. Budget",
                               style: Styles.txtBlackColorW40012,
                             ),
-                            Text("₹650000", style: Styles.txtBlackColorW60012),
+                            Text(
+                              controller.getOneTripData?.budget.toString() ??
+                                  " - ",
+                              style: Styles.txtBlackColorW60012,
+                            ),
                           ],
                         ),
                         Column(
@@ -266,18 +286,21 @@ class TripDetailsScreen extends StatelessWidget {
                     Text("Location", style: Styles.txtBlackColorW40012),
                     Dimens.boxHeight6,
                     Text(
-                      "Al Fahidi Historical Neighbourhood, Dubai ",
+                      controller.getOneTripData?.location ?? " - ",
                       style: Styles.txtBlackColorW60012,
                     ),
                     Dimens.boxHeight10,
                     Text("Purpose", style: Styles.txtBlackColorW40012),
                     Dimens.boxHeight6,
-                    Text("Business Meting", style: Styles.txtBlackColorW60012),
+                    Text(
+                      controller.getOneTripData?.purpose ?? " - ",
+                      style: Styles.txtBlackColorW60012,
+                    ),
                     Dimens.boxHeight10,
                     Text("Remark", style: Styles.txtBlackColorW40012),
                     Dimens.boxHeight6,
                     Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                      controller.getOneTripData?.remark ?? " - ",
                       style: Styles.txtBlackColorW60012,
                     ),
                     Dimens.boxHeight10,
@@ -305,7 +328,9 @@ class TripDetailsScreen extends StatelessWidget {
                           child: CustomButton(
                             heightBtn: Dimens.fourtyFour,
                             radius: Dimens.six,
-                            onPressed: () {},
+                            onPressed: () {
+                              showLogoutDialog(context);
+                            },
                             text: "Delete",
                             textStyle: Styles.redColor50014,
                             backgroundColor: ColorsValue.whiteColor,
@@ -351,10 +376,10 @@ class TripDetailsScreen extends StatelessWidget {
               SizedBox(
                 height: Dimens.thirty,
                 child: ListView.builder(
-                  itemCount: controller.expenseType.length,
+                  itemCount: controller.expanceCategoryList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    var item = controller.expenseType[index];
+                    var item = controller.expanceCategoryList[index];
                     return GestureDetector(
                       onTap: () {
                         controller.selectExpense = index;
@@ -372,7 +397,7 @@ class TripDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(Dimens.six),
                         ),
                         child: Text(
-                          item,
+                          item.name,
                           style:
                               controller.selectExpense == index
                                   ? Styles.whiteColorW70016
@@ -464,7 +489,10 @@ class TripDetailsScreen extends StatelessWidget {
                               child: CustomButton(
                                 heightBtn: Dimens.fourtyFour,
                                 radius: Dimens.six,
-                                onPressed: () {},
+                                onPressed: () {
+                                  showLogoutDialog(context);
+                                  // showDeleteTripDialog(context);
+                                },
                                 text: "Delete",
                                 textStyle: Styles.redColor50014,
                                 backgroundColor: ColorsValue.whiteColor,
@@ -505,6 +533,103 @@ class TripDetailsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DeleteTripDialog(
+          onCancel: () {
+            Get.back();
+          },
+          onConfirm: () {
+            Get.back();
+            print("Trip deleted");
+          },
+        );
+      },
+    );
+  }
+}
+
+class DeleteTripDialog extends StatelessWidget {
+  final VoidCallback onConfirm;
+  final VoidCallback onCancel;
+
+  const DeleteTripDialog({
+    super.key,
+    required this.onConfirm,
+    required this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Delete Trip",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              "Are you sure you want to delete this trip?",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.black87),
+            ),
+
+            const SizedBox(height: 25),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: onCancel,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      "No",
+                      style: Styles.appColorW50016.copyWith(
+                        color: ColorsValue.blackColor,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                // Confirm Button
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onConfirm,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                    child: Text("Yes", style: Styles.whiteColorW60016),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

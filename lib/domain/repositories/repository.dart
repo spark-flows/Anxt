@@ -7,6 +7,9 @@ import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
+import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_one_expences.dart';
+import 'package:a_nxt/domain/models/get_one_tripe_model.dart';
 
 import '../../app/app.dart';
 
@@ -231,6 +234,48 @@ class Repository {
     }
   }
 
+  Future<GetAllProductTypeModel?> getExpenseCategory({
+    bool isLoading = false,
+  }) async {
+    try {
+      var response = await _dataRepository.getExpenseCategory(
+        isLoading: isLoading,
+      );
+      var getAllProductTypeModel = getAllProductTypeModelFromJson(response.data);
+      if (getAllProductTypeModel.data != null) {
+        return getAllProductTypeModel;
+      } else {
+        return getAllProductTypeModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetOneExpenseCategory?> getOneExpense({
+    bool isLoading = false,
+    required String expenseCatid,
+  }) async {
+    try {
+      var response = await _dataRepository.getOneExpense(
+        isLoading: isLoading,
+        expenseCatid:  expenseCatid,
+      );
+      var getOneExpenseCategory = getOneExpenseCategoryFromJson(response.data);
+      if (getOneExpenseCategory.data != null) {
+        return getOneExpenseCategory;
+      } else {
+        return getOneExpenseCategory;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<CreateCustomerModel?> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -356,6 +401,48 @@ class Repository {
       } else {
         return productListModel;
       }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetAllTripModel?> postGetAllTripList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String location,
+    required String search,
+  }) async {
+    try {
+      var response = await _dataRepository.postGetAllTripList(
+        limit: limit,
+        page: page,
+        location: location,
+        search: search,
+        isLoading: isLoading,
+      );
+      var getAllTripListModel = getAllTripModelFromJson(response.data);
+      return getAllTripListModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetOneTripModel?> postGetOneTripDetail({
+    bool isLoading = false,
+    required String tripId,
+  }) async {
+    try {
+      var response = await _dataRepository.postGetOneTripDetail(
+        tripId: tripId,
+        isLoading: isLoading,
+      );
+      var getOneTripModel = getOneTripModelFromJson(response.data);
+      return getOneTripModel;
     } catch (e) {
       Utility.closeDialog();
       UnimplementedError();
