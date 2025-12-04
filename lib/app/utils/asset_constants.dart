@@ -21,6 +21,8 @@ abstract class AssetConstants {
   static const String ic_fill_sales_analytics =
       "assets/svg/ic_fill_sales_analytics.svg";
   static const String ic_sales_analytics = "assets/svg/ic_sales_analytics.svg";
+  static const String ic_catlogues = "assets/svg/catlogues_icon.svg";
+  static const String ic_order_history = "assets/svg/order_history_icon.svg";
   static const String ic_filter = "assets/svg/ic_filter.svg";
   static const String ic_close = "assets/svg/ic_close.svg";
   static const String ic_date = "assets/svg/ic_date.svg";
@@ -30,5 +32,10 @@ abstract class AssetConstants {
   static const String ic_delete = "assets/svg/ic_delete.svg";
   static const String ic_view = "assets/svg/ic_view.svg";
   static const String ic_export = "assets/svg/ic_export.svg";
-  static const String ssss = "";
+  static const String edit_Doc = "assets/svg/edit_Doc.svg";
+
+  static const String ic_share = "assets/svg/ic_share.svg";
+  static const String ic_document = "assets/svg/ic_document.svg";
+  static const String folder_image = "assets/image/folder_image.png";
+  
 }

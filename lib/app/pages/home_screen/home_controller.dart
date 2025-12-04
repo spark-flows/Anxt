@@ -15,6 +15,21 @@ class HomeController extends GetxController {
       activeIcon: AssetConstants.ic_fill_sales_analytics,
     ),
     HomeModel(
+      name: "Catalogue",
+      icon: AssetConstants.ic_catlogues,
+      activeIcon: AssetConstants.ic_fill_sales_analytics,
+    ),
+    HomeModel(
+      name: "Stock Catalogue",
+      icon: AssetConstants.ic_catlogues,
+      activeIcon: AssetConstants.ic_fill_sales_analytics,
+    ),
+    HomeModel(
+      name: "Order History",
+      icon: AssetConstants.ic_order_history,
+      activeIcon: AssetConstants.ic_fill_sales_analytics,
+    ),
+    HomeModel(
       name: "Trip",
       icon: AssetConstants.ic_trip,
       activeIcon: AssetConstants.ic_fill_trip,
@@ -24,6 +39,15 @@ class HomeController extends GetxController {
   void onTapItem(String selectItem) {
     switch (selectItem) {
       case "Sales Analytics":
+        RouteManagement.goToSalesAnalyticsListScreen();
+        break;
+      case "Catalogue":
+        RouteManagement.goToDocumentScreen();
+        break;
+      case "Stock Catalogue":
+        RouteManagement.goToSalesAnalyticsListScreen();
+        break;
+      case "Order History":
         RouteManagement.goToSalesAnalyticsListScreen();
         break;
       case "Trip":

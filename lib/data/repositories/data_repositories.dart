@@ -278,4 +278,18 @@ class DataRepository extends DomainRepository {
     isLoading: isLoading,
     mediaFileList: mediaFileList,
   );
+
+  Future<ResponseModel> postAllFolders({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+    required String parentid,
+  }) async => await connectHelper.postAllFolders(
+    page: page,
+    limit: limit,
+    search: search,
+    parentid: parentid,
+    isLoading: isLoading,
+  );
 }

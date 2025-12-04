@@ -14,4 +14,6 @@ class EndPoints {
   static String postGetOneTrips = 'api/trip/getone';
   static String getExpenseCategory = 'api/expensecategory';
   static String getGetOneExpense = 'api/expensecategory/getone';
+
+  static String postAllFolders = 'api/category/all';
 }

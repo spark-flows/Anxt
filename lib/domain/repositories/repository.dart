@@ -7,6 +7,7 @@ import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
+import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_tripe_model.dart';
@@ -241,7 +242,9 @@ class Repository {
       var response = await _dataRepository.getExpenseCategory(
         isLoading: isLoading,
       );
-      var getAllProductTypeModel = getAllProductTypeModelFromJson(response.data);
+      var getAllProductTypeModel = getAllProductTypeModelFromJson(
+        response.data,
+      );
       if (getAllProductTypeModel.data != null) {
         return getAllProductTypeModel;
       } else {
@@ -261,7 +264,7 @@ class Repository {
     try {
       var response = await _dataRepository.getOneExpense(
         isLoading: isLoading,
-        expenseCatid:  expenseCatid,
+        expenseCatid: expenseCatid,
       );
       var getOneExpenseCategory = getOneExpenseCategoryFromJson(response.data);
       if (getOneExpenseCategory.data != null) {
@@ -480,6 +483,29 @@ class Repository {
       } else {
         return getProfileModel;
       }
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetAllFileAndFolder?> postAllFolders({
+    required int limit,
+    required int page,
+    required String parentid,
+    required String search,
+  }) async {
+    try {
+      var response = await _dataRepository.postAllFolders(
+        limit: limit,
+        page: page,
+        parentid: parentid,
+        search: search,
+        isLoading: false,
+      );
+      var getAllFileAndFolder = getAllFileAndFolderFromJson(response.data);
+      return getAllFileAndFolder;
     } catch (_) {
       Utility.closeDialog();
       UnimplementedError();

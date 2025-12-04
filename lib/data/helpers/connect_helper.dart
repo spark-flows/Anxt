@@ -189,9 +189,7 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> getExpenseCategory({
-    bool isLoading = false,
-  }) async {
+  Future<ResponseModel> getExpenseCategory({bool isLoading = false}) async {
     var response = await apiWrapper.makeRequest(
       '${EndPoints.getExpenseCategory}?page=1&limit=10&search',
       Request.get,
@@ -223,7 +221,7 @@ class ConnectHelper {
     required String salesperson,
     required String name,
     required String mobile,
-    required String email, 
+    required String email,
     required String address,
     required String state,
     required String city,
@@ -235,7 +233,7 @@ class ConnectHelper {
     required String managermobile,
   }) async {
     var data = {
-      "salesperson" : salesperson,
+      "salesperson": salesperson,
       "customerid": customerId,
       "name": name,
       "mobile": mobile,
@@ -350,10 +348,10 @@ class ConnectHelper {
     var data = {
       "page": page,
       "limit": limit,
-      "location" : location,
-      "search" : search,
-      "sortfield" : 'start',
-      "sortoption" : 1,
+      "location": location,
+      "search": search,
+      "sortfield": 'start',
+      "sortoption": 1,
     };
 
     var response = await apiWrapper.makeRequest(
@@ -370,9 +368,7 @@ class ConnectHelper {
     bool isLoading = false,
     required String tripId,
   }) async {
-    var data = {
-      'tripid': tripId,
-    };
+    var data = {'tripid': tripId};
 
     var response = await apiWrapper.makeRequest(
       EndPoints.postGetOneTrips,
@@ -430,6 +426,29 @@ class ConnectHelper {
       isLoading,
       Utility.commonHeader(isDefaultAuthorizationKeyAdd: false),
       mediaFileList: mediaFileList,
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postAllFolders({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+    required String parentid,
+  }) async {
+    var data = {
+      "page": page,
+      "limit": limit,
+      "search": search,
+      "parentid": parentid,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postAllFolders,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
     );
     return response;
   }

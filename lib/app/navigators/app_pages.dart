@@ -1,3 +1,6 @@
+import 'package:a_nxt/app/pages/document_screen/document_bindings.dart';
+import 'package:a_nxt/app/pages/document_screen/document_detail_screen.dart';
+import 'package:a_nxt/app/pages/document_screen/document_screen.dart';
 import 'package:a_nxt/app/pages/pages.dart';
 import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:get/get.dart';
@@ -113,6 +116,20 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: AddTripScreen.new,
       binding: TripBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<DocumentScreen>(
+      name: _Paths.documentScreen,
+      transitionDuration: transitionDuration,
+      page: DocumentScreen.new,
+      binding: DocumentBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<DocumentDetailScreen>(
+      name: _Paths.documentDetailScreen,
+      transitionDuration: transitionDuration,
+      page: DocumentDetailScreen.new,
+      binding: DocumentBindings(),
       transition: Transition.fadeIn,
     ),
   ];
