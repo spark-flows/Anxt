@@ -37,5 +37,5 @@ abstract class AssetConstants {
   static const String ic_share = "assets/svg/ic_share.svg";
   static const String ic_document = "assets/svg/ic_document.svg";
   static const String folder_image = "assets/image/folder_image.png";
-  
+  static const String ic_download = "assets/svg/ic_download.svg";
 }

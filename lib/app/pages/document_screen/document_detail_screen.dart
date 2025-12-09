@@ -1,6 +1,5 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/pages/document_screen/document_page.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -18,9 +17,9 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
     return GetBuilder<DocumentController>(
       initState: (state) async {
         var controller = Get.find<DocumentController>();
-        // controller.selectAll = controller.imageDetailsDocList.every(
-        //   (item) => item.isSelect,
-        // );
+        controller.selectAll = controller.imageDetailsDocList.every(
+          (item) => item.isSelect,
+        );
         controller.folderId = Get.arguments;
         controller.postGetProductList(categoryId: Get.arguments);
         // controller.isFolderLoading = true;
@@ -52,7 +51,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
           backgroundColor: ColorsValue.whiteColor,
           appBar: AppBarWidget(
             onTapBack: controller.goBack,
-            title: 'Store',
+            title: 'Catlogues Details',
             isVisible: true,
             isCenter: true,
           ),
@@ -137,7 +136,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                                       Dimens.four,
                                     ),
                                     border: Border.all(
-                                      color: ColorsValue.color475569,
+                                      color: ColorsValue.lineColor,
                                     ),
                                   ),
                                   child: Padding(
@@ -200,30 +199,19 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                               // ?
                               controller.imageDetailsDocList.isNotEmpty
                                   ? !controller.downloading
-                                      ? GridView.builder(
+                                      ? ListView.builder(
                                         itemCount:
                                             controller
                                                 .imageDetailsDocList
                                                 .length,
                                         shrinkWrap: true,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: Dimens.eight,
-                                              mainAxisSpacing: Dimens.eight,
-                                            ),
                                         itemBuilder: (context, index) {
                                           var item =
                                               controller
                                                   .imageDetailsDocList[index];
-                                          final fileType =
-                                              // Utility.getFileTypeFromUrl(
-                                              //   item.fileurl ?? "",
-                                              // );
-                                              "image" ?? "";
-
                                           return ProductCard(
-                                            designNo: item.tagno,
+                                            tagno: item.tagno,
+                                            designNo: item.designno,
                                             code: item.tagno,
                                             imageUrl: item.image,
                                             gw: item.gwt.toString(),
@@ -233,268 +221,303 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                                             kt: '120',
                                             onTap: () {},
                                           );
-
-                                          return GestureDetector(
-                                            onLongPress: () {
-                                              // if (fileType != "folder") {
-                                              //   item.isSelect =
-                                              //       !item.isSelect;
-                                              //   controller.isLongPress =
-                                              //       true;
-                                              //   controller.update();
-                                              // }
-                                            },
-                                            onTap: () {
-                                              // if (fileType == "image") {
-                                              //   // RouteManagement.goToViewAllImgVidScreen(controller.imageDetailsDocList, index);
-                                              // } else if (fileType ==
-                                              //     "video") {
-                                              //   // RouteManagement.goToSingleFullScreenImageVideo(ApiWrapper.imageUrl + (item.fileurl ?? ""), 'Video');
-                                              // } else if (fileType ==
-                                              //     "folder") {
-                                              //   controller.isClick = false;
-                                              //   controller.isFolderLoading =
-                                              //       true;
-                                              //   controller.update();
-                                              //   // controller.addNewStep(item);
-                                              // } else {}
-                                            },
-                                            child: Container(
-                                              padding:
-                                                  fileType != "image"
-                                                      ? Dimens.edgeInsets5
-                                                      : Dimens.edgeInsets0,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                      Dimens.twenty,
-                                                    ),
-                                                border: Border.all(
-                                                  color:
-                                                      ColorsValue.lightCBD5E1,
-                                                ),
-                                              ),
-                                              child: Builder(
-                                                builder: (context) {
-                                                  if (fileType == "image") {
-                                                    // final ext =
-                                                    //     Utility.getFileTypeFromUrl(
-                                                    //       item.fileurl ??
-                                                    //           "",
-                                                    //     );
-                                                    return ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            Dimens.ten,
-                                                          ),
-                                                      child: Stack(
-                                                        children: [
-                                                          Stack(
-                                                            children: [
-                                                              CachedNetworkImage(
-                                                                imageUrl:
-                                                                    item.image,
-                                                                fit:
-                                                                    BoxFit
-                                                                        .cover,
-                                                                height:
-                                                                    double
-                                                                        .infinity,
-                                                                width:
-                                                                    double
-                                                                        .infinity,
-                                                                placeholder:
-                                                                    (
-                                                                      context,
-                                                                      url,
-                                                                    ) => Image.asset(
-                                                                      AssetConstants
-                                                                          .placeholder,
-                                                                      fit:
-                                                                          BoxFit
-                                                                              .cover,
-                                                                    ),
-                                                                errorWidget:
-                                                                    (
-                                                                      context,
-                                                                      url,
-                                                                      error,
-                                                                    ) => Image.asset(
-                                                                      AssetConstants
-                                                                          .placeholder,
-                                                                      fit:
-                                                                          BoxFit
-                                                                              .cover,
-                                                                    ),
-                                                              ),
-                                                              Padding(
-                                                                padding: Dimens
-                                                                    .edgeInsets0
-                                                                    .copyWith(
-                                                                      left: 10,
-                                                                      bottom:
-                                                                          10,
-                                                                    ),
-                                                                child: Align(
-                                                                  alignment:
-                                                                      AlignmentGeometry
-                                                                          .bottomLeft,
-                                                                  child: Container(
-                                                                    padding: Dimens
-                                                                        .edgeInsets0
-                                                                        .copyWith(
-                                                                          left:
-                                                                              8,
-                                                                          right:
-                                                                              8,
-                                                                          bottom:
-                                                                              4,
-                                                                        ),
-                                                                    decoration: BoxDecoration(
-                                                                      color:
-                                                                          ColorsValue
-                                                                              .whiteColor,
-                                                                      border: Border.all(
-                                                                        color:
-                                                                            ColorsValue.blackColor,
-                                                                      ),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            4,
-                                                                          ),
-                                                                    ),
-                                                                    child: Text(
-                                                                      'ext',
-                                                                      style: Styles.appColorW60014.copyWith(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        color:
-                                                                            ColorsValue.color0F172A,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  } else if (fileType ==
-                                                      "video") {
-                                                    return Stack(children: [
-                                                          ],
-                                                        );
-                                                    // else if (fileType ==
-                                                    //     "document") {
-                                                    //   String icon = '';
-                                                    //   // final ext =
-                                                    //   //     Utility.getFileTypeFromUrl(
-                                                    //   //       item.fileurl ??
-                                                    //   //           "",
-                                                    //   //     );
-                                                    //   if ([
-                                                    //     "doc",
-                                                    //     "docx",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .word_icon;
-                                                    //   } else if ([
-                                                    //     "xls",
-                                                    //     "xlsx",
-                                                    //     "csv",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .excel_icon;
-                                                    //   } else if ([
-                                                    //     "ppt",
-                                                    //     "pptx",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .ppt_icon;
-                                                    //   } else if ([
-                                                    //     "zip",
-                                                    //     "rar",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .zip_icon;
-                                                    //   } else if ([
-                                                    //     "gif",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .gif_icon;
-                                                    //   } else if ([
-                                                    //     "pdf",
-                                                    //   ].contains(ext)) {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .zip_icon;
-                                                    //     // .word_icon;
-                                                    //     // .excel_icon;
-                                                    //     // .ppt_icon;
-                                                    //     // .gif_icon;
-                                                    //   } else {
-                                                    //     icon =
-                                                    //         AssetConstants
-                                                    //             .app_logo;
-                                                    //   }
-                                                    //   return Stack(
-                                                    //     children: [
-                                                    //       Center(
-                                                    //         child:
-                                                    //             SvgPicture.asset(
-                                                    //               icon,
-                                                    //             ),
-                                                    //       ),
-                                                    //       if (controller
-                                                    //           .isLongPress)
-                                                    //         Positioned(
-                                                    //           right: 0,
-                                                    //           child: Transform.scale(
-                                                    //             scale: 1.2,
-                                                    //             child: Checkbox(
-                                                    //               value:
-                                                    //                   item.isSelect,
-                                                    //               activeColor:
-                                                    //                   ColorsValue
-                                                    //                       .appColor,
-                                                    //               onChanged: (
-                                                    //                 value,
-                                                    //               ) {
-                                                    //                 item.isSelect =
-                                                    //                     value!;
-                                                    //                 controller
-                                                    //                     .updateSelectedCount();
-                                                    //                 controller
-                                                    //                     .update();
-                                                    //               },
-                                                    //             ),
-                                                    //           ),
-                                                    //         ),
-                                                    //     ],
-                                                    //   );
-                                                  } else {
-                                                    return Center(
-                                                      child: SvgPicture.asset(
-                                                        AssetConstants
-                                                            .ic_document,
-                                                        height: 50,
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          );
                                         },
+                                        // GridView.builder(
+                                        //   itemCount:
+                                        //       controller
+                                        //           .imageDetailsDocList
+                                        //           .length,
+                                        //   shrinkWrap: true,
+                                        //   gridDelegate:
+                                        //       SliverGridDelegateWithFixedCrossAxisCount(
+                                        //         crossAxisCount: 3,
+                                        //         crossAxisSpacing: Dimens.eight,
+                                        //         mainAxisSpacing: Dimens.eight,
+                                        //       ),
+                                        //   itemBuilder: (context, index) {
+                                        //     var item =
+                                        //         controller
+                                        //             .imageDetailsDocList[index];
+                                        //     final fileType =
+                                        //         // Utility.getFileTypeFromUrl(
+                                        //         //   item.fileurl ?? "",
+                                        //         // );
+                                        //         "image" ?? "";
+
+                                        //     return ProductCard(
+                                        //       designNo: item.tagno,
+                                        //       code: item.tagno,
+                                        //       imageUrl: item.image,
+                                        //       gw: item.gwt.toString(),
+                                        //       dw: item.dwt.toString(),
+                                        //       ow: '112',
+                                        //       nw: item.nwt.toString(),
+                                        //       kt: '120',
+                                        //       onTap: () {},
+                                        //     );
+
+                                        //     return GestureDetector(
+                                        //       onLongPress: () {
+                                        //         // if (fileType != "folder") {
+                                        //         //   item.isSelect =
+                                        //         //       !item.isSelect;
+                                        //         //   controller.isLongPress =
+                                        //         //       true;
+                                        //         //   controller.update();
+                                        //         // }
+                                        //       },
+                                        //       onTap: () {
+                                        //         // if (fileType == "image") {
+                                        //         //   // RouteManagement.goToViewAllImgVidScreen(controller.imageDetailsDocList, index);
+                                        //         // } else if (fileType ==
+                                        //         //     "video") {
+                                        //         //   // RouteManagement.goToSingleFullScreenImageVideo(ApiWrapper.imageUrl + (item.fileurl ?? ""), 'Video');
+                                        //         // } else if (fileType ==
+                                        //         //     "folder") {
+                                        //         //   controller.isClick = false;
+                                        //         //   controller.isFolderLoading =
+                                        //         //       true;
+                                        //         //   controller.update();
+                                        //         //   // controller.addNewStep(item);
+                                        //         // } else {}
+                                        //       },
+                                        //       child: Container(
+                                        //         padding:
+                                        //             fileType != "image"
+                                        //                 ? Dimens.edgeInsets5
+                                        //                 : Dimens.edgeInsets0,
+                                        //         decoration: BoxDecoration(
+                                        //           color: Colors.white,
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(
+                                        //                 Dimens.twenty,
+                                        //               ),
+                                        //           border: Border.all(
+                                        //             color:
+                                        //                 ColorsValue.lightCBD5E1,
+                                        //           ),
+                                        //         ),
+                                        //         child: Builder(
+                                        //           builder: (context) {
+                                        //             if (fileType == "image") {
+                                        //               // final ext =
+                                        //               //     Utility.getFileTypeFromUrl(
+                                        //               //       item.fileurl ??
+                                        //               //           "",
+                                        //               //     );
+                                        //               return ClipRRect(
+                                        //                 borderRadius:
+                                        //                     BorderRadius.circular(
+                                        //                       Dimens.ten,
+                                        //                     ),
+                                        //                 child: Stack(
+                                        //                   children: [
+                                        //                     Stack(
+                                        //                       children: [
+                                        //                         CachedNetworkImage(
+                                        //                           imageUrl:
+                                        //                               item.image,
+                                        //                           fit:
+                                        //                               BoxFit
+                                        //                                   .cover,
+                                        //                           height:
+                                        //                               double
+                                        //                                   .infinity,
+                                        //                           width:
+                                        //                               double
+                                        //                                   .infinity,
+                                        //                           placeholder:
+                                        //                               (
+                                        //                                 context,
+                                        //                                 url,
+                                        //                               ) => Image.asset(
+                                        //                                 AssetConstants
+                                        //                                     .placeholder,
+                                        //                                 fit:
+                                        //                                     BoxFit
+                                        //                                         .cover,
+                                        //                               ),
+                                        //                           errorWidget:
+                                        //                               (
+                                        //                                 context,
+                                        //                                 url,
+                                        //                                 error,
+                                        //                               ) => Image.asset(
+                                        //                                 AssetConstants
+                                        //                                     .placeholder,
+                                        //                                 fit:
+                                        //                                     BoxFit
+                                        //                                         .cover,
+                                        //                               ),
+                                        //                         ),
+                                        //                         Padding(
+                                        //                           padding: Dimens
+                                        //                               .edgeInsets0
+                                        //                               .copyWith(
+                                        //                                 left: 10,
+                                        //                                 bottom:
+                                        //                                     10,
+                                        //                               ),
+                                        //                           child: Align(
+                                        //                             alignment:
+                                        //                                 AlignmentGeometry
+                                        //                                     .bottomLeft,
+                                        //                             child: Container(
+                                        //                               padding: Dimens
+                                        //                                   .edgeInsets0
+                                        //                                   .copyWith(
+                                        //                                     left:
+                                        //                                         8,
+                                        //                                     right:
+                                        //                                         8,
+                                        //                                     bottom:
+                                        //                                         4,
+                                        //                                   ),
+                                        //                               decoration: BoxDecoration(
+                                        //                                 color:
+                                        //                                     ColorsValue
+                                        //                                         .whiteColor,
+                                        //                                 border: Border.all(
+                                        //                                   color:
+                                        //                                       ColorsValue.blackColor,
+                                        //                                 ),
+                                        //                                 borderRadius:
+                                        //                                     BorderRadius.circular(
+                                        //                                       4,
+                                        //                                     ),
+                                        //                               ),
+                                        //                               child: Text(
+                                        //                                 'ext',
+                                        //                                 style: Styles.appColorW60014.copyWith(
+                                        //                                   fontSize:
+                                        //                                       14,
+                                        //                                   fontWeight:
+                                        //                                       FontWeight.w500,
+                                        //                                   color:
+                                        //                                       ColorsValue.color0F172A,
+                                        //                                 ),
+                                        //                               ),
+                                        //                             ),
+                                        //                           ),
+                                        //                         ),
+                                        //                       ],
+                                        //                     ),
+                                        //                   ],
+                                        //                 ),
+                                        //               );
+                                        //             } else if (fileType ==
+                                        //                 "video") {
+                                        //               return Stack(children: [
+                                        //                     ],
+                                        //                   );
+                                        //               // else if (fileType ==
+                                        //               //     "document") {
+                                        //               //   String icon = '';
+                                        //               //   // final ext =
+                                        //               //   //     Utility.getFileTypeFromUrl(
+                                        //               //   //       item.fileurl ??
+                                        //               //   //           "",
+                                        //               //   //     );
+                                        //               //   if ([
+                                        //               //     "doc",
+                                        //               //     "docx",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .word_icon;
+                                        //               //   } else if ([
+                                        //               //     "xls",
+                                        //               //     "xlsx",
+                                        //               //     "csv",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .excel_icon;
+                                        //               //   } else if ([
+                                        //               //     "ppt",
+                                        //               //     "pptx",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .ppt_icon;
+                                        //               //   } else if ([
+                                        //               //     "zip",
+                                        //               //     "rar",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .zip_icon;
+                                        //               //   } else if ([
+                                        //               //     "gif",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .gif_icon;
+                                        //               //   } else if ([
+                                        //               //     "pdf",
+                                        //               //   ].contains(ext)) {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .zip_icon;
+                                        //               //     // .word_icon;
+                                        //               //     // .excel_icon;
+                                        //               //     // .ppt_icon;
+                                        //               //     // .gif_icon;
+                                        //               //   } else {
+                                        //               //     icon =
+                                        //               //         AssetConstants
+                                        //               //             .app_logo;
+                                        //               //   }
+                                        //               //   return Stack(
+                                        //               //     children: [
+                                        //               //       Center(
+                                        //               //         child:
+                                        //               //             SvgPicture.asset(
+                                        //               //               icon,
+                                        //               //             ),
+                                        //               //       ),
+                                        //               //       if (controller
+                                        //               //           .isLongPress)
+                                        //               //         Positioned(
+                                        //               //           right: 0,
+                                        //               //           child: Transform.scale(
+                                        //               //             scale: 1.2,
+                                        //               //             child: Checkbox(
+                                        //               //               value:
+                                        //               //                   item.isSelect,
+                                        //               //               activeColor:
+                                        //               //                   ColorsValue
+                                        //               //                       .appColor,
+                                        //               //               onChanged: (
+                                        //               //                 value,
+                                        //               //               ) {
+                                        //               //                 item.isSelect =
+                                        //               //                     value!;
+                                        //               //                 controller
+                                        //               //                     .updateSelectedCount();
+                                        //               //                 controller
+                                        //               //                     .update();
+                                        //               //               },
+                                        //               //             ),
+                                        //               //           ),
+                                        //               //         ),
+                                        //               //     ],
+                                        //               //   );
+                                        //             } else {
+                                        //               return Center(
+                                        //                 child: SvgPicture.asset(
+                                        //                   AssetConstants
+                                        //                       .ic_document,
+                                        //                   height: 50,
+                                        //                 ),
+                                        //               );
+                                        //             }
+                                        //           },
+                                        //         ),
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // )
                                       )
                                       : const Center(
                                         child: CircularProgressIndicator(),
@@ -525,6 +548,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
 
 class ProductCard extends StatelessWidget {
   final String designNo;
+  final String tagno;
   final String code;
   final String imageUrl;
   final String gw;
@@ -538,6 +562,7 @@ class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
     required this.designNo,
+    required this.tagno,
     required this.code,
     required this.imageUrl,
     required this.gw,
@@ -554,13 +579,13 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        padding: Dimens.edgeInsets10,
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ColorsValue.textFieldBg,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
+            color: isSelected ? ColorsValue.greyCBD5E1 : ColorsValue.greyColor,
             width: isSelected ? 2 : 1,
           ),
           boxShadow: [
@@ -574,65 +599,103 @@ class ProductCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // IMAGE
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                imageUrl,
-                width: 110,
-                height: 110,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    imageUrl,
+                    width: 110,
+                    height: 110,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    margin: Dimens.edgeInsets5,
+                    decoration: BoxDecoration(
+                      color: ColorsValue.colorDFEFEF,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                      child: Text(
+                        tagno,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: ColorsValue.txtBlackColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-
             const SizedBox(width: 10),
-
-            // RIGHT SIDE DETAILS
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // TITLE ROW
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Design No. :- $designNo",
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Design No. :- ",
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: ColorsValue.txtBlackColor,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                designNo,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: ColorsValue.lineColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const Spacer(),
-                      Icon(
-                        Icons.check_circle,
-                        color: isSelected ? Colors.blue : Colors.grey,
-                        size: 20,
-                      ),
+                      // Icon(
+                      //   Icons.check_circle,
+                      //   color: isSelected ? Colors.blue : Colors.grey,
+                      //   size: 20,
+                      // ),
                     ],
                   ),
-
-                  const SizedBox(height: 8),
-
+                  Dimens.boxHeight10,
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _labelValue("G.W", gw),
                       const SizedBox(width: 20),
                       _labelValue("D.W", dw),
                     ],
                   ),
-
-                  const SizedBox(height: 4),
-
+                  Dimens.boxHeight10,
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _labelValue("O.W", ow),
                       const SizedBox(width: 20),
                       _labelValue("N.W", nw),
                     ],
                   ),
-
-                  const SizedBox(height: 4),
-
+                  Dimens.boxHeight10,
                   _labelValue("KT", kt),
                 ],
               ),
@@ -645,19 +708,20 @@ class ProductCard extends StatelessWidget {
 
   Widget _labelValue(String label, String value) {
     return RichText(
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(
         text: "$label :- ",
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
+        style: TextStyle(
+          fontSize: 14,
+          color: ColorsValue.txtBlackColor,
+          fontWeight: FontWeight.w700,
         ),
         children: [
           TextSpan(
             text: value,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 13,
+            style: TextStyle(
+              fontSize: 14,
+              color: ColorsValue.lineColor,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -733,10 +797,7 @@ class CustomFAB extends StatelessWidget {
     return FloatingActionButton.extended(
       onPressed: onPressed,
       backgroundColor: const Color(0xFFD2A679),
-      // light brown color
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8), // smooth corners
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       icon: const Icon(Icons.upload_rounded, color: Colors.white),
       label: const Text(
         "Upload File",

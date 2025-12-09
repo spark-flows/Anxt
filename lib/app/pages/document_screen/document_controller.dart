@@ -1,18 +1,13 @@
 import 'dart:io';
 import 'package:a_nxt/app/pages/document_screen/document_preneter.dart';
 import 'package:a_nxt/app/utils/utility.dart';
-import 'package:a_nxt/data/helpers/api_wrapper.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
-import 'package:a_nxt/domain/repositories/local_storage_keys.dart';
-import 'package:a_nxt/domain/repositories/repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:mime/mime.dart';
-import 'package:http_parser/http_parser.dart';
 
 class DocumentController extends GetxController {
   DocumentController(this.documentPreneter);
@@ -71,9 +66,9 @@ class DocumentController extends GetxController {
   void toggleSelectAllFolders() {
     selectAllFolder = !selectAllFolder;
 
-    // for (var item in folderDocList) {
-    //   item.isSelect = selectAllFolder;
-    // }
+    for (var item in folderDocList) {
+      item.isSelect = selectAllFolder;
+    }
     updateSelectedDocumentCount();
     update();
   }
@@ -87,7 +82,7 @@ class DocumentController extends GetxController {
   }
 
   void updateSelectedDocumentCount() {
-    // selectedDocumentCount.value = folderDocList.where((e) => e.isSelect).length;
+    selectedDocumentCount.value = folderDocList.where((e) => e.isSelect).length;
     update();
   }
 
@@ -114,8 +109,7 @@ class DocumentController extends GetxController {
 
   int filePageCount = 1;
   // bool isFolderLoading = false;
-  List<ProductListDoc> imageDetailsDocList = [
-  ];
+  List<ProductListDoc> imageDetailsDocList = [];
   List<GetAllFileDoc> folderDocList = [];
 
   Future<void> postAllFolders(final String parentid) async {

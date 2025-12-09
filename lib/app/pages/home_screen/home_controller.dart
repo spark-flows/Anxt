@@ -19,16 +19,16 @@ class HomeController extends GetxController {
       icon: AssetConstants.ic_catlogues,
       activeIcon: AssetConstants.ic_fill_sales_analytics,
     ),
-    HomeModel(
-      name: "Stock Catalogue",
-      icon: AssetConstants.ic_catlogues,
-      activeIcon: AssetConstants.ic_fill_sales_analytics,
-    ),
-    HomeModel(
-      name: "Order History",
-      icon: AssetConstants.ic_order_history,
-      activeIcon: AssetConstants.ic_fill_sales_analytics,
-    ),
+    // HomeModel(
+    //   name: "Stock Catalogue",
+    //   icon: AssetConstants.ic_catlogues,
+    //   activeIcon: AssetConstants.ic_fill_sales_analytics,
+    // ),
+    // HomeModel(
+    //   name: "Order History",
+    //   icon: AssetConstants.ic_order_history,
+    //   activeIcon: AssetConstants.ic_fill_sales_analytics,
+    // ),
     HomeModel(
       name: "Trip",
       icon: AssetConstants.ic_trip,

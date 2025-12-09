@@ -130,6 +130,7 @@ class ProductListDoc {
   final String id;
   final ProductListCategory? category;
   final String shortname;
+  final String designno;
   final String productname;
   final String image;
   final String tagno;
@@ -139,12 +140,14 @@ class ProductListDoc {
   final bool status;
   final DateTime createdAt;
   final String docId;
+  final bool isSelect;
 
   ProductListDoc({
     required this.id,
     required this.category,
     required this.shortname,
     required this.productname,
+    required this.designno,
     required this.image,
     required this.tagno,
     required this.gwt,
@@ -153,11 +156,13 @@ class ProductListDoc {
     required this.status,
     required this.createdAt,
     required this.docId,
+    this.isSelect = false,
   });
 
   ProductListDoc copyWith({
     String? id,
     ProductListCategory? category,
+    String? designno,
     String? shortname,
     String? productname,
     String? image,
@@ -168,10 +173,12 @@ class ProductListDoc {
     bool? status,
     DateTime? createdAt,
     String? docId,
+    bool? isSelect,
   }) => ProductListDoc(
     id: id ?? this.id,
     category: category ?? this.category,
     shortname: shortname ?? this.shortname,
+    designno: designno ?? this.designno,
     productname: productname ?? this.productname,
     image: image ?? this.image,
     tagno: tagno ?? this.tagno,
@@ -181,6 +188,7 @@ class ProductListDoc {
     status: status ?? this.status,
     createdAt: createdAt ?? this.createdAt,
     docId: docId ?? this.docId,
+    isSelect: isSelect ?? this.isSelect,
   );
 
   factory ProductListDoc.fromJson(Map<String, dynamic> json) => ProductListDoc(
@@ -190,6 +198,7 @@ class ProductListDoc {
             ? null
             : ProductListCategory.fromJson(json["category"]),
     shortname: json["shortname"] ?? "",
+    designno: json["designno"] ?? "Test",
     productname: json["productname"] ?? "",
     image: json["image"] ?? "",
     tagno: json["tagno"] ?? "",
@@ -199,12 +208,14 @@ class ProductListDoc {
     status: json["status"] ?? false,
     createdAt: DateTime.parse(json["createdAt"]),
     docId: json["id"] ?? "",
+    isSelect: json["isSelect"] ??false,
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
     "category": category?.toJson(),
     "shortname": shortname,
+    "designno": designno,
     "productname": productname,
     "image": image,
     "tagno": tagno,
@@ -214,6 +225,7 @@ class ProductListDoc {
     "status": status,
     "createdAt": createdAt.toIso8601String(),
     "id": docId,
+    "isSelect": isSelect,
   };
 }
 
