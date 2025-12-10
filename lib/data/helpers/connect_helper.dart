@@ -215,6 +215,25 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postCreateTrip({
+  bool isLoading = false,
+  required Map<String, dynamic> formData,
+  required List<ImageFormData> mediaFiles,
+}) async {
+
+  var response = await apiWrapper.makeRequest(
+    EndPoints.postCreateTrip,
+    Request.postWithFormData,
+    formData,
+    isLoading,
+    Utility.commonHeader(),
+    mediaFileList: mediaFiles,
+  );
+
+  return response;
+}
+
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,

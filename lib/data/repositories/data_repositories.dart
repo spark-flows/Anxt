@@ -111,6 +111,7 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> getExpenseCategory({bool isLoading = false}) async =>
       await connectHelper.getExpenseCategory(isLoading: isLoading);
 
+
   Future<ResponseModel> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
@@ -118,6 +119,17 @@ class DataRepository extends DomainRepository {
     isLoading: isLoading,
     expenseCatid: expenseCatid,
   );
+
+  Future<ResponseModel> postCreateTrip({
+    bool isLoading = false,
+    required Map<String, dynamic> formData,
+    required List<ImageFormData> mediaFiles,
+  }) async => await connectHelper.postCreateTrip(
+    isLoading: isLoading,
+    formData: formData,
+    mediaFiles: mediaFiles,
+  );
+
 
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,

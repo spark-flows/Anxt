@@ -24,7 +24,9 @@ class AddExpenseTripScreen extends StatelessWidget {
             child: Padding(
               padding: Dimens.edgeInsets20_10_20_10,
               child: CustomButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.submitTrip('');
+                },
                 text: 'Save',
                 backgroundColor: ColorsValue.appColor,
                 textStyle: Styles.whiteColorW60016,

@@ -1,3 +1,4 @@
+import 'package:a_nxt/domain/models/create_trip_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/models.dart';
@@ -34,9 +35,21 @@ class TripUsecases {
     bool isLoading = false,
   }) async => await repository.getExpenseCategory(isLoading: isLoading);
 
-
-Future<GetOneExpenseCategory?> getOneExpense({
+  Future<GetOneExpenseCategory?> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
-  }) async => await repository.getOneExpense(isLoading: isLoading,expenseCatid: expenseCatid);
+  }) async => await repository.getOneExpense(
+    isLoading: isLoading,
+    expenseCatid: expenseCatid,
+  );
+
+  Future<TripCreatedModel?> postCreateTrip({
+    bool isLoading = false,
+    required Map<String, dynamic> formData,
+    required List<ImageFormData> mediaFiles,
+  }) async => await repository.postCreateTrip(
+    isLoading: isLoading,
+    formData: formData,
+    mediaFiles: mediaFiles,
+  );
 }

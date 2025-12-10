@@ -185,6 +185,46 @@ class TripController extends GetxController {
     }
     update();
   }
+
+  Future<void> submitTrip(String tripId) async {
+    // if (pickedImage.value == null) {
+    //   Get.snackbar("Error", "Please select an image");
+    //   return;
+    // }
+
+    final formData = {
+      "tripid": tripId,
+      "tripname": nameController.text,
+      "purpose": purposeController.text,
+      "status": selectStatus ?? '',
+      "budget": budgetController.text,
+      "start": startDateController.text,
+      "end": endDateController.text,
+      "location": locationController.text,
+      "remark": remarkAddController.text,
+      "participants":
+          participantsList
+              .map((participant) => participant.selectMember ?? '')
+              .toList(),
+    };
+
+    // final mediaFiles = [
+    //   ImageFormData(fieldName: "image", filePath: pickedImage.value!.path),
+    // ];
+
+    final response = await tripPresenter.postCreateTrip(
+      isLoading: true,
+      formData: formData,
+      mediaFiles: [],
+    );
+
+    if (response?.status == 200) {
+      Get.snackbar("Success", "Trip created successfully");
+      Get.back();
+    } else {
+      Get.snackbar("Error", "Failed: ${response?.data}");
+    }
+  }
 }
 
 class FilterModel {

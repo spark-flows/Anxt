@@ -5,6 +5,7 @@ import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
+import 'package:a_nxt/domain/models/create_trip_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
@@ -257,6 +258,7 @@ class Repository {
     }
   }
 
+
   Future<GetOneExpenseCategory?> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
@@ -271,6 +273,30 @@ class Repository {
         return getOneExpenseCategory;
       } else {
         return getOneExpenseCategory;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<TripCreatedModel?> postCreateTrip({
+    bool isLoading = false,
+    required Map<String, dynamic> formData,
+    required List<ImageFormData> mediaFiles,
+  }) async {
+    try {
+      var response = await _dataRepository.postCreateTrip(
+        isLoading: isLoading,
+        formData: formData,
+        mediaFiles: mediaFiles,
+      );
+      var tripCreatedModel = tripCreatedModelFromJson(response.data);
+      if (tripCreatedModel.data != null) {
+        return tripCreatedModel;
+      } else {
+        return tripCreatedModel;
       }
     } catch (e) {
       Utility.closeDialog();
