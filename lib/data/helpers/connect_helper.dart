@@ -215,25 +215,6 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> postCreateTrip({
-  bool isLoading = false,
-  required Map<String, dynamic> formData,
-  required List<ImageFormData> mediaFiles,
-}) async {
-
-  var response = await apiWrapper.makeRequest(
-    EndPoints.postCreateTrip,
-    Request.postWithFormData,
-    formData,
-    isLoading,
-    Utility.commonHeader(),
-    mediaFileList: mediaFiles,
-  );
-
-  return response;
-}
-
-
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -399,9 +380,36 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postTripDelete({
+    bool isLoading = false,
+    required String tripId,
+  }) async {
+    var data = {'tripid': tripId};
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postTripDelete,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> getProfileApi({bool isLoading = false}) async {
     var response = await apiWrapper.makeRequest(
       EndPoints.getProfileApi,
+      Request.get,
+      null,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> getAllUser({bool isLoading = false}) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.getAllUser,
       Request.get,
       null,
       isLoading,
@@ -468,6 +476,77 @@ class ConnectHelper {
       data,
       isLoading,
       Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postCreateTrip({
+    bool isLoading = false,
+    required String tripid,
+    required String tripname,
+    required String purpose,
+    required String status,
+    required String budget,
+    required String start,
+    required String end,
+    required String location,
+    required String remark,
+    required List<String> participants,
+    required String currency,
+    required List<ImageFormData> mediaFileList,
+  }) async {
+    var data = {
+      "tripid": tripid,
+      "tripname": tripname,
+      "purpose": purpose,
+      "status": status,
+      "budget": budget,
+      "start": start,
+      "end": end,
+      "location": location,
+      "remark": remark,
+      "participants": participants,
+      "currency": currency,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCreateTrip,
+      Request.postWithFormData,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+      mediaFileList: mediaFileList,
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postExpenseCreate({
+    bool isLoading = false,
+    required String expenseid,
+    required String tripid,
+    required String title,
+    required String date,
+    required String expenseCatid,
+    required String userid,
+    required String amount,
+    required String remark,
+    required List<ImageFormData> mediaFileList,
+  }) async {
+    var data = {
+      "expenseid": expenseid,
+      "tripid": tripid,
+      "title": title,
+      "date": date,
+      "expense_catid": expenseCatid,
+      "userid": userid,
+      "amount": amount,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postExpenseCreate,
+      Request.postWithFormData,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+      mediaFileList: mediaFileList,
     );
     return response;
   }

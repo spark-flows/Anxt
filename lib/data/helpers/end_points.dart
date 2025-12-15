@@ -17,4 +17,7 @@ class EndPoints {
 
   static String postAllFolders = 'api/category/all';
   static String postCreateTrip = 'api/trip/create';
+  static String getAllUser = 'api/users';
+  static String postTripDelete = 'api/trip/delete';
+  static String postExpenseCreate = 'api/expense/create';
 }

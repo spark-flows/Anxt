@@ -9,3 +9,4 @@ export 'home_usecases.dart';
 export 'auth_usecases.dart';
 export 'common_usecases.dart';
 export 'trip_usecases.dart';
+export 'order_history_usecases.dart';

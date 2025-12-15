@@ -57,18 +57,7 @@ class DocumentScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               GestureDetector(
-                                onTap: () async {
-                                  // final selectedDeleteFolder = controller
-                                  //     .getSelectedFolderIds(
-                                  //       controller.folderDocList,
-                                  //     );
-                                  // showDeleteDialog(
-                                  //   context,
-                                  //   controller: controller,
-                                  //   selectedDeleteFolder:
-                                  //       selectedDeleteFolder,
-                                  // );
-                                },
+                                onTap: () async {},
                                 child: Container(
                                   margin: Dimens.edgeInsets10.copyWith(left: 0),
                                   decoration: BoxDecoration(
@@ -92,7 +81,7 @@ class DocumentScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           "Download",
-                                          style: Styles.black50018.copyWith(
+                                          style: Styles.blackW50018.copyWith(
                                             color: ColorsValue.color1E293B,
                                           ),
                                         ),
@@ -110,18 +99,7 @@ class DocumentScreen extends StatelessWidget {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () async {
-                                  // final selectedDeleteFolder = controller
-                                  //     .getSelectedFolderIds(
-                                  //       controller.folderDocList,
-                                  //     );
-                                  // showDeleteDialog(
-                                  //   context,
-                                  //   controller: controller,
-                                  //   selectedDeleteFolder:
-                                  //       selectedDeleteFolder,
-                                  // );
-                                },
+                                onTap: () async {},
                                 child: Container(
                                   margin: Dimens.edgeInsets10.copyWith(left: 0),
                                   decoration: BoxDecoration(
@@ -145,7 +123,7 @@ class DocumentScreen extends StatelessWidget {
                                       children: [
                                         Text(
                                           "Share",
-                                          style: Styles.black50018.copyWith(
+                                          style: Styles.blackW50018.copyWith(
                                             color: ColorsValue.color1E293B,
                                           ),
                                         ),
@@ -387,7 +365,7 @@ class DocumentScreen extends StatelessWidget {
                   : Center(
                     child: Text(
                       "Folder data not found...!",
-                      style: Styles.black50014,
+                      style: Styles.blackW50014,
                     ),
                   ),
           // : Center(child: CircularProgressIndicator()),

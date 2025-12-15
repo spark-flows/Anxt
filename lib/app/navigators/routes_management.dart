@@ -20,13 +20,28 @@ abstract class RouteManagement {
       Get.toNamed<void>(Routes.salesAnalyticsProductScreen);
   static void goToProfileScreen() => Get.toNamed<void>(Routes.profileScreen);
   static void goToTripScreen() => Get.toNamed<void>(Routes.tripscreen);
-  static void goToTripDetailsScreen({required String tripid}) => Get.toNamed<void>(Routes.tripDetailsScreen,arguments: tripid);
-  static void goToAddExpenseTripScreen() => Get.toNamed<void>(Routes.addExpenseTripScreen);
+  static void goToTripDetailsScreen({required String tripid}) =>
+      Get.toNamed<void>(Routes.tripDetailsScreen, arguments: tripid);
+  static void goToAddExpenseTripScreen() =>
+      Get.toNamed<void>(Routes.addExpenseTripScreen);
   static void goToAddTripScreen() => Get.toNamed<void>(Routes.addTripScreen);
 
-
+  static void goToOrderHistoryDetailsScreen() =>
+      Get.toNamed<void>(Routes.orderHistoryDetailsScreen);
+  static void goToShowFullScareenImage(String? image, String? type) =>
+      Get.toNamed<void>(Routes.showFullScareenImage, arguments: [image, type]);
+  static void goToOrderHistoryScreen() =>
+      Get.toNamed<void>(Routes.orderHistoryScreen);
   static void goToDocumentScreen() => Get.toNamed<void>(Routes.documentScreen);
 
   static void goToDocumentDetailScreen(String id) =>
       Get.toNamed<void>(Routes.documentDetailScreen, arguments: id);
+
+  static void goToFindProductScreen() =>
+      Get.toNamed<void>(Routes.findProductSRJOScreen);
+
+  static void goToScannerScreen() => Get.toNamed<void>(Routes.scannerScreen);
+
+  static void goToProductDetailScreen({required String srjNum}) =>
+      Get.toNamed<void>(Routes.productDetailScreen, arguments: srjNum);
 }

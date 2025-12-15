@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
@@ -107,7 +108,9 @@ class SalesAnalyticsController extends GetxController {
       }
     } else {
       isLoading = false;
-      Utility.errorMessage(response?.message ?? 'Getting error while fetching data');
+      Utility.errorMessage(
+        response?.message ?? 'Getting error while fetching data',
+      );
     }
     update();
   }
@@ -302,6 +305,51 @@ class SalesAnalyticsController extends GetxController {
       Utility.errorMessage(response?.message ?? "");
     }
     update();
+  }
+
+  ////// New Flow ///
+
+  final List<MetalDetail> metalList = [
+    MetalDetail(
+      code: "G14KTR",
+      gw: 6.381,
+      nw: 6.220,
+      purity: 74.00,
+      fine: 4.603,
+      rate: 7450,
+    ),
+    MetalDetail(
+      code: "G18K",
+      gw: 3.250,
+      nw: 3.100,
+      purity: 75.00,
+      fine: 2.325,
+      rate: 8200,
+    ),
+    MetalDetail(
+      code: "G22K",
+      gw: 2.150,
+      nw: 2.050,
+      purity: 91.60,
+      fine: 1.878,
+      rate: 9100,
+    ),
+  ];
+
+  List<String> paymentMasterList = [
+    'Price Master 01',
+    'Price Master 02',
+    'Price Master 03',
+  ];
+  String? paymentMaster;
+
+  bool is18KSelected = false;
+  bool is14KSelected = false;
+
+  int calculateTotal(int total) {
+    if (is18KSelected) total += 1500;
+    if (is14KSelected) total += 1000;
+    return total;
   }
 }
 

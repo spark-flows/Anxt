@@ -19,6 +19,28 @@ abstract class Styles {
     fontWeight: FontWeight.w700,
   );
 
+  static TextStyle txtGreyColorW50016 = GoogleFonts.outfit(
+    color: ColorsValue.txtGreyColor,
+    fontSize: Dimens.sixteen,
+    fontWeight: FontWeight.w500,
+  );
+  static TextStyle yellowColorW70012 = GoogleFonts.outfit(
+    color: ColorsValue.yellowColor,
+    fontSize: Dimens.twelve,
+    fontWeight: FontWeight.w700,
+  );
+  static TextStyle whiteColorW60014 = GoogleFonts.outfit(
+    color: ColorsValue.whiteColor,
+    fontSize: Dimens.fourteen,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle txtBlackColorW50016 = GoogleFonts.outfit(
+    color: ColorsValue.txtBlackColor,
+    fontSize: Dimens.sixteen,
+    fontWeight: FontWeight.w500,
+  );
+
   static TextStyle txtBlackColorW70022 = GoogleFonts.jost(
     color: ColorsValue.txtBlackColor,
     fontSize: Dimens.twentyTwo,
@@ -100,6 +122,12 @@ abstract class Styles {
   static TextStyle whiteColorW70016 = GoogleFonts.jost(
     color: ColorsValue.whiteColor,
     fontSize: Dimens.sixteen,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle whiteColorW70018 = GoogleFonts.jost(
+    color: ColorsValue.whiteColor,
+    fontSize: Dimens.eighteen,
     fontWeight: FontWeight.w700,
   );
 
@@ -241,39 +269,81 @@ abstract class Styles {
   );
 
   /// Dialog Text
-  static TextStyle black50018 = GoogleFonts.jost(
+  static TextStyle blackW50018 = GoogleFonts.jost(
     color: ColorsValue.blackColor,
     fontSize: Dimens.eighteen,
     fontWeight: FontWeight.w500,
   );
 
-  static TextStyle redColor50014 = GoogleFonts.jost(
+  static TextStyle redColorW50014 = GoogleFonts.jost(
     color: ColorsValue.redColor,
     fontWeight: FontWeight.w500,
     fontSize: Dimens.fourteen,
   );
 
-  static TextStyle redColor50012 = GoogleFonts.jost(
+  static TextStyle redColorW50012 = GoogleFonts.jost(
     color: ColorsValue.redColor,
     fontWeight: FontWeight.w500,
     fontSize: Dimens.twelve,
   );
 
-  static TextStyle redColor70014 = GoogleFonts.jost(
+  static TextStyle redColorW70014 = GoogleFonts.jost(
     color: ColorsValue.redColor,
     fontWeight: FontWeight.w700,
     fontSize: Dimens.fourteen,
   );
 
-  static TextStyle redColor40014 = GoogleFonts.jost(
+  static TextStyle redColorW40014 = GoogleFonts.jost(
     color: ColorsValue.redColor,
     fontWeight: FontWeight.w400,
     fontSize: Dimens.fourteen,
   );
 
-  static TextStyle black50014 = GoogleFonts.jost(
+  static TextStyle blackW50014 = GoogleFonts.jost(
     color: ColorsValue.blackColor,
     fontSize: Dimens.fourteen,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle color1E293BW70016 = GoogleFonts.jost(
+    color: ColorsValue.color1E293B,
+    fontSize: Dimens.sixteen,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle color64748BW40012 = GoogleFonts.jost(
+    color: ColorsValue.color64748B,
+    fontSize: Dimens.twelve,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle color475569W60012 = GoogleFonts.jost(
+    color: ColorsValue.lineColor,
+    fontSize: Dimens.twelve,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle color0F172AW60016 = GoogleFonts.jost(
+    color: ColorsValue.color0F172A,
+    fontSize: Dimens.sixteen,
+    fontWeight: FontWeight.w600,
+  );
+
+  static TextStyle lineColorW70014 = GoogleFonts.jost(
+    color: ColorsValue.lineColor,
+    fontSize: Dimens.fourteen,
+    fontWeight: FontWeight.w700,
+  );
+
+  static TextStyle lineColorW40014 = GoogleFonts.jost(
+    color: ColorsValue.lineColor,
+    fontSize: Dimens.fourteen,
+    fontWeight: FontWeight.w400,
+  );
+
+  static TextStyle color94A3B8W50012 = GoogleFonts.jost(
+    color: ColorsValue.color94A3B8,
+    fontSize: Dimens.twelve,
     fontWeight: FontWeight.w500,
   );
 }

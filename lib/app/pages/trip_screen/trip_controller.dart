@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
+import 'package:mime/mime.dart';
 
 class TripController extends GetxController {
   TripController(this.tripPresenter);
@@ -20,10 +27,10 @@ class TripController extends GetxController {
   TextEditingController toCandidateController = TextEditingController();
 
   List<FilterModel> statusCandidateList = [
-    FilterModel(title: "applied", isSelect: false),
-    FilterModel(title: "rejected", isSelect: false),
-    FilterModel(title: "interview", isSelect: false),
-    FilterModel(title: "shortlisted", isSelect: false),
+    FilterModel(title: "pending", isSelect: false),
+    FilterModel(title: "ongoing", isSelect: false),
+    FilterModel(title: "completed", isSelect: false),
+    FilterModel(title: "cancelled", isSelect: false),
   ];
 
   /// ============================================ TripDetailsScreen =======================
@@ -31,109 +38,35 @@ class TripController extends GetxController {
 
   List<String> expenseType = ['All', 'Food', 'Travel', "Accommodation"];
 
-  /// ============================================ AddTripScreen =======================
-
-  GlobalKey<FormState> addTripKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController purposeController = TextEditingController();
-  TextEditingController budgetController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
-  TextEditingController remarkAddController = TextEditingController();
-
-  DateTime? startDateTime;
-  DateTime? endDateTime;
-
-  String? selectStatus;
-
-  List<ParticipantsModel> participantsList = [
-    ParticipantsModel(selectMember: null),
-  ];
-
-  /// ============================================ AddExpenseTripScreen =======================
-
-  GlobalKey<FormState> expenseTripKey = GlobalKey<FormState>();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  TextEditingController amountController = TextEditingController();
-  TextEditingController remarkController = TextEditingController();
-
-  DateTime? dateTime;
-
-  String? selectExpenseCategory;
-
-  String? selectInvoice;
-
-  final pickerBank = ImagePicker();
-
-  Future uploadInvoice() async {
-    final pickedFile = await pickerBank.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      // var imageData = await eimPresenter.postEimUpload(
-      //   employeename: getOneEimData?.personaldetail?.employeeid?.name ?? "",
-      //   mediaFileList: [
-      //     ImageFormData(
-      //       fieldName: "image",
-      //       filePath: pickedFile.path,
-      //       mediaType: MediaType.parse(lookupMimeType(pickedFile.path) ?? ""),
-      //     ),
-      //   ],
-      //   isLoading: true,
-      // );
-      update();
-    }
-  }
-
   List<GetAllTripDoc> getAllTripList = [];
-  int pageCount = 1;
-  bool isLastPage = false;
-  bool isLoading = false;
-  final ScrollController scrollController = ScrollController();
 
-  Future<void> postGetAllTripList(
-    int pageKey, {
-    String? location,
-    String? search,
-  }) async {
-    if (pageKey == 1) {
-      pageCount = 1;
-    }
-    isLoading = true;
+  PagingController<int, GetAllTripDoc> tripPagingController = PagingController(
+    firstPageKey: 1,
+  );
+
+  Future<void> postGetAllTripList(int pageKey) async {
     var response = await tripPresenter.postGetAllTripList(
       page: 1,
-      limit: 50,
-      location: location ?? "",
-      search: search ?? "",
-      isLoading: true,
+      limit: 10,
+      location: "",
+      search: searchController.text,
+      isLoading: false,
     );
-    getAllTripList.clear();
     if (response?.data != null) {
-      isLoading = false;
       if (pageKey == 1) {
-        isLastPage = false;
         getAllTripList.clear();
       }
-      if ((response?.data.docs.length ?? 0) < 20) {
-        isLastPage = true;
-        getAllTripList.addAll(response?.data.docs ?? []);
+      getAllTripList = response?.data.docs ?? [];
+
+      final isLastPage = getAllTripList.length < 10;
+      if (isLastPage) {
+        tripPagingController.appendLastPage(getAllTripList);
       } else {
-        pageCount++;
-        getAllTripList.addAll(response?.data.docs ?? []);
+        var nextPageKey = pageKey + 1;
+        tripPagingController.appendPage(getAllTripList, nextPageKey);
       }
-      if (pageKey == 1) {
-        if (scrollController.positions.isNotEmpty) {
-          scrollController.jumpTo(0);
-        }
-      }
-    } else {
-      isLoading = false;
-      Utility.errorMessage(
-        response?.message ?? 'Getting error while fetching data',
-      );
+      update();
     }
-    update();
   }
 
   GetOneTripData? getOneTripData;
@@ -186,43 +119,194 @@ class TripController extends GetxController {
     update();
   }
 
-  Future<void> submitTrip(String tripId) async {
-    // if (pickedImage.value == null) {
-    //   Get.snackbar("Error", "Please select an image");
-    //   return;
-    // }
+  /// ============================================ AddTripScreen =======================
 
-    final formData = {
-      "tripid": tripId,
-      "tripname": nameController.text,
-      "purpose": purposeController.text,
-      "status": selectStatus ?? '',
-      "budget": budgetController.text,
-      "start": startDateController.text,
-      "end": endDateController.text,
-      "location": locationController.text,
-      "remark": remarkAddController.text,
-      "participants":
-          participantsList
-              .map((participant) => participant.selectMember ?? '')
-              .toList(),
-    };
+  GlobalKey<FormState> addTripKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController purposeController = TextEditingController();
+  TextEditingController budgetController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController remarkAddController = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
 
-    // final mediaFiles = [
-    //   ImageFormData(fieldName: "image", filePath: pickedImage.value!.path),
-    // ];
+  DateTime? startDateTime;
+  DateTime? endDateTime;
 
-    final response = await tripPresenter.postCreateTrip(
+  String? selectCurrency;
+  List<String> currencyList = ["USD", "INR", "EUR", "AED", "KWD"];
+
+  String? selectStatus;
+
+  String? tripid;
+
+  Future<void> postCreateTrip() async {
+    var response = await tripPresenter.postCreateTrip(
+      tripid: tripid ?? "",
+      tripname: nameController.text,
+      purpose: purposeController.text,
+      status: selectStatus ?? "",
+      budget: budgetController.text,
+      start:
+          startDateController.text.isNotEmpty
+              ? DateFormat(
+                'yyyy-MM-dd',
+              ).format(DateTime.parse(startDateController.text))
+              : "",
+      end:
+          endDateController.text.isNotEmpty
+              ? DateFormat(
+                'yyyy-MM-dd',
+              ).format(DateTime.parse(endDateController.text))
+              : "",
+      location: locationController.text,
+      remark: remarkAddController.text,
+      participants: participantsList.map((e) => e.selectMember ?? "").toList(),
+      currency: selectCurrency ?? "",
+      mediaFileList: [
+        ImageFormData(
+          fieldName: "image",
+          filePath: selectFile?.path ?? "",
+          mediaType: MediaType.parse(
+            lookupMimeType(selectFile?.path ?? "") ?? "",
+          ),
+        ),
+      ],
       isLoading: true,
-      formData: formData,
-      mediaFiles: [],
     );
 
-    if (response?.status == 200) {
-      Get.snackbar("Success", "Trip created successfully");
+    if (response?.statusCode == 200) {
       Get.back();
+      tripPagingController.refresh();
+      update();
     } else {
-      Get.snackbar("Error", "Failed: ${response?.data}");
+      Utility.errorMessage(
+        jsonDecode(response?.data?.toString() ?? "")['Message'],
+      );
+    }
+  }
+
+  clearData() {
+    selectCurrency = null;
+    nameController.clear();
+    purposeController.clear();
+    budgetController.clear();
+    startDateController.clear();
+    endDateController.clear();
+    locationController.clear();
+    remarkAddController.clear();
+    currencyController.clear();
+    participantsList = [ParticipantsModel(selectMember: null)];
+  }
+
+  List<ParticipantsModel> participantsList = [
+    ParticipantsModel(selectMember: null),
+  ];
+
+  List<UserData> userDataList = [];
+
+  Future<void> getAllUser() async {
+    var response = await tripPresenter.getAllUser(isLoading: true);
+    userDataList.clear();
+    if (response?.data != null) {
+      userDataList = response?.data ?? [];
+      update();
+    }
+  }
+
+  final pickerBank = ImagePicker();
+  File? selectFile;
+  String? selectImage;
+
+  Future uploadInvoice() async {
+    final pickedFile = await pickerBank.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectFile = File(pickedFile.path);
+      update();
+    }
+  }
+
+  Future<void> postTripDelete({required String tripId}) async {
+    var response = await tripPresenter.postTripDelete(
+      isLoading: true,
+      tripId: tripId,
+    );
+    if (response?.statusCode == 200) {
+      Get.back();
+      tripPagingController.refresh();
+    } else {
+      Utility.errorMessage(
+        jsonDecode(response?.data.toString() ?? "")['Message'],
+      );
+    }
+    update();
+  }
+
+  /// ============================================ AddExpenseTripScreen =======================
+
+  GlobalKey<FormState> expenseTripKey = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController remarkController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+
+  DateTime? dateTime;
+
+  String? selectExpenseCategory;
+  String? selectExpenseUser;
+
+  final pickerInvoice = ImagePicker();
+  File? selectFileInvoice;
+  String? selectInvoice;
+
+  Future uploadinvoice() async {
+    final pickedFile = await pickerInvoice.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      selectFileInvoice = File(pickedFile.path);
+      update();
+    }
+  }
+
+  Future<void> postExpenseCreate() async {
+    var response = await tripPresenter.postExpenseCreate(
+      expenseid: "",
+      tripid: tripid ?? "",
+      title: titleController.text,
+      date:
+          dateController.text.isNotEmpty
+              ? DateFormat(
+                "yyyy-MM-dd",
+              ).format(DateTime.parse(dateController.text))
+              : "",
+      expenseCatid: selectExpenseCategory ?? "",
+      userid: selectExpenseUser ?? "",
+      amount: amountController.text,
+      remark: "",
+      mediaFileList: [
+        ImageFormData(
+          fieldName: "receipt",
+          filePath: selectFile?.path ?? "",
+          mediaType: MediaType.parse(
+            lookupMimeType(selectFile?.path ?? "") ?? "",
+          ),
+        ),
+      ],
+      isLoading: true,
+    );
+    if (response?.statusCode == 200) {
+      Get.back();
+      postGetOneTripDetail(tripId: tripid ?? "");
+      update();
+    } else {
+      Utility.errorMessage(
+        jsonDecode(response?.data?.toString() ?? "")['Message'],
+      );
     }
   }
 }

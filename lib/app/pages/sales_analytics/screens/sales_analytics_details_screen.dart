@@ -58,7 +58,8 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                     heightBtn: Dimens.fifty,
                     radius: Dimens.zero,
                     onPressed: () {
-                      RouteManagement.goToSalesAnalyticsProductScreen();
+                      RouteManagement.goToFindProductScreen();
+                      // RouteManagement.goToSalesAnalyticsProductScreen();
                     },
                     text: 'Next',
                     isBorder: true,

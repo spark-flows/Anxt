@@ -10,6 +10,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.isVisible = true,
     this.isCenter = false,
+    this.bgColor,
     this.actions,
   });
 
@@ -17,12 +18,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   String title;
   bool isVisible;
   bool isCenter;
+  Color? bgColor;
   List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: ColorsValue.appBg,
+      backgroundColor: bgColor ?? ColorsValue.whiteColor,
       centerTitle: isCenter ? true : false,
       automaticallyImplyLeading: false,
       leadingWidth: isVisible ? Dimens.fifty : Dimens.twenty,

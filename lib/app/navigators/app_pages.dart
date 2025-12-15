@@ -1,8 +1,11 @@
+import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/pages/document_screen/document_bindings.dart';
 import 'package:a_nxt/app/pages/document_screen/document_detail_screen.dart';
 import 'package:a_nxt/app/pages/document_screen/document_screen.dart';
-import 'package:a_nxt/app/pages/pages.dart';
 import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
+import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/find_prouct.dart';
+import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/product_detail.dart';
+import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/scanner_screen.dart';
 import 'package:get/get.dart';
 
 part 'app_routes.dart';
@@ -130,6 +133,51 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: DocumentDetailScreen.new,
       binding: DocumentBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<OrderHistoryScreen>(
+      name: _Paths.orderHistoryScreen,
+      transitionDuration: transitionDuration,
+      page: OrderHistoryScreen.new,
+      binding: OrderHistoryBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<OrderHistoryDetailsScreen>(
+      name: _Paths.orderHistoryDetailsScreen,
+      transitionDuration: transitionDuration,
+      page: OrderHistoryDetailsScreen.new,
+      binding: OrderHistoryBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<ShowFullScareenImage>(
+      name: _Paths.showFullScareenImage,
+      transitionDuration: transitionDuration,
+      page: ShowFullScareenImage.new,
+      binding: HomeBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<FindProductSRJO>(
+      name: _Paths.findProductSRJOScreen,
+      transitionDuration: transitionDuration,
+      page: FindProductSRJO.new,
+      binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<ScannerScreen>(
+      name: _Paths.scannerScreen,
+      transitionDuration: transitionDuration,
+      page: ScannerScreen.new,
+      binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<ProductDetailScreen>(
+      name: _Paths.productDetailScreen,
+      transitionDuration: transitionDuration,
+      page: ProductDetailScreen.new,
+      binding: SalesAnalyticsBinding(),
       transition: Transition.fadeIn,
     ),
   ];

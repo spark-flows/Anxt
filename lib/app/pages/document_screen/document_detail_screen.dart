@@ -99,7 +99,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                                       children: [
                                         Text(
                                           "Delete",
-                                          style: Styles.black50018.copyWith(
+                                          style: Styles.blackW50018.copyWith(
                                             color: ColorsValue.redColor,
                                           ),
                                         ),
@@ -151,7 +151,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                                       children: [
                                         Text(
                                           "Share",
-                                          style: Styles.black50018.copyWith(
+                                          style: Styles.blackW50018.copyWith(
                                             color: ColorsValue.color1E293B,
                                           ),
                                         ),
@@ -537,7 +537,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                   : Center(
                     child: Text(
                       "Folder data not found...!",
-                      style: Styles.black50014,
+                      style: Styles.blackW50014,
                     ),
                   ),
         );

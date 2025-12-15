@@ -25,7 +25,7 @@ class AddExpenseTripScreen extends StatelessWidget {
               padding: Dimens.edgeInsets20_10_20_10,
               child: CustomButton(
                 onPressed: () {
-                  controller.submitTrip('');
+                  controller.postExpenseCreate();
                 },
                 text: 'Save',
                 backgroundColor: ColorsValue.appColor,
@@ -137,12 +137,80 @@ class AddExpenseTripScreen extends StatelessWidget {
                       size: Dimens.twenty,
                     ),
                     items:
-                        controller.statusCandidateList.isNotEmpty
-                            ? controller.statusCandidateList.map((option) {
+                        controller.expanceCategoryList.isNotEmpty
+                            ? controller.expanceCategoryList.map((option) {
                               return DropdownMenuItem(
-                                value: option.title,
+                                value: option.id,
                                 child: Text(
-                                  option?.title ?? "",
+                                  option?.name ?? "",
+                                  style: Styles.txtBlackColorW50014.copyWith(
+                                    fontSize:
+                                        Utility.isTablet()
+                                            ? Dimens.twenty
+                                            : Dimens.fourteen,
+                                  ),
+                                ),
+                              );
+                            }).toList()
+                            : [],
+                  ),
+                ),
+                Dimens.boxHeight20,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Select User'.tr,
+                    style: Styles.txtBlackColorW70014.copyWith(
+                      fontSize:
+                          Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
+                    ),
+                  ),
+                ),
+                Dimens.boxHeight5,
+                Container(
+                  padding: Dimens.edgeInsets20_00_20_00,
+                  height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ColorsValue.textFieldBg,
+                    borderRadius: BorderRadius.circular(Dimens.ten),
+                  ),
+                  child: DropdownButton<String>(
+                    underline: Container(),
+                    isDense: true,
+                    isExpanded: true,
+                    onChanged: (value) {
+                      controller.selectExpenseUser = value!;
+                      controller.update();
+                    },
+                    hint: Text(
+                      'Select User'.tr,
+                      style: Styles.txtGreyColorW50012.copyWith(
+                        fontSize:
+                            Utility.isTablet()
+                                ? Dimens.eighteen
+                                : Dimens.fourteen,
+                      ),
+                    ),
+                    focusColor: Colors.white,
+                    dropdownColor: ColorsValue.whiteColor,
+                    value: controller.selectExpenseUser,
+                    style: Styles.txtBlackColorW50014,
+                    iconEnabledColor: Colors.black,
+                    icon: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: Dimens.twenty,
+                    ),
+                    items:
+                        controller.getOneTripData?.participants?.isNotEmpty ??
+                                false
+                            ? controller.getOneTripData?.participants?.map((
+                              option,
+                            ) {
+                              return DropdownMenuItem(
+                                value: option.id,
+                                child: Text(
+                                  option?.name ?? "",
                                   style: Styles.txtBlackColorW50014.copyWith(
                                     fontSize:
                                         Utility.isTablet()
@@ -169,20 +237,20 @@ class AddExpenseTripScreen extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
                 ),
-                Dimens.boxHeight20,
-                CustomTextFormField(
-                  controller: controller.remarkController,
-                  isTitle: true,
-                  title: "Remark",
-                  titleStyle: Styles.txtBlackColorW70014,
-                  hintText: 'Enter Remark',
-                  hintStyle: Styles.txtGreyColorW50012,
-                  filled: true,
-                  readOnly: true,
-                  fillColor: ColorsValue.textFieldBg,
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.text,
-                ),
+                // Dimens.boxHeight20,
+                // CustomTextFormField(
+                //   controller: controller.remarkController,
+                //   isTitle: true,
+                //   title: "Remark",
+                //   titleStyle: Styles.txtBlackColorW70014,
+                //   hintText: 'Enter Remark',
+                //   hintStyle: Styles.txtGreyColorW50012,
+                //   filled: true,
+                //   readOnly: true,
+                //   fillColor: ColorsValue.textFieldBg,
+                //   textInputAction: TextInputAction.done,
+                //   keyboardType: TextInputType.text,
+                // ),
                 Dimens.boxHeight20,
                 Align(
                   alignment: Alignment.topLeft,
@@ -199,7 +267,7 @@ class AddExpenseTripScreen extends StatelessWidget {
                   txt: 'Upload File',
                   height: Dimens.hundred,
                   onTap: () {
-                    controller.uploadInvoice();
+                    controller.uploadinvoice();
                   },
                   bgColor: ColorsValue.textFieldBg,
                   svgPicture: AssetConstants.ic_export,

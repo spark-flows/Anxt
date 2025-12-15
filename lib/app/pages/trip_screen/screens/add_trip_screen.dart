@@ -10,6 +10,10 @@ class AddTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TripController>(
+      initState: (state) {
+        var controller = Get.find<TripController>();
+        controller.getAllUser();
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
@@ -25,7 +29,7 @@ class AddTripScreen extends StatelessWidget {
               padding: Dimens.edgeInsets20_10_20_10,
               child: CustomButton(
                 onPressed: () {
-                  
+                  controller.postCreateTrip();
                 },
                 text: 'Save',
                 backgroundColor: ColorsValue.appColor,
@@ -118,7 +122,7 @@ class AddTripScreen extends StatelessWidget {
                               return DropdownMenuItem(
                                 value: option.title,
                                 child: Text(
-                                  option?.title ?? "",
+                                  option?.title?.capitalizeFirst ?? "",
                                   style: Styles.txtBlackColorW50014.copyWith(
                                     fontSize:
                                         Utility.isTablet()
@@ -143,6 +147,71 @@ class AddTripScreen extends StatelessWidget {
                   fillColor: ColorsValue.textFieldBg,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
+                ),
+                Dimens.boxHeight20,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Currency'.tr,
+                    style: Styles.txtBlackColorW70014.copyWith(
+                      fontSize:
+                          Utility.isTablet() ? Dimens.twenty : Dimens.fourteen,
+                    ),
+                  ),
+                ),
+                Dimens.boxHeight5,
+                Container(
+                  padding: Dimens.edgeInsets20_00_20_00,
+                  height: Utility.isTablet() ? Dimens.sixtyFive : Dimens.fifty,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ColorsValue.textFieldBg,
+                    borderRadius: BorderRadius.circular(Dimens.ten),
+                  ),
+                  child: DropdownButton<String>(
+                    underline: Container(),
+                    isDense: true,
+                    isExpanded: true,
+                    onChanged: (value) {
+                      controller.selectCurrency = value!;
+                      controller.update();
+                    },
+                    hint: Text(
+                      'Select Currency'.tr,
+                      style: Styles.txtGreyColorW50012.copyWith(
+                        fontSize:
+                            Utility.isTablet()
+                                ? Dimens.eighteen
+                                : Dimens.fourteen,
+                      ),
+                    ),
+                    focusColor: Colors.white,
+                    dropdownColor: ColorsValue.whiteColor,
+                    value: controller.selectCurrency,
+                    style: Styles.txtBlackColorW50014,
+                    iconEnabledColor: Colors.black,
+                    icon: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: Dimens.twenty,
+                    ),
+                    items:
+                        controller.currencyList.isNotEmpty
+                            ? controller.currencyList.map((option) {
+                              return DropdownMenuItem(
+                                value: option,
+                                child: Text(
+                                  option ?? "",
+                                  style: Styles.txtBlackColorW50014.copyWith(
+                                    fontSize:
+                                        Utility.isTablet()
+                                            ? Dimens.twenty
+                                            : Dimens.fourteen,
+                                  ),
+                                ),
+                              );
+                            }).toList()
+                            : [],
+                  ),
                 ),
                 Dimens.boxHeight20,
                 CustomTextFormField(
@@ -262,6 +331,14 @@ class AddTripScreen extends StatelessWidget {
                   svgPicture: AssetConstants.ic_export,
                   image: controller.selectInvoice,
                 ),
+                if (controller.selectFile != null) ...[
+                  Image.file(
+                    controller.selectFile!,
+                    fit: BoxFit.cover,
+                    height: Dimens.hundred,
+                    width: double.infinity,
+                  ),
+                ],
                 Dimens.boxHeight20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,12 +414,12 @@ class AddTripScreen extends StatelessWidget {
                                   size: Dimens.twenty,
                                 ),
                                 items:
-                                    controller.expenseType.isNotEmpty
-                                        ? controller.expenseType.map((option) {
+                                    controller.userDataList.isNotEmpty
+                                        ? controller.userDataList.map((option) {
                                           return DropdownMenuItem(
-                                            value: option,
+                                            value: option.id,
                                             child: Text(
-                                              option ?? "",
+                                              option.name ?? "",
                                               style: Styles.txtBlackColorW50014
                                                   .copyWith(
                                                     fontSize:

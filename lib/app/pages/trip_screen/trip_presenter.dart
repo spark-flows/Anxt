@@ -1,5 +1,4 @@
 import 'package:a_nxt/domain/domain.dart';
-import 'package:a_nxt/domain/models/create_trip_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 
@@ -30,6 +29,12 @@ class TripPresenter {
     tripId: tripId,
   );
 
+  Future<ResponseModel?> postTripDelete({
+    bool isLoading = false,
+    required String tripId,
+  }) async =>
+      await tripUsecases.postTripDelete(isLoading: isLoading, tripId: tripId);
+
   Future<GetAllProductTypeModel?> getExpenseCategory({
     bool isLoading = false,
   }) async => await tripUsecases.getExpenseCategory(isLoading: isLoading);
@@ -42,13 +47,60 @@ class TripPresenter {
     expenseCatid: expenseCatid,
   );
 
-  Future<TripCreatedModel?> postCreateTrip({
+  Future<ResponseModel?> postCreateTrip({
     bool isLoading = false,
-    required Map<String, dynamic> formData,
-    required List<ImageFormData> mediaFiles,
+    required String tripid,
+    required String tripname,
+    required String purpose,
+    required String status,
+    required String budget,
+    required String start,
+    required String end,
+    required String location,
+    required String remark,
+    required List<String> participants,
+    required String currency,
+    required List<ImageFormData> mediaFileList,
   }) async => await tripUsecases.postCreateTrip(
+    tripid: tripid,
+    tripname: tripname,
+    purpose: purpose,
+    status: status,
+    budget: budget,
+    start: start,
+    end: end,
+    location: location,
+    remark: remark,
+    participants: participants,
+    currency: currency,
+    mediaFileList: mediaFileList,
     isLoading: isLoading,
-    formData: formData,
-    mediaFiles: mediaFiles,
   );
+
+  Future<ResponseModel?> postExpenseCreate({
+    bool isLoading = false,
+    required String expenseid,
+    required String tripid,
+    required String title,
+    required String date,
+    required String expenseCatid,
+    required String userid,
+    required String amount,
+    required String remark,
+    required List<ImageFormData> mediaFileList,
+  }) async => await tripUsecases.postExpenseCreate(
+    expenseid: expenseid,
+    tripid: tripid,
+    title: title,
+    date: date,
+    expenseCatid: expenseCatid,
+    userid: userid,
+    amount: amount,
+    remark: remark,
+    mediaFileList: mediaFileList,
+    isLoading: isLoading,
+  );
+
+  Future<UserModel?> getAllUser({bool isLoading = false}) async =>
+      await tripUsecases.getAllUser(isLoading: isLoading);
 }

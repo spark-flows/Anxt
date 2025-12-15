@@ -33,9 +33,14 @@ abstract class AssetConstants {
   static const String ic_view = "assets/svg/ic_view.svg";
   static const String ic_export = "assets/svg/ic_export.svg";
   static const String edit_Doc = "assets/svg/edit_Doc.svg";
+  static const String ic_order = "assets/svg/ic_order.svg";
 
   static const String ic_share = "assets/svg/ic_share.svg";
   static const String ic_document = "assets/svg/ic_document.svg";
   static const String folder_image = "assets/image/folder_image.png";
   static const String ic_download = "assets/svg/ic_download.svg";
+  static const String ic_invoice = "assets/svg/ic_invoice.svg";
+  static const String ic_view_img = "assets/svg/ic_view_img.svg";
+  static const String srjo_img = "assets/image/srjo_number.png";
+  
 }

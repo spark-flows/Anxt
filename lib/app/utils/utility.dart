@@ -392,18 +392,17 @@ abstract class Utility {
   }
 
   static void showTopSnack(String message, Color color) {
-  Get.showSnackbar(
-    GetSnackBar(
-      message: message,
-      backgroundColor: color,
-      snackPosition: SnackPosition.TOP,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      borderRadius: 12,
-      duration: const Duration(seconds: 2),
-    ),
-  );
-}
-
+    Get.showSnackbar(
+      GetSnackBar(
+        message: message,
+        backgroundColor: color,
+        snackPosition: SnackPosition.TOP,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        borderRadius: 12,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
   // Error Message
   static errorMessage(String message) async {
@@ -800,21 +799,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Photos Permission for uploading the image.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -838,21 +837,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Camera Permission for capture image.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -891,21 +890,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Audio Permission for uploading the audio.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -931,21 +930,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Microphone Permission for voice call.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -985,21 +984,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Storage Permission for uploading the File.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -1023,21 +1022,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Location Permission for Current Location.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -1061,21 +1060,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Contacts Permission for get contact.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
@@ -1099,21 +1098,21 @@ abstract class Utility {
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
-          title: Text("Permission Needed!", style: Styles.black50018),
+          title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
             "Please give the Notification Permission for notification.",
-            style: Styles.redColor50014,
+            style: Styles.redColorW50014,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("Allow", style: Styles.redColor50014),
+              child: Text("Allow", style: Styles.redColorW50014),
               onPressed: () async {
                 Get.back();
                 await openAppSettings();
               },
             ),
             TextButton(
-              child: Text("Deny", style: Styles.black50014),
+              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },

@@ -5,13 +5,11 @@ import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
-import 'package:a_nxt/domain/models/create_trip_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
-import 'package:a_nxt/domain/models/get_one_tripe_model.dart';
 
 import '../../app/app.dart';
 
@@ -258,7 +256,6 @@ class Repository {
     }
   }
 
-
   Future<GetOneExpenseCategory?> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
@@ -273,30 +270,6 @@ class Repository {
         return getOneExpenseCategory;
       } else {
         return getOneExpenseCategory;
-      }
-    } catch (e) {
-      Utility.closeDialog();
-      UnimplementedError();
-      return null;
-    }
-  }
-
-  Future<TripCreatedModel?> postCreateTrip({
-    bool isLoading = false,
-    required Map<String, dynamic> formData,
-    required List<ImageFormData> mediaFiles,
-  }) async {
-    try {
-      var response = await _dataRepository.postCreateTrip(
-        isLoading: isLoading,
-        formData: formData,
-        mediaFiles: mediaFiles,
-      );
-      var tripCreatedModel = tripCreatedModelFromJson(response.data);
-      if (tripCreatedModel.data != null) {
-        return tripCreatedModel;
-      } else {
-        return tripCreatedModel;
       }
     } catch (e) {
       Utility.closeDialog();
@@ -479,6 +452,23 @@ class Repository {
     }
   }
 
+  Future<ResponseModel?> postTripDelete({
+    bool isLoading = false,
+    required String tripId,
+  }) async {
+    try {
+      var response = await _dataRepository.postTripDelete(
+        tripId: tripId,
+        isLoading: isLoading,
+      );
+      return response;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<ResponseModel?> postResetApi({
     bool isLoading = false,
     required String content,
@@ -516,6 +506,22 @@ class Repository {
     }
   }
 
+  Future<UserModel?> getAllUser({bool isLoading = false}) async {
+    try {
+      var response = await _dataRepository.getAllUser(isLoading: isLoading);
+      var getProfileModel = userModelFromJson(response.data);
+      if (getProfileModel.data != null) {
+        return getProfileModel;
+      } else {
+        return getProfileModel;
+      }
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<GetAllFileAndFolder?> postAllFolders({
     required int limit,
     required int page,
@@ -532,6 +538,78 @@ class Repository {
       );
       var getAllFileAndFolder = getAllFileAndFolderFromJson(response.data);
       return getAllFileAndFolder;
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ResponseModel?> postCreateTrip({
+    bool isLoading = false,
+    required String tripid,
+    required String tripname,
+    required String purpose,
+    required String status,
+    required String budget,
+    required String start,
+    required String end,
+    required String location,
+    required String remark,
+    required List<String> participants,
+    required String currency,
+    required List<ImageFormData> mediaFileList,
+  }) async {
+    try {
+      var response = await _dataRepository.postCreateTrip(
+        tripid: tripid,
+        tripname: tripname,
+        purpose: purpose,
+        status: status,
+        budget: budget,
+        start: start,
+        end: end,
+        location: location,
+        remark: remark,
+        participants: participants,
+        currency: currency,
+        mediaFileList: mediaFileList,
+        isLoading: isLoading,
+      );
+      return response;
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ResponseModel?> postExpenseCreate({
+    bool isLoading = false,
+    required String expenseid,
+    required String tripid,
+    required String title,
+    required String date,
+    required String expenseCatid,
+    required String userid,
+    required String amount,
+    required String remark,
+    required List<ImageFormData> mediaFileList,
+  }) async {
+    try {
+      var response = await _dataRepository.postExpenseCreate(
+        expenseid: expenseid,
+        tripid: tripid,
+        title: title,
+        date: date,
+        expenseCatid: expenseCatid,
+        userid: userid,
+        amount: amount,
+        remark: remark,
+        mediaFileList: mediaFileList,
+        isLoading: isLoading,
+      );
+      return response;
     } catch (_) {
       Utility.closeDialog();
       UnimplementedError();

@@ -1,5 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/data/data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +47,7 @@ class ShowFullScareenImage extends StatelessWidget {
 
   PhotoViewGalleryPageOptions buildForImage(image) {
     return PhotoViewGalleryPageOptions(
-      imageProvider: CachedNetworkImageProvider(ApiWrapper.imageUrl + image),
+      imageProvider: CachedNetworkImageProvider(image),
       initialScale: PhotoViewComputedScale.contained * 1,
       minScale: PhotoViewComputedScale.contained * 1,
     );

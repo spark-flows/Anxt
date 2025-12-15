@@ -371,6 +371,12 @@ abstract class Dimens {
     right: six,
     bottom: four,
   );
+  static EdgeInsets edgeInsets08_04_08_04 = EdgeInsets.only(
+    left: eight,
+    top: four,
+    right: eight,
+    bottom: four,
+  );
 
   static EdgeInsets edgeInsets16_04_16_04 = EdgeInsets.only(
     left: sixteen,
@@ -658,6 +664,7 @@ abstract class Dimens {
   static SizedBox boxHeight57 = SizedBox(height: fiftySeven);
   static SizedBox boxHeight60 = SizedBox(height: sixty);
   static SizedBox boxHeight64 = SizedBox(height: sixtyFour);
+  static SizedBox boxHeight74 = SizedBox(height: seventyFour);
   static SizedBox boxHeight76 = SizedBox(height: seventySix);
   static SizedBox boxHeight80 = SizedBox(height: eighty);
   static SizedBox boxHeight90 = SizedBox(height: ninty);

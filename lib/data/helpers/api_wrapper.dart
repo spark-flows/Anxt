@@ -183,23 +183,27 @@ class ApiWrapper {
                 Utility.showLoader();
               }
               var request = http.MultipartRequest('POST', Uri.parse(uri));
-              request.fields.addAll(data);
+              data.forEach((key, value) {
+                // if (value is List) {
+                //   request.fields[key] = jsonEncode(value);
+                // } else {
+                request.fields[key] = value.toString();
+                // }
+              });
 
               for (var fileData in mediaFileList ?? <ImageFormData>[]) {
                 request.files.add(
                   await http.MultipartFile.fromPath(
                     fileData.fieldName,
                     fileData.filePath,
-                    contentType:
-                        fileData.mediaType ??
-                        media_type.MediaType("application", "image"),
+                    contentType: fileData.mediaType,
                   ),
                 );
               }
 
               request.headers.addAll(headers);
 
-              request.fields.addAll(data);
+              // request.fields.addAll(data);
 
               http.StreamedResponse response = await request.send().timeout(
                 const Duration(seconds: 120),

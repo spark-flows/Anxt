@@ -111,7 +111,6 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> getExpenseCategory({bool isLoading = false}) async =>
       await connectHelper.getExpenseCategory(isLoading: isLoading);
 
-
   Future<ResponseModel> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
@@ -119,17 +118,6 @@ class DataRepository extends DomainRepository {
     isLoading: isLoading,
     expenseCatid: expenseCatid,
   );
-
-  Future<ResponseModel> postCreateTrip({
-    bool isLoading = false,
-    required Map<String, dynamic> formData,
-    required List<ImageFormData> mediaFiles,
-  }) async => await connectHelper.postCreateTrip(
-    isLoading: isLoading,
-    formData: formData,
-    mediaFiles: mediaFiles,
-  );
-
 
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
@@ -243,8 +231,17 @@ class DataRepository extends DomainRepository {
     tripId: tripId,
   );
 
+  Future<ResponseModel> postTripDelete({
+    bool isLoading = false,
+    required String tripId,
+  }) async =>
+      await connectHelper.postTripDelete(isLoading: isLoading, tripId: tripId);
+
   Future<ResponseModel> getProfileApi({bool isLoading = false}) async =>
       await connectHelper.getProfileApi(isLoading: isLoading);
+
+  Future<ResponseModel> getAllUser({bool isLoading = false}) async =>
+      await connectHelper.getAllUser(isLoading: isLoading);
 
   Future<ResponseModel> postResetApi({
     bool isLoading = false,
@@ -299,6 +296,60 @@ class DataRepository extends DomainRepository {
     limit: limit,
     search: search,
     parentid: parentid,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> postCreateTrip({
+    bool isLoading = false,
+    required String tripid,
+    required String tripname,
+    required String purpose,
+    required String status,
+    required String budget,
+    required String start,
+    required String end,
+    required String location,
+    required String remark,
+    required List<String> participants,
+    required String currency,
+    required List<ImageFormData> mediaFileList,
+  }) async => await connectHelper.postCreateTrip(
+    tripid: tripid,
+    tripname: tripname,
+    purpose: purpose,
+    status: status,
+    budget: budget,
+    start: start,
+    end: end,
+    location: location,
+    remark: remark,
+    participants: participants,
+    currency: currency,
+    mediaFileList: mediaFileList,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> postExpenseCreate({
+    bool isLoading = false,
+    required String expenseid,
+    required String tripid,
+    required String title,
+    required String date,
+    required String expenseCatid,
+    required String userid,
+    required String amount,
+    required String remark,
+    required List<ImageFormData> mediaFileList,
+  }) async => await connectHelper.postExpenseCreate(
+    expenseid: expenseid,
+    tripid: tripid,
+    title: title,
+    date: date,
+    expenseCatid: expenseCatid,
+    userid: userid,
+    amount: amount,
+    remark: remark,
+    mediaFileList: mediaFileList,
     isLoading: isLoading,
   );
 }

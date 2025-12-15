@@ -1,7 +1,9 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 
 class TripScreen extends StatelessWidget {
@@ -9,27 +11,13 @@ class TripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _debouncer = Debouncer(milliseconds: 500);
     return GetBuilder<TripController>(
       initState: (state) {
         final controller = Get.find<TripController>();
-        controller.postGetAllTripList(1, location: '', search: '');
-        controller.scrollController.addListener(() async {
-          if (controller.scrollController.position.pixels ==
-              controller.scrollController.position.maxScrollExtent) {
-            if (controller.isLoading == false) {
-              controller.isLoading = true;
-              controller.update();
-              if (controller.isLastPage == false) {
-                await controller.postGetAllTripList(
-                  controller.pageCount,
-                  location: '',
-                  search: '',
-                );
-              }
-              controller.isLoading = false;
-              controller.update();
-            }
-          }
+        controller.tripPagingController = PagingController(firstPageKey: 1);
+        controller.tripPagingController.addPageRequestListener((pageKey) async {
+          await controller.postGetAllTripList(pageKey);
         });
       },
       builder: (controller) {
@@ -66,8 +54,40 @@ class TripScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  spacing: Dimens.ten,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: controller.searchController,
+                        isTitle: false,
+                        titleStyle: Styles.txtBlackColorW70014.copyWith(
+                          fontSize:
+                              Utility.isTablet()
+                                  ? Dimens.twenty
+                                  : Dimens.fourteen,
+                        ),
+                        hintStyle: Styles.txtGreyColorW50012.copyWith(
+                          fontSize:
+                              Utility.isTablet()
+                                  ? Dimens.eighteen
+                                  : Dimens.fourteen,
+                        ),
+                        hintText: 'Search'.tr,
+                        fillColor: ColorsValue.textFieldBg,
+                        filled: true,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          _debouncer.run(() {
+                            Future.sync(() {
+                              return controller.tripPagingController.refresh();
+                            });
+                          });
+                        },
+                      ),
+                    ),
+
                     GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
@@ -718,8 +738,12 @@ class TripScreen extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        height: Dimens.thirty,
-                        width: Dimens.ninty,
+                        height: Dimens.fourtyFive,
+                        width: Dimens.fourtyFive,
+                        padding:
+                            Utility.isTablet()
+                                ? Dimens.edgeInsets30_10_30_10
+                                : Dimens.edgeInsets14_06_14_06,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.ten),
                           color: ColorsValue.greyColor,
@@ -728,23 +752,16 @@ class TripScreen extends StatelessWidget {
                             color: ColorsValue.txtBlackColor,
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Filter", style: Styles.txtBlackColorW50014),
-                            Dimens.boxWidth10,
-                            SvgPicture.asset(
-                              AssetConstants.ic_filter,
-                              height:
-                                  Utility.isTablet()
-                                      ? Dimens.twentyFour
-                                      : Dimens.fifteen,
-                              width:
-                                  Utility.isTablet()
-                                      ? Dimens.twentyFour
-                                      : Dimens.fifteen,
-                            ),
-                          ],
+                        child: SvgPicture.asset(
+                          AssetConstants.ic_filter,
+                          height:
+                              Utility.isTablet()
+                                  ? Dimens.twentyFour
+                                  : Dimens.twenty,
+                          width:
+                              Utility.isTablet()
+                                  ? Dimens.twentyFour
+                                  : Dimens.twenty,
                         ),
                       ),
                     ),
@@ -752,124 +769,118 @@ class TripScreen extends StatelessWidget {
                 ),
                 Dimens.boxHeight20,
                 Expanded(
-                  child:
-                      !controller.isLoading
-                          ? controller.getAllTripList.isEmpty
-                              ? Center(child: Text('Trip Not Found...'))
-                              : ListView.builder(
-                                itemCount: controller.getAllTripList.length,
-                                itemBuilder: (context, index) {
-                                  final element =
-                                      controller.getAllTripList[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      RouteManagement.goToTripDetailsScreen(tripid: element.id);
-                                    },
-                                    child: Container(
-                                      margin: Dimens.edgeInsetsBottom10,
+                  child: PagedListView<int, GetAllTripDoc>(
+                    pagingController: controller.tripPagingController,
+                    builderDelegate: PagedChildBuilderDelegate<GetAllTripDoc>(
+                      noItemsFoundIndicatorBuilder: (context) {
+                        return Center(
+                          child: Text(
+                            "Trip data not found..!",
+                            style: Styles.txtBlackColorW50016,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                      itemBuilder: (context, item, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            RouteManagement.goToTripDetailsScreen(
+                              tripid: item.id,
+                            );
+                          },
+                          child: Container(
+                            margin: Dimens.edgeInsetsBottom10,
+                            decoration: BoxDecoration(
+                              color: ColorsValue.textFieldBg,
+                            ),
+                            padding: Dimens.edgeInsets14,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      item.tripname,
+                                      style: Styles.txtBlackColorW70014
+                                          .copyWith(fontSize: Dimens.sixteen),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      padding: Dimens.edgeInsets06_04_06_04,
                                       decoration: BoxDecoration(
-                                        color: ColorsValue.textFieldBg,
+                                        color:
+                                            item.status == "Completed"
+                                                ? ColorsValue.greenColor
+                                                : item.status == "Cancelled"
+                                                ? ColorsValue.redColor
+                                                : ColorsValue.appColor,
+                                        borderRadius: BorderRadius.circular(
+                                          Dimens.four,
+                                        ),
                                       ),
-                                      padding: Dimens.edgeInsets14,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                element.tripname,
-                                                style: Styles
-                                                    .txtBlackColorW70014
-                                                    .copyWith(
-                                                      fontSize: Dimens.sixteen,
-                                                    ),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.center,
-                                                padding:
-                                                    Dimens
-                                                        .edgeInsets06_04_06_04,
-                                                decoration: BoxDecoration(
-                                                  color: ColorsValue.redColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        Dimens.four,
-                                                      ),
-                                                ),
-                                                child: Text(
-                                                  element.status,
-                                                  style:
-                                                      Styles.whiteColorW50010,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Dimens.boxHeight6,
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Purpose :- ",
-                                                style:
-                                                    Styles.txtBlackColorW50014,
-                                              ),
-                                              Text(
-                                                element.purpose,
-                                                style:
-                                                    Styles.txtGreyColorW40014,
-                                              ),
-                                            ],
-                                          ),
-                                          Dimens.boxHeight6,
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Date :-  ",
-                                                style:
-                                                    Styles.txtBlackColorW50014,
-                                              ),
-                                              Text(
-                                                Utility.getFormatedTime(
-                                                  element.createdAt.toString(),
-                                                  'dd-MM-yyyy',
-                                                ),
-                                                style:
-                                                    Styles.txtGreyColorW40014,
-                                              ),
-                                            ],
-                                          ),
-                                          Dimens.boxHeight6,
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Location :-  ",
-                                                style:
-                                                    Styles.txtBlackColorW50014,
-                                              ),
-                                              Flexible(
-                                                child: Text(
-                                                  element.location,
-                                                  // "2Al Fahidi Historical Neighbourhood",
-                                                  style:
-                                                      Styles.txtGreyColorW40014,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      child: Text(
+                                        item.status,
+                                        style: Styles.whiteColorW50010,
                                       ),
                                     ),
-                                  );
-                                },
-                              )
-                          : Center(child: CircularProgressIndicator()),
+                                  ],
+                                ),
+                                Dimens.boxHeight6,
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Purpose :- ",
+                                      style: Styles.txtBlackColorW50014,
+                                    ),
+                                    Text(
+                                      item.purpose,
+                                      style: Styles.txtGreyColorW40014,
+                                    ),
+                                  ],
+                                ),
+                                Dimens.boxHeight6,
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Date :-  ",
+                                      style: Styles.txtBlackColorW50014,
+                                    ),
+                                    Text(
+                                      Utility.getFormatedTime(
+                                        item.start.toString(),
+                                        'dd-MM-yyyy',
+                                      ),
+                                      style: Styles.txtGreyColorW40014,
+                                    ),
+                                  ],
+                                ),
+                                Dimens.boxHeight6,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Location :-  ",
+                                      style: Styles.txtBlackColorW50014,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        item.location,
+                                        style: Styles.txtGreyColorW40014,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

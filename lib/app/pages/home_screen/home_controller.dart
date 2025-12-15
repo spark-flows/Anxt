@@ -19,16 +19,11 @@ class HomeController extends GetxController {
       icon: AssetConstants.ic_catlogues,
       activeIcon: AssetConstants.ic_fill_sales_analytics,
     ),
-    // HomeModel(
-    //   name: "Stock Catalogue",
-    //   icon: AssetConstants.ic_catlogues,
-    //   activeIcon: AssetConstants.ic_fill_sales_analytics,
-    // ),
-    // HomeModel(
-    //   name: "Order History",
-    //   icon: AssetConstants.ic_order_history,
-    //   activeIcon: AssetConstants.ic_fill_sales_analytics,
-    // ),
+    HomeModel(
+      name: "Order History",
+      icon: AssetConstants.ic_order_history,
+      activeIcon: AssetConstants.ic_order,
+    ),
     HomeModel(
       name: "Trip",
       icon: AssetConstants.ic_trip,
@@ -48,7 +43,7 @@ class HomeController extends GetxController {
         RouteManagement.goToSalesAnalyticsListScreen();
         break;
       case "Order History":
-        RouteManagement.goToSalesAnalyticsListScreen();
+        RouteManagement.goToOrderHistoryScreen();
         break;
       case "Trip":
         RouteManagement.goToTripScreen();
