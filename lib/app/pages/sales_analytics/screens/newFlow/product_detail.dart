@@ -1,3 +1,4 @@
+import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_page.dart';
 import 'package:a_nxt/app/theme/colors_value.dart';
 import 'package:a_nxt/app/theme/dimens.dart';
@@ -189,122 +190,128 @@ class ProductDetailScreen extends StatelessWidget {
 
                     Dimens.boxHeight10,
 
-                    // Container(
-                    //   margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     borderRadius: BorderRadius.circular(12),
-                    //     border: Border.all(
-                    //       color: const Color(0xFFE0E0E0),
-                    //       width: 1.5,
-                    //     ),
-                    //   ),
-                    //   child: Column(
-                    //     mainAxisSize: MainAxisSize.min,
-                    //     children: [
-                    //       // Header
-                    //       Container(
-                    //         padding: const EdgeInsets.symmetric(vertical: 10),
-                    //         decoration: const BoxDecoration(
-                    //           border: Border(
-                    //             bottom: BorderSide(
-                    //               color: Color(0xFFE0E0E0),
-                    //               width: 1.5,
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         child: Center(
-                    //           child: Text(
-                    //             'Lab Grown Diamond',
-                    //             style: Styles.txtBlackColorW70014,
-                    //           ),
-                    //         ),
-                    //       ),
-
-                    //       // Options Row
-                    //       Padding(
-                    //         padding: const EdgeInsets.all(0),
-                    //         child: Row(
-                    //           children: [
-                    //             Expanded(
-                    //               child: _buildOptionTile(
-                    //                 label: '18K :-',
-                    //                 price: '\$1500',
-                    //                 isSelected: controller.is18KSelected,
-                    //                 onTap: () {
-                    //                   controller.is18KSelected =
-                    //                       !controller.is18KSelected;
-                    //                   controller.update();
-                    //                 },
-                    //               ),
-                    //             ),
-                    //             Expanded(
-                    //               child: _buildOptionTile(
-                    //                 label: '14K :-',
-                    //                 price: '\$1000',
-                    //                 isSelected: controller.is14KSelected,
-                    //                 onTap: () {
-                    //                   controller.is14KSelected =
-                    //                       !controller.is14KSelected;
-                    //                   controller.update();
-                    //                 },
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xFFE0E0E0),
-                            width: 1.5,
-                          ),
-                        ),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        // border: Border.all(
+                        //   color: const Color(0xFFE0E0E0),
+                        //   width: 1.5,
+                        // ),
                       ),
-                      child: IntrinsicHeight(
-                        child: Row(
-                          children: [
-                            // 18K Option
-                            Expanded(
-                              child: _buildOptionTile(
-                                label: '18K :-',
-                                price: '\$1500',
-                                isSelected: controller.is18KSelected,
-                                onTap: () {
-                                  controller.is18KSelected =
-                                      !controller.is18KSelected;
-                                  controller.update();
-                                },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Header
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: ColorsValue.color94A3B8,
+                                  width: 1.5,
+                                ),
                               ),
                             ),
-
-                            // Vertical Divider
-                            Container(
-                              width: 1.5,
-                              color: const Color(0xFFE0E0E0),
-                            ),
-
-                            // 14K Option
-                            Expanded(
-                              child: _buildOptionTile(
-                                label: '14K :-',
-                                price: '\$1000',
-                                isSelected: controller.is14KSelected,
-                                onTap: () {
-                                  controller.is14KSelected =
-                                      !controller.is14KSelected;
-                                  controller.update();
-                                },
+                            child: Center(
+                              child: Text(
+                                'Lab Grown Diamond',
+                                style: Styles.txtBlackColorW70014,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+
+                          // Options Row
+                          IntrinsicHeight(
+                            child: Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildOptionTile(
+                                      label: '18K :-',
+                                      price: '\$1500',
+                                      isSelected: controller.is18KSelected,
+                                      onTap: () {
+                                        controller.is18KSelected =
+                                            !controller.is18KSelected;
+                                        controller.update();
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 1.5,
+                                    color: ColorsValue.color94A3B8,
+                                  ),
+                                  Expanded(
+                                    child: _buildOptionTile(
+                                      label: '14K :-',
+                                      price: '\$1000',
+                                      isSelected: controller.is14KSelected,
+                                      onTap: () {
+                                        controller.is14KSelected =
+                                            !controller.is14KSelected;
+                                        controller.update();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    // Container(
+                    //   decoration: const BoxDecoration(
+                    //     border: Border(
+                    //       bottom: BorderSide(
+                    //         color: Color(0xFFE0E0E0),
+                    //         width: 1.5,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   child: IntrinsicHeight(
+                    //     child: Row(
+                    //       children: [
+                    //         // 18K Option
+                    //         Expanded(
+                    //           child: _buildOptionTile(
+                    //             label: '18K :-',
+                    //             price: '\$1500',
+                    //             isSelected: controller.is18KSelected,
+                    //             onTap: () {
+                    //               controller.is18KSelected =
+                    //                   !controller.is18KSelected;
+                    //               controller.update();
+                    //             },
+                    //           ),
+                    //         ),
+
+                    //         // Vertical Divider
+                    //         Container(
+                    //           width: 1.5,
+                    //           color: const Color(0xFFE0E0E0),
+                    //         ),
+
+                    //         // 14K Option
+                    //         Expanded(
+                    //           child: _buildOptionTile(
+                    //             label: '14K :-',
+                    //             price: '\$1000',
+                    //             isSelected: controller.is14KSelected,
+                    //             onTap: () {
+                    //               controller.is14KSelected =
+                    //                   !controller.is14KSelected;
+                    //               controller.update();
+                    //             },
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     Dimens.boxHeight10,
                     Container(
                       padding: const EdgeInsets.all(10),
@@ -318,11 +325,14 @@ class ProductDetailScreen extends StatelessWidget {
                           Text('Final Amount', style: Styles.whiteColorW70018),
                           Text(
                             controller.calculateTotal(41630).toString(),
-                            style: const TextStyle(
+                            style: Styles.whiteColorW70018.copyWith(
                               fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
                             ),
+                            // const TextStyle(
+                            //   fontSize: 20,
+                            //   fontWeight: FontWeight.w700,
+                            //   color: Colors.white,
+                            // ),
                           ),
                         ],
                       ),
@@ -387,6 +397,7 @@ class ProductDetailScreen extends StatelessWidget {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
+                                RouteManagement.goToCartScreen();
                                 // await dbHelper.insertProduct(element);
                                 // await ProductDBManager.instance.insert(element);
                                 // RouteManagement.goToAddNewCustomerScreen();
@@ -439,7 +450,7 @@ class ProductDetailScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         child: Row(
           children: [
             Expanded(
@@ -469,8 +480,8 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Container(
-              width: 28,
-              height: 28,
+              width: 20,
+              height: 20,
               decoration: BoxDecoration(
                 border: Border.all(
                   color:
@@ -485,7 +496,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
               child:
                   isSelected
-                      ? const Icon(Icons.check, color: Colors.white, size: 18)
+                      ? const Icon(Icons.check, color: Colors.white, size: 16)
                       : null,
             ),
           ],

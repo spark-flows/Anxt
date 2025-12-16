@@ -3,6 +3,7 @@ import 'package:a_nxt/app/pages/document_screen/document_bindings.dart';
 import 'package:a_nxt/app/pages/document_screen/document_detail_screen.dart';
 import 'package:a_nxt/app/pages/document_screen/document_screen.dart';
 import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
+import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/cart_screen.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/find_prouct.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/product_detail.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/scanner_screen.dart';
@@ -177,6 +178,14 @@ class AppPages {
       name: _Paths.productDetailScreen,
       transitionDuration: transitionDuration,
       page: ProductDetailScreen.new,
+      binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<CartScreen>(
+      name: _Paths.cartScreen,
+      transitionDuration: transitionDuration,
+      page: CartScreen.new,
       binding: SalesAnalyticsBinding(),
       transition: Transition.fadeIn,
     ),

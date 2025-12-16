@@ -66,6 +66,7 @@ class AddExpenseTripScreen extends StatelessWidget {
                   readOnly: true,
                   fillColor: ColorsValue.textFieldBg,
                   textInputAction: TextInputAction.next,
+
                   keyboardType: TextInputType.datetime,
                   suffixIcon: Padding(
                     padding: Dimens.edgeInsets10,

@@ -44,4 +44,6 @@ abstract class RouteManagement {
 
   static void goToProductDetailScreen({required String srjNum}) =>
       Get.toNamed<void>(Routes.productDetailScreen, arguments: srjNum);
+
+  static void goToCartScreen() => Get.toNamed<void>(Routes.cartScreen);
 }
