@@ -1,11 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_page.dart';
-import 'package:a_nxt/app/theme/colors_value.dart';
-import 'package:a_nxt/app/theme/dimens.dart';
-import 'package:a_nxt/app/theme/styles.dart';
-import 'package:a_nxt/app/utils/asset_constants.dart';
-import 'package:a_nxt/app/utils/utility.dart';
-import 'package:a_nxt/app/widgets/app_bar_widgets.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -293,6 +293,12 @@ abstract class Styles {
     fontSize: Dimens.fourteen,
   );
 
+  static TextStyle redColorW70016 = GoogleFonts.jost(
+    color: ColorsValue.redColor,
+    fontWeight: FontWeight.w700,
+    fontSize: Dimens.sixteen,
+  );
+
   static TextStyle redColorW40014 = GoogleFonts.jost(
     color: ColorsValue.redColor,
     fontWeight: FontWeight.w400,
