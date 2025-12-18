@@ -1,7 +1,12 @@
+import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_page.dart';
 import 'package:a_nxt/app/theme/colors_value.dart';
 import 'package:a_nxt/app/theme/dimens.dart';
 import 'package:a_nxt/app/theme/styles.dart';
+import 'package:a_nxt/app/widgets/app_bar_widgets.dart';
+import 'package:a_nxt/app/widgets/custom_text_form_field.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CartItem {
   final String jobNo;
@@ -33,437 +38,421 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  String _selectedCurrency = '₹';
-  final TextEditingController _discountController = TextEditingController();
-  bool _productSummaryExpanded = true;
-  bool _invoiceSummaryExpanded = true;
-  bool _discountChecked = false;
-
-  List<CartItem> cartItems = [
-    CartItem(
-      jobNo: '175987',
-      quality: '14 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 1,
-      totalAmount: 165000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-    CartItem(
-      jobNo: '175987',
-      quality: '15 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 2,
-      totalAmount: 165000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-    CartItem(
-      jobNo: '175987',
-      quality: '16 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 12,
-      totalAmount: 1980000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-  ];
-
-  void _updateQuantity(int index, int delta) {
-    setState(() {
-      if (cartItems[index].quantity + delta > 0) {
-        cartItems[index].quantity += delta;
-      }
-    });
-  }
-
-  void _removeItem(int index) {
-    setState(() {
-      cartItems.removeAt(index);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsValue.whiteColor,
-      appBar: AppBar(
-        backgroundColor: ColorsValue.whiteColor,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
-        ),
-        title: const Text(
-          'Cart',
-          style: TextStyle(color: Colors.black, fontSize: 18),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Cart Items
-                      Container(
-                        color: ColorsValue.whiteColor,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: cartItems.length,
-                          itemBuilder: (context, index) {
-                            final item = cartItems[index];
-                            return CartProductCard(
-                              designNo: item.jobNo,
-                              imageUrl: item.imageUrl,
-                              nw: item.nw,
-                              amount: item.amount.toString(),
-                              totalAmount: item.totalAmount.toString(),
-                              quality: item.quality.toString(),
-                              jobNo: item.jobNo,
-                              count: item.quantity,
-                              onIncrease: () => _updateQuantity(index, 1),
-                              onDecrease: () => _updateQuantity(index, -1),
-                              onRemove: () => _removeItem(index),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Discount Section
-                      Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Discount',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
+    return GetBuilder<SalesAnalyticsController>(
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: ColorsValue.whiteColor,
+          appBar: AppBarWidget(
+            onTapBack: () {
+              Get.back();
+            },
+            title: "Cart",
+            isCenter: true,
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // Cart Items
+                          Container(
+                            color: ColorsValue.whiteColor,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.cartItems.length,
+                              itemBuilder: (context, index) {
+                                final item = controller.cartItems[index];
+                                return CartProductCard(
+                                  designNo: item.jobNo,
+                                  imageUrl: item.imageUrl,
+                                  nw: item.nw,
+                                  amount: item.amount.toString(),
+                                  totalAmount: item.totalAmount.toString(),
+                                  quality: item.quality.toString(),
+                                  jobNo: item.jobNo,
+                                  count: item.quantity,
+                                  onIncrease:
+                                      () => controller.updateQuantity(index, 1),
+                                  onDecrease:
+                                      () =>
+                                          controller.updateQuantity(index, -1),
+                                  onRemove: () => controller.removeItem(index),
+                                );
+                              },
                             ),
-                            const SizedBox(height: 12),
-                            Row(
+                          ),
+                          const SizedBox(height: 8),
+                          // Discount Section
+                          Container(
+                            color: Colors.white,
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[100],
-                                      border: Border.all(
-                                        color: Colors.grey[300]!,
+                                // const Text(
+                                //   'Discount',
+                                //   style: TextStyle(
+                                //     fontSize: 16,
+                                //     fontWeight: FontWeight.w600,
+                                //     color: Colors.black87,
+                                //   ),
+                                // ),
+                                // const SizedBox(height: 12),
+                                CustomTextFormField(
+                                  controller: controller.nameController,
+                                  isTitle: true,
+                                  titleStyle: Styles.txtBlackColorW70014,
+                                  hintStyle: Styles.txtGreyColorW50012,
+                                  hintText: 'Enter Discount'.tr,
+                                  title: 'Discount'.tr,
+                                  fillColor: ColorsValue.textFieldBg,
+                                  filled: true,
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.text,
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return 'com.pure.pureyou'.tr;
+                                    }
+                                    return null;
+                                  },
+                                  suffixIcon: Text("data"),
+
+                                  prefixIcon: Padding(
+                                    padding: Dimens.edgeInsetsLeft2,
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: Dimens.eight,
+                                        vertical: Dimens.ten,
                                       ),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        // Currency Dropdown
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              right: BorderSide(
-                                                color: Colors.grey[300]!,
-                                                width: 1,
-                                              ),
-                                            ),
-                                          ),
-                                          child: DropdownButton<String>(
-                                            value: _selectedCurrency,
-                                            underline: const SizedBox(),
-                                            icon: const Icon(
-                                              Icons.keyboard_arrow_down,
-                                              size: 20,
-                                            ),
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black87,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            items:
-                                                ['₹', '\$', '€', '£'].map((
-                                                  String value,
-                                                ) {
-                                                  return DropdownMenuItem<
-                                                    String
-                                                  >(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                _selectedCurrency =
-                                                    newValue ?? '₹';
-                                              });
-                                            },
-                                          ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          Dimens.six,
                                         ),
-                                        // Vertical Divider is handled by border above
-                                        // Text Field
-                                        Expanded(
-                                          child: TextField(
-                                            controller: _discountController,
-                                            keyboardType: TextInputType.number,
-                                            decoration: const InputDecoration(
-                                              hintText: 'Enter Discount',
-                                              border: InputBorder.none,
-                                              hintStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey,
-                                              ),
-                                              contentPadding:
-                                                  EdgeInsets.symmetric(
-                                                    horizontal: 12,
-                                                    vertical: 12,
+                                        border: Border.all(
+                                          color: ColorsValue.greenColor,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: Dimens.twelve,
+                                              vertical: Dimens.eight,
+                                            ),
+                                            child: Text(
+                                              controller.discount == "dol"
+                                                  ? "\₹"
+                                                  : "%",
+                                              style: Styles.txtBlackColorW70016,
+                                            ),
+                                          ),
+                                          Container(
+                                            height: Dimens.twentyFour,
+                                            width: 1,
+                                            color: ColorsValue.greenColor,
+                                          ),
+                                          PopupMenuButton<String>(
+                                            offset: Offset(0, 35),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    Dimens.eight,
                                                   ),
                                             ),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black87,
+                                            itemBuilder:
+                                                (BuildContext context) => [
+                                                  PopupMenuItem<String>(
+                                                    value: 'dol',
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          "\₹",
+                                                          style:
+                                                              Styles
+                                                                  .txtBlackColorW70014,
+                                                        ),
+                                                        SizedBox(
+                                                          width: Dimens.twelve,
+                                                        ),
+                                                        Text(
+                                                          'Rupees'.tr,
+                                                          style:
+                                                              Styles
+                                                                  .txtBlackColorW70014,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  PopupMenuItem<String>(
+                                                    value: 'per',
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          "%",
+                                                          style:
+                                                              Styles
+                                                                  .txtBlackColorW70014,
+                                                        ),
+                                                        SizedBox(
+                                                          width: Dimens.twelve,
+                                                        ),
+                                                        Text(
+                                                          'Percentage'.tr,
+                                                          style:
+                                                              Styles
+                                                                  .txtBlackColorW70014,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                            onSelected: (String value) {
+                                              controller.discount = value;
+                                              controller.update();
+                                            },
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: Dimens.ten,
+                                                vertical: Dimens.eight,
+                                              ),
+                                              child: Icon(
+                                                Icons.expand_more,
+                                                color:
+                                                    ColorsValue.txtBlackColor,
+                                                size: Dimens.twenty,
+                                              ),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  // suffixIcon: Padding(
+                                  //   padding: Dimens.edgeInsetsRight10,
+                                  //   child: CustomButton(
+                                  //     onPressed: () {},
+                                  //     text: 'Apply',
+                                  //   ),
+                                  // ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          // Product Summary
+                          Container(
+                            color: ColorsValue.textFieldBg,
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      controller.productSummaryExpanded =
+                                          !controller.productSummaryExpanded;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Product Summary',
+                                          style: Styles.txtBlackColorW60014,
+                                          // TextStyle(
+                                          //   fontWeight: FontWeight.w600,
+                                          //   fontSize: 14,
+                                          // ),
+                                        ),
+                                        Icon(
+                                          controller.productSummaryExpanded
+                                              ? Icons.keyboard_arrow_up
+                                              : Icons.keyboard_arrow_down,
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                // Apply Button
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Handle apply discount
-                                    if (_discountController.text.isNotEmpty) {
-                                      // Apply discount logic here
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(
-                                      0xFF2C3E50,
-                                    ), // Dark blue-grey
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 28,
-                                      vertical: 14,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    elevation: 0,
+                                if (controller.productSummaryExpanded) ...[
+                                  Divider(
+                                    height: 1,
+                                    color: ColorsValue.greyCBD5E1,
                                   ),
-                                  child: const Text(
-                                    'Apply',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      children: [
+                                        _buildRow('Product', 'Qta'),
+                                        Divider(
+                                          height: 1,
+                                          color: ColorsValue.greyCBD5E1,
+                                        ),
+                                        Dimens.boxHeight5,
+                                        _buildRow('Ladies Ring', '2'),
+                                        _buildRow('Pendent', '3'),
+                                        _buildRow('Bracelet', '4'),
+                                        DottedLine(
+                                          dashColor: ColorsValue.greyCBD5E1,
+                                          lineThickness: 2,
+                                          dashGapLength: 4,
+                                          dashGapRadius: 20,
+                                        ),
+                                        Dimens.boxHeight5,
+
+                                        _buildRow(
+                                          'Total Item',
+                                          '9',
+                                          isBold: true,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
+                                ],
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Product Summary
-                      Container(
-                        color: ColorsValue.textFieldBg,
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _productSummaryExpanded =
-                                      !_productSummaryExpanded;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Product Summary',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                      ),
+                          ),
+                          const SizedBox(height: 8),
+                          // Invoice Summary
+                          Container(
+                            color: ColorsValue.textFieldBg,
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      controller.invoiceSummaryExpanded =
+                                          !controller.invoiceSummaryExpanded;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          'Invoice Summary',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Icon(
+                                          controller.invoiceSummaryExpanded
+                                              ? Icons.keyboard_arrow_up
+                                              : Icons.keyboard_arrow_down,
+                                        ),
+                                      ],
                                     ),
-                                    Icon(
-                                      _productSummaryExpanded
-                                          ? Icons.keyboard_arrow_up
-                                          : Icons.keyboard_arrow_down,
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                if (controller.invoiceSummaryExpanded) ...[
+                                  const Divider(height: 1),
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      children: [
+                                        _buildRow('Gold Rate', '0.00'),
+                                        _buildRow('G.W', '56.570 gm'),
+                                        _buildRow('N.W', '49.008 gm'),
+                                        _buildRow('Fine', '37.729 gm'),
+                                        _buildRow('Less', '602 x 35.341 gm'),
+                                        _buildRow('S.W', '24.803 cts'),
+                                        _buildRow('Rs', '75'),
+                                        _buildRow('Diamond', '₹218528'),
+                                        _buildRow('Stone', '₹44231'),
+                                        _buildRow('Hubb Charges', '672'),
+                                        _buildRow('GST 3%', '₹7839'),
+                                        DottedLine(
+                                          dashColor: ColorsValue.greyCBD5E1,
+                                          lineThickness: 2,
+                                          dashGapLength: 4,
+                                          dashGapRadius: 20,
+                                        ),
+                                        Dimens.boxHeight5,
+                                        _buildRow(
+                                          'Discount',
+                                          '10%',
+                                          isBold: true,
+                                        ),
+                                        DottedLine(
+                                          dashColor: ColorsValue.greyCBD5E1,
+                                          lineThickness: 2,
+                                          dashGapLength: 4,
+                                          dashGapRadius: 20,
+                                        ),
+                                        Dimens.boxHeight5,
+                                        _buildRow(
+                                          'Total',
+                                          '₹22,27,076',
+                                          isBold: true,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
-                            if (_productSummaryExpanded) ...[
-                              const Divider(height: 1),
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  children: [
-                                    _buildSummaryRow('Product', '2', true),
-                                    _buildSummaryRow('Ladies Ring', '2', false),
-                                    _buildSummaryRow('Pendent', '3', false),
-                                    _buildSummaryRow('Bracelet', '4', false),
-                                    const Divider(height: 20),
-                                    _buildSummaryRow('Total Item', '9', true),
-                                  ],
+                          ),
+                          Container(
+                            color: Colors.white,
+                            padding: const EdgeInsets.all(
+                              16,
+                            ).copyWith(right: 0, left: 0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFD4A574),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Invoice Summary
-                      Container(
-                        color: ColorsValue.textFieldBg,
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _invoiceSummaryExpanded =
-                                      !_invoiceSummaryExpanded;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Invoice Summary',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Icon(
-                                      _invoiceSummaryExpanded
-                                          ? Icons.keyboard_arrow_up
-                                          : Icons.keyboard_arrow_down,
-                                    ),
-                                  ],
+                                child: const Text(
+                                  'Order Now',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            if (_invoiceSummaryExpanded) ...[
-                              const Divider(height: 1),
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  children: [
-                                    _buildInvoiceRow('Gold Rate', '0.00'),
-                                    _buildInvoiceRow('G.W', '56.570 gm'),
-                                    _buildInvoiceRow('N.W', '49.008 gm'),
-                                    _buildInvoiceRow('Fine', '37.729 gm'),
-                                    _buildInvoiceRow('Less', '602 x 35.341 gm'),
-                                    _buildInvoiceRow('S.W', '24.803 cts'),
-                                    _buildInvoiceRow('Rs', '75'),
-                                    _buildInvoiceRow('Diamond', '₹218528'),
-                                    _buildInvoiceRow('Stone', '₹44231'),
-                                    _buildInvoiceRow('Hubb Charges', '672'),
-                                    _buildInvoiceRow('GST 3%', '₹7839'),
-                                    const Divider(height: 20),
-                                    _buildInvoiceRow('Discount', '10%'),
-                                    const Divider(height: 20),
-                                    _buildInvoiceRow(
-                                      'Total',
-                                      '₹22,27,076',
-                                      isBold: true,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(
-                          16,
-                        ).copyWith(right: 0, left: 0),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFD4A574),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Order Now',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                  // Order Now Button
+                ],
               ),
-              // Order Now Button
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 3),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 80,
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 11, color: Colors.grey[600]),
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildSummaryRow(String label, String value, bool isBold) {
+  Widget _buildRow(String label, String value, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -471,48 +460,48 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
-            ),
+            style:
+                isBold
+                    ? Styles.txtBlackColorW60014
+                    : Styles.txtBlackColorW50014,
           ),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
-            ),
+            style:
+                isBold
+                    ? Styles.txtBlackColorW60014
+                    : Styles.txtBlackColorW50014,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInvoiceRow(String label, String value, {bool isBold = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
-              color: isBold ? Colors.black : Colors.grey[700],
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildInvoiceRow(String label, String value, {bool isBold = false}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 8),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           label,
+  //           style: TextStyle(
+  //             fontSize: 13,
+  //             fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
+  //             color: isBold ? Colors.black : Colors.grey[700],
+  //           ),
+  //         ),
+  //         Text(
+  //           value,
+  //           style: TextStyle(
+  //             fontSize: 13,
+  //             fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 class CartProductCard extends StatelessWidget {

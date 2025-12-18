@@ -14,10 +14,10 @@ class EndPoints {
   static String postGetOneTrips = 'api/trip/getone';
   static String getExpenseCategory = 'api/expensecategory';
   static String getGetOneExpense = 'api/expensecategory/getone';
-
-  static String postAllFolders = 'api/category/all';
-  static String postCreateTrip = 'api/trip/create';
-  static String getAllUser = 'api/users';
   static String postTripDelete = 'api/trip/delete';
   static String postExpenseCreate = 'api/expense/create';
+  static String postCreateTrip = 'api/trip/create';
+  static String getAllUser = 'api/users';
+
+  static String postAllFolders = 'api/category/all';
 }

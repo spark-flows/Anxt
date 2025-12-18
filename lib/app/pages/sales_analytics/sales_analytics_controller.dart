@@ -1,4 +1,5 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/cart_screen.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
@@ -350,6 +351,62 @@ class SalesAnalyticsController extends GetxController {
     if (is18KSelected) total += 1500;
     if (is14KSelected) total += 1000;
     return total;
+  }
+
+  String discount = "dol";
+
+  String selectedCurrency = '₹';
+  final TextEditingController discountController = TextEditingController();
+  bool productSummaryExpanded = true;
+  bool invoiceSummaryExpanded = true;
+  bool discountChecked = false;
+
+  List<CartItem> cartItems = [
+    CartItem(
+      jobNo: '175987',
+      quality: '14 KT',
+      nw: 120,
+      amount: 165000,
+      quantity: 1,
+      totalAmount: 165000,
+      designNo: '',
+      imageUrl:
+          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+    ),
+    CartItem(
+      jobNo: '175987',
+      quality: '15 KT',
+      nw: 120,
+      amount: 165000,
+      quantity: 2,
+      totalAmount: 165000,
+      designNo: '',
+      imageUrl:
+          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+    ),
+    CartItem(
+      jobNo: '175987',
+      quality: '16 KT',
+      nw: 120,
+      amount: 165000,
+      quantity: 12,
+      totalAmount: 1980000,
+      designNo: '',
+      imageUrl:
+          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+    ),
+  ];
+
+  void updateQuantity(int index, int delta) {
+    if (cartItems[index].quantity + delta > 0) {
+      cartItems[index].quantity += delta;
+    }
+    update();
+  }
+
+  void removeItem(int index) {
+    cartItems.removeAt(index);
+    update();
   }
 }
 

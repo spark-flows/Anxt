@@ -306,6 +306,40 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> getProfileApi({bool isLoading = false}) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.getProfileApi,
+      Request.get,
+      null,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postAllFolders({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+    required String parentid,
+  }) async {
+    var data = {
+      "page": page,
+      "limit": limit,
+      "search": search,
+      "parentid": parentid,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postAllFolders,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postGetProductList({
     bool isLoading = false,
     required int page,
@@ -396,17 +430,6 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> getProfileApi({bool isLoading = false}) async {
-    var response = await apiWrapper.makeRequest(
-      EndPoints.getProfileApi,
-      Request.get,
-      null,
-      isLoading,
-      Utility.commonHeader(),
-    );
-    return response;
-  }
-
   Future<ResponseModel> getAllUser({bool isLoading = false}) async {
     var response = await apiWrapper.makeRequest(
       EndPoints.getAllUser,
@@ -453,29 +476,6 @@ class ConnectHelper {
       isLoading,
       Utility.commonHeader(isDefaultAuthorizationKeyAdd: false),
       mediaFileList: mediaFileList,
-    );
-    return response;
-  }
-
-  Future<ResponseModel> postAllFolders({
-    bool isLoading = false,
-    required int page,
-    required int limit,
-    required String search,
-    required String parentid,
-  }) async {
-    var data = {
-      "page": page,
-      "limit": limit,
-      "search": search,
-      "parentid": parentid,
-    };
-    var response = await apiWrapper.makeRequest(
-      EndPoints.postAllFolders,
-      Request.post,
-      data,
-      isLoading,
-      Utility.commonHeader(),
     );
     return response;
   }

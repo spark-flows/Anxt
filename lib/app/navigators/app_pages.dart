@@ -2,11 +2,15 @@ import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/pages/document_screen/document_bindings.dart';
 import 'package:a_nxt/app/pages/document_screen/document_detail_screen.dart';
 import 'package:a_nxt/app/pages/document_screen/document_screen.dart';
+import 'package:a_nxt/app/pages/order_history_screen/screens/order_detail.dart';
 import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/cart_screen.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/find_prouct.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/product_detail.dart';
 import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/scanner_screen.dart';
+import 'package:a_nxt/app/pages/stock_catalogue_screen/stock_catalogue_bindings.dart';
+import 'package:a_nxt/app/pages/stock_catalogue_screen/stock_catalogue_detail_screen.dart';
+import 'package:a_nxt/app/pages/stock_catalogue_screen/stock_catalogue_screen.dart';
 import 'package:get/get.dart';
 
 part 'app_routes.dart';
@@ -187,6 +191,29 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: CartScreen.new,
       binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<OrderDetailScreen>(
+      name: _Paths.orderDetailScreen,
+      transitionDuration: transitionDuration,
+      page: OrderDetailScreen.new,
+      binding: SalesAnalyticsBinding(),
+      transition: Transition.fadeIn,
+    ),
+
+    GetPage<StockCatalogueScreen>(
+      name: _Paths.stockCatalogueScreen,
+      transitionDuration: transitionDuration,
+      page: StockCatalogueScreen.new,
+      binding: StockCatalogueBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<StockCatalogueDetailScreen>(
+      name: _Paths.stockCatalogueDetailScreen,
+      transitionDuration: transitionDuration,
+      page: StockCatalogueDetailScreen.new,
+      binding: StockCatalogueBindings(),
       transition: Transition.fadeIn,
     ),
   ];

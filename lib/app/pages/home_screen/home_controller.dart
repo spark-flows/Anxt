@@ -19,6 +19,12 @@ class HomeController extends GetxController {
       icon: AssetConstants.ic_catlogues,
       activeIcon: AssetConstants.ic_fill_sales_analytics,
     ),
+
+    HomeModel(
+      name: "Stock Catalogue",
+      icon: AssetConstants.ic_catlogues,
+      activeIcon: AssetConstants.ic_stock_catlogues,
+    ),
     HomeModel(
       name: "Order History",
       icon: AssetConstants.ic_order_history,
@@ -40,7 +46,7 @@ class HomeController extends GetxController {
         RouteManagement.goToDocumentScreen();
         break;
       case "Stock Catalogue":
-        RouteManagement.goToSalesAnalyticsListScreen();
+        RouteManagement.goToStockCatalogueScreen();
         break;
       case "Order History":
         RouteManagement.goToOrderHistoryScreen();

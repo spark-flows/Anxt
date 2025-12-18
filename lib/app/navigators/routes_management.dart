@@ -37,6 +37,12 @@ abstract class RouteManagement {
   static void goToDocumentDetailScreen(String id) =>
       Get.toNamed<void>(Routes.documentDetailScreen, arguments: id);
 
+  static void goToStockCatalogueScreen() =>
+      Get.toNamed<void>(Routes.stockCatalogueScreen);
+
+  static void goToStockCatalogueDetailScreen(String id) =>
+      Get.toNamed<void>(Routes.stockCatalogueDetailScreen, arguments: id);
+
   static void goToFindProductScreen() =>
       Get.toNamed<void>(Routes.findProductSRJOScreen);
 
@@ -44,6 +50,9 @@ abstract class RouteManagement {
 
   static void goToProductDetailScreen({required String srjNum}) =>
       Get.toNamed<void>(Routes.productDetailScreen, arguments: srjNum);
+
+  static void goToOrderDetailScreen({required String srjNum}) =>
+      Get.toNamed<void>(Routes.orderDetailScreen, arguments: srjNum);
 
   static void goToCartScreen() => Get.toNamed<void>(Routes.cartScreen);
 }

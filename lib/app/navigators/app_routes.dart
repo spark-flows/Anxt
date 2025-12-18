@@ -19,12 +19,15 @@ abstract class Routes {
 
   static const documentScreen = _Paths.documentScreen;
   static const documentDetailScreen = _Paths.documentDetailScreen;
+  static const stockCatalogueScreen = _Paths.stockCatalogueScreen;
+  static const stockCatalogueDetailScreen = _Paths.stockCatalogueDetailScreen;
   static const orderHistoryScreen = _Paths.orderHistoryScreen;
   static const orderHistoryDetailsScreen = _Paths.orderHistoryDetailsScreen;
   static const showFullScareenImage = _Paths.showFullScareenImage;
   static const findProductSRJOScreen = _Paths.findProductSRJOScreen;
   static const scannerScreen = _Paths.scannerScreen;
   static const productDetailScreen = _Paths.productDetailScreen;
+  static const orderDetailScreen = _Paths.orderDetailScreen;
   static const cartScreen = _Paths.cartScreen;
 }
 
@@ -47,11 +50,14 @@ abstract class _Paths {
 
   static const documentScreen = '/documentScreen';
   static const documentDetailScreen = '/documentDetailScreen';
+  static const stockCatalogueScreen = '/stockCatalogueScreen';
+  static const stockCatalogueDetailScreen = '/stockCatalogueDetailScreen';
   static const orderHistoryScreen = '/orderHistoryScreen';
   static const orderHistoryDetailsScreen = '/orderHistoryDetailsScreen';
   static const showFullScareenImage = '/showFullScareenImage';
   static const findProductSRJOScreen = '/findProductSRJO';
   static const scannerScreen = '/scannerScreen';
   static const productDetailScreen = '/productDetailScreen';
+  static const orderDetailScreen = '/orderDetailScreen';
   static const cartScreen = '/cartScreen';
 }
