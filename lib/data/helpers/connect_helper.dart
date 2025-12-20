@@ -215,6 +215,22 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postPriceMasterList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async {
+    var data = {"page": page, 'limit': limit, "search": "", "status": ""};
+    var response = await apiWrapper.makeRequest(
+      EndPoints.getPriceMasterList,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,

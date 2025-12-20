@@ -5,6 +5,7 @@ import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -340,13 +341,6 @@ class SalesAnalyticsController extends GetxController {
     ),
   ];
 
-  List<String> paymentMasterList = [
-    'Price Master 01',
-    'Price Master 02',
-    'Price Master 03',
-  ];
-  String? paymentMaster;
-
   bool is18KSelected = false;
   bool is14KSelected = false;
 
@@ -431,6 +425,28 @@ class SalesAnalyticsController extends GetxController {
           productDetail: oneProductDetail!,
         );
       }
+      Utility.closeLoader();
+    } else {
+      Utility.closeLoader();
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  List<PriceMasterListDoc> paymentMasterList = [];
+  PriceMasterListData? priceMasterListData;
+  String? paymentMaster;
+
+
+  Future<void> postPriceMasterList() async {
+    var response = await salesAnalyticsPresenter.postPriceMasterList(
+      isLoading: false,
+      page: 1,
+      limit: 30,
+    );
+    paymentMasterList.clear();
+    if (response?.data != null) {
+      paymentMasterList.addAll(response?.data?.docs ?? []);
       Utility.closeLoader();
     } else {
       Utility.closeLoader();

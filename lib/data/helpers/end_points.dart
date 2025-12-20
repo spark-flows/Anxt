@@ -29,4 +29,7 @@ class EndPoints {
 
   static String getScaneData = 'api/stock/scan?jobno=';
 
+
+
+  static String getPriceMasterList = 'api/pricemastername';
 }

@@ -6,6 +6,7 @@ import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
@@ -141,5 +142,15 @@ class SalesAnalyticsUsecases {
     isLoading: isLoading,
     jobNo: jobNo,
     pricemasternameId: pricemasternameId,
+  );
+
+  Future<PriceMasterListModel?> postPriceMasterList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async => await repository.postPriceMasterList(
+    isLoading: isLoading,
+    page: page,
+    limit: limit,
   );
 }

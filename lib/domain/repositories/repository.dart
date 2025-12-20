@@ -14,6 +14,7 @@ import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
 
@@ -272,6 +273,30 @@ class Repository {
         expenseCatid: expenseCatid,
       );
       var getOneExpenseCategory = getOneExpenseCategoryFromJson(response.data);
+      if (getOneExpenseCategory.data != null) {
+        return getOneExpenseCategory;
+      } else {
+        return getOneExpenseCategory;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<PriceMasterListModel?> postPriceMasterList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      var response = await _dataRepository.postPriceMasterList(
+        isLoading: isLoading,
+        page: page,
+        limit: limit,
+      );
+      var getOneExpenseCategory = priceMasterListModelFromJson(response.data);
       if (getOneExpenseCategory.data != null) {
         return getOneExpenseCategory;
       } else {

@@ -111,12 +111,23 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> getExpenseCategory({bool isLoading = false}) async =>
       await connectHelper.getExpenseCategory(isLoading: isLoading);
 
+
   Future<ResponseModel> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
   }) async => await connectHelper.getOneExpense(
     isLoading: isLoading,
     expenseCatid: expenseCatid,
+  );
+
+  Future<ResponseModel> postPriceMasterList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async => await connectHelper.postPriceMasterList(
+    isLoading: isLoading,
+    page: page,
+    limit: limit,
   );
 
   Future<ResponseModel> postCreateCustomer({

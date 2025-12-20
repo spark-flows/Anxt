@@ -1,6 +1,7 @@
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/models.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
 class TripUsecases {
@@ -39,7 +40,6 @@ class TripUsecases {
   Future<GetAllProductTypeModel?> getExpenseCategory({
     bool isLoading = false,
   }) async => await repository.getExpenseCategory(isLoading: isLoading);
-
 
   Future<GetOneExpenseCategory?> getOneExpense({
     bool isLoading = false,

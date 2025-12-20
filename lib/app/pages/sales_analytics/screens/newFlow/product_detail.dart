@@ -1,6 +1,6 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class ProductDetailScreen extends StatelessWidget {
       initState: (state) {
         final controller = Get.find<SalesAnalyticsController>();
         productDetail = Get.arguments;
+        controller.postPriceMasterList();
       },
       builder: (controller) {
         return Scaffold(
@@ -101,10 +102,29 @@ class ProductDetailScreen extends StatelessWidget {
                         "Fine",
                         "Rate",
                       ],
-                      rows: const [
-                        ["G14KTR", "6.381", "6.220", "74.00", "4.603", "7450"],
+                      rows:
+                          (productDetail?.metalcomponents ?? []).map((metal) {
+                            return [
+                              metal.shape ?? ' - '.trim(),
+                              metal.grossweight?.toString() ?? "0",
+                              metal.netweight?.toString() ?? "0",
+                              "${metal.priceRatio ?? 0}%",
+                              metal.fineweight?.toString() ?? "0",
+                              Utility.formatIndianCurrency(metal.rate ?? 0),
+                            ];
+                          }).toList(),
+                      totalRow: [
+                        "",
+                        productDetail?.grossweight ?? "0",
+                        productDetail?.netweight ?? "0",
+                        "",
+                        productDetail?.fineweight ?? "0",
+                        "",
                       ],
-                      totalRow: const ["", "6.381", "6.220", "", "4.603", ""],
+                      // rows: const [
+                      //   ["G14KTR", "6.381", "6.220", "74.00", "4.603", "7450"],
+                      // ],
+                      // totalRow: const ["", "6.381", "6.220", "", "4.603", ""],
                     ),
 
                     // Diamond Details
@@ -118,25 +138,71 @@ class ProductDetailScreen extends StatelessWidget {
                         "Rate",
                         "Amount",
                       ],
-                      rows: const [
-                        ["Gold", "0.010-0.110", "2", "0.190", "17800", "3382"],
-                        ["Round", "0.010-0.110", "2", "0.220", "17800", "3382"],
-                        ["MOP", "0.010-0.110", "6", "0.220", "17800", "3382"],
-                        ["Marquise", "+6-11", "60", "0.220", "17800", "3382"],
-                        ["Round", "+6-11", "10", "0.220", "17800", "3382"],
+                      rows:
+                          (productDetail?.diamondcomponents ?? []).map((
+                            diamond,
+                          ) {
+                            return [
+                              diamond.size ?? "",
+                              diamond.pcs?.toString() ?? "0",
+                              diamond.weight?.toString() ?? "0",
+                              Utility.formatIndianCurrency(diamond.rate ?? 0),
+                              Utility.formatIndianCurrency(diamond.amount ?? 0),
+                            ];
+                          }).toList(),
+                      totalRow: [
+                        "",
+                        "",
+                        productDetail?.diamondpcs?.toString() ?? "0",
+                        productDetail?.diamondcts ?? "0",
+                        "",
+                        Utility.formatIndianCurrency(
+                          double.tryParse(
+                                productDetail?.diamondamount ?? "0",
+                              ) ??
+                              0,
+                        ),
                       ],
-                      totalRow: const ["", "", "80", "0.220", "", "16910"],
+                      // rows: const [
+                      //   ["Gold", "0.010-0.110", "2", "0.190", "17800", "3382"],
+                      //   ["Round", "0.010-0.110", "2", "0.220", "17800", "3382"],
+                      //   ["MOP", "0.010-0.110", "6", "0.220", "17800", "3382"],
+                      //   ["Marquise", "+6-11", "60", "0.220", "17800", "3382"],
+                      //   ["Round", "+6-11", "10", "0.220", "17800", "3382"],
+                      // ],
+                      // totalRow: const ["", "", "80", "0.220", "", "16910"],
                     ),
 
                     // Stone Details
-                    DetailsExpansion(
-                      title: "Stone Details",
-                      header: const ["Code", "Weight", "Rate", "Amount"],
-                      rows: const [
-                        ["G14KTR", "0.190", "1700", "11560"],
-                      ],
-                      totalRow: const ["", "0.190", "", "11560"],
-                    ),
+                    if ((productDetail?.stonecomponents ?? []).isNotEmpty)
+                      DetailsExpansion(
+                        title: "Stone Details",
+                        header: const ["Code", "Weight", "Rate", "Amount"],
+                        rows:
+                            (productDetail?.stonecomponents ?? []).map((stone) {
+                              return [
+                                (stone.type ?? "").toString(),
+                                (stone.weight?.toString() ?? "0").toString(),
+                                Utility.formatIndianCurrency(
+                                  stone.rate ?? 0,
+                                ).toString(),
+                                Utility.formatIndianCurrency(
+                                  stone.amount ?? 0,
+                                ).toString(),
+                              ];
+                            }).toList(),
+                        totalRow: [
+                          "",
+                          (productDetail?.stoneweight ?? "0").toString(),
+                          "",
+                          Utility.formatIndianCurrency(
+                            double.tryParse(
+                                  productDetail?.stoneamount ?? "0",
+                                ) ??
+                                0,
+                          ).toString(),
+                        ],
+                      ),
 
                     // Other Details
                     DetailsExpansion(
@@ -149,14 +215,35 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
 
                     // Making Details
-                    DetailsExpansion(
-                      title: "Making Details",
-                      header: const ["Rate", "Amount"],
-                      rows: const [
-                        ["1700", "1600"],
-                      ],
-                      totalRow: const ["", "1600"],
-                    ),
+                    if ((productDetail?.makingcomponents ?? []).isNotEmpty)
+                      DetailsExpansion(
+                        title: "Making Details",
+                        header: const ["Rate", "Amount"],
+                        rows:
+                            (productDetail?.makingcomponents ?? []).map((
+                              making,
+                            ) {
+                              return [
+                                Utility.formatIndianCurrency(making.rate ?? 0),
+                                Utility.formatIndianCurrency(
+                                  making.amount ?? 0,
+                                ),
+                              ];
+                            }).toList(),
+                        totalRow: [
+                          "",
+                          Utility.formatIndianCurrency(
+                            double.tryParse(
+                                  productDetail?.makingcharges ?? "0",
+                                ) ??
+                                0,
+                          ),
+                        ],
+                        // rows: const [
+                        //   ["1700", "1600"],
+                        // ],
+                        // totalRow: const ["", "1600"],
+                      ),
 
                     Dimens.boxHeight10,
                     Text("Price Master", style: Styles.lineColorW70014),
@@ -192,8 +279,8 @@ class ProductDetailScreen extends StatelessWidget {
                             controller.paymentMasterList
                                 .map(
                                   (option) => DropdownMenuItem(
-                                    value: option,
-                                    child: Text(option),
+                                    value: option.name,
+                                    child: Text(option.name ?? ''),
                                   ),
                                 )
                                 .toList(),

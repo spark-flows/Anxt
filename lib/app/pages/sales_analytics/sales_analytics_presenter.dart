@@ -4,6 +4,7 @@ import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 
 class SalesAnalyticsPresenter {
@@ -135,5 +136,15 @@ class SalesAnalyticsPresenter {
     isLoading: isLoading,
     jobNo: jobNo,
     pricemasternameId: pricemasternameId,
+  );
+
+  Future<PriceMasterListModel?> postPriceMasterList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async => await salesAnalyticsUsecases.postPriceMasterList(
+    isLoading: isLoading,
+    page: page,
+    limit: limit,
   );
 }
