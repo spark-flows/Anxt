@@ -20,4 +20,5 @@ class EndPoints {
   static String getAllUser = 'api/users';
 
   static String postAllFolders = 'api/category/all';
+  static String getScan = 'api/stock/scan';
 }

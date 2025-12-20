@@ -69,10 +69,7 @@ class FindProductSRJO extends StatelessWidget {
                         child: CustomButton(
                           text: "By Scan",
                           onPressed: () {
-                            RouteManagement.goToProductDetailScreen(
-                              srjNum: 'G22K',
-                            );
-                            // RouteManagement.goToScannerScreen();
+                            RouteManagement.goToScannerScreen();
                           },
                           heightBtn: 48,
                           radius: 14,

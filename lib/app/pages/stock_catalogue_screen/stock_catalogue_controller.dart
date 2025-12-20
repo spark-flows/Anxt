@@ -112,14 +112,18 @@ class StockCatalogueController extends GetxController {
   // bool isFolderLoading = false;
   List<ProductListDoc> imageDetailsDocList = [];
   List<GetAllFileDoc> folderDocList = [];
+  bool isFolderLoading = false;
 
   Future<void> postAllFolders(final String parentid) async {
+    isFolderLoading = true;
     var response = await stockCataloguePreneter.postAllFolders(
       limit: 10,
       page: filePageCount,
       parentid: folderId,
       search: '',
     );
+    isFolderLoading = false;
+    update();
     folderDocList.clear();
     if (response?.data != null) {
       folderDocList = response!.data.docs;

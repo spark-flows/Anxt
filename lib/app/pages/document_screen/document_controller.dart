@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:a_nxt/app/pages/document_screen/document_preneter.dart';
 import 'package:a_nxt/app/utils/utility.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
@@ -108,17 +109,19 @@ class DocumentController extends GetxController {
   }
 
   int filePageCount = 1;
-  // bool isFolderLoading = false;
+  bool isFolderLoading = false;
   List<ProductListDoc> imageDetailsDocList = [];
   List<GetAllFileDoc> folderDocList = [];
 
   Future<void> postAllFolders(final String parentid) async {
+    isFolderLoading = true;
     var response = await documentPreneter.postAllFolders(
       limit: 10,
       page: filePageCount,
       parentid: folderId,
       search: '',
     );
+    isFolderLoading = false;
     folderDocList.clear();
     if (response?.data != null) {
       folderDocList = response!.data.docs;

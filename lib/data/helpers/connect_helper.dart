@@ -215,6 +215,20 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> getProductApi({
+    bool isLoading = false,
+    String? srjobno,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      '${EndPoints.getScan}?jobno=$srjobno',
+      Request.get,
+      null,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,

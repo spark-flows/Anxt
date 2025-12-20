@@ -1,10 +1,10 @@
-import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_controller.dart';
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
@@ -131,4 +131,10 @@ class SalesAnalyticsUsecases {
     min: min,
     search: search,
   );
+
+  Future<GetStockProductModel?> getProductApi({
+    bool isLoading = false,
+    required String srjobno,
+  }) async =>
+      await repository.getProductApi(srjobno: srjobno, isLoading: isLoading);
 }

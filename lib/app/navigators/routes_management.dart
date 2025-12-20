@@ -1,4 +1,5 @@
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:get/get.dart';
 
 import 'app_pages.dart';
@@ -48,8 +49,9 @@ abstract class RouteManagement {
 
   static void goToScannerScreen() => Get.toNamed<void>(Routes.scannerScreen);
 
-  static void goToProductDetailScreen({required String srjNum}) =>
-      Get.toNamed<void>(Routes.productDetailScreen, arguments: srjNum);
+  static void goToProductDetailScreen({
+    required GetStockProductDatum productDetail,
+  }) => Get.toNamed<void>(Routes.productDetailScreen, arguments: productDetail);
 
   static void goToOrderDetailScreen({required String srjNum}) =>
       Get.toNamed<void>(Routes.orderDetailScreen, arguments: srjNum);

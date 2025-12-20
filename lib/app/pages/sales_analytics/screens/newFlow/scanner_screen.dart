@@ -10,7 +10,9 @@ class ScannerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
-      initState: (state) async {},
+      initState: (state) async {
+        // RouteManagement.goToProductDetailScreen(srjNum: 'G22K');
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
@@ -20,6 +22,9 @@ class ScannerScreen extends StatelessWidget {
             ),
             fit: BoxFit.cover,
             onDetect: (BarcodeCapture capture) {
+              controller.getProductApi(
+                srjobno: capture.barcodes.first.rawValue ?? '',
+              );
               Get.back();
             },
           ),

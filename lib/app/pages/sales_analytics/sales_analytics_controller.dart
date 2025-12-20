@@ -5,6 +5,7 @@ import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -407,6 +408,27 @@ class SalesAnalyticsController extends GetxController {
   void removeItem(int index) {
     cartItems.removeAt(index);
     update();
+  }
+
+  GetStockProductDatum? productDetail;
+
+  Future<void> getProductApi({required String srjobno}) async {
+    var response = await salesAnalyticsPresenter.getProductApi(
+      isLoading: false,
+      srjobno: srjobno,
+    );
+    productDetail = null;
+    if (response?.data != null) {
+      productDetail = response?.data?[0];
+      if (productDetail != null) {
+        RouteManagement.goToProductDetailScreen(productDetail: productDetail!);
+      }
+      Utility.closeLoader();
+      update();
+    } else {
+      Utility.closeLoader();
+      Utility.errorMessage(response?.message ?? "");
+    }
   }
 }
 

@@ -1,10 +1,9 @@
-import 'package:a_nxt/app/pages/sales_analytics/sales_analytics_controller.dart';
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
-import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 
 class SalesAnalyticsPresenter {
   SalesAnalyticsPresenter(this.salesAnalyticsUsecases);
@@ -119,11 +118,19 @@ class SalesAnalyticsPresenter {
     required String search,
   }) async => await salesAnalyticsUsecases.postGetProductList(
     isLoading: isLoading,
-        category: category,
-        page: page,
-        limit: limit,
-        max: max,
-        min: min,
-        search: search,
+    category: category,
+    page: page,
+    limit: limit,
+    max: max,
+    min: min,
+    search: search,
+  );
+
+  Future<GetStockProductModel?> getProductApi({
+    bool isLoading = false,
+    required String srjobno,
+  }) async => await salesAnalyticsUsecases.getProductApi(
+    srjobno: srjobno,
+    isLoading: isLoading,
   );
 }

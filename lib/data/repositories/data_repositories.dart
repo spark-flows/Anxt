@@ -119,6 +119,12 @@ class DataRepository extends DomainRepository {
     expenseCatid: expenseCatid,
   );
 
+  Future<ResponseModel> getProductApi({
+    bool isLoading = false,
+    required String srjobno,
+  }) async =>
+      await connectHelper.getProductApi(srjobno: srjobno, isLoading: isLoading);
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,

@@ -1,5 +1,6 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
+import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -7,14 +8,14 @@ import 'package:lottie/lottie.dart';
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
 
-  String srjoNum = ' - ';
+  GetStockProductDatum? productDetail;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
       initState: (state) {
         final controller = Get.find<SalesAnalyticsController>();
-        srjoNum = Get.arguments;
+        productDetail = Get.arguments;
       },
       builder: (controller) {
         return Scaffold(
@@ -22,7 +23,7 @@ class ProductDetailScreen extends StatelessWidget {
             onTapBack: () {
               Get.back();
             },
-            title: "Job No.$srjoNum",
+            title: "Job No.${productDetail?.jobno}",
             isCenter: true,
           ),
           backgroundColor: ColorsValue.textFieldBg,
@@ -41,6 +42,7 @@ class ProductDetailScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
                             width: double.infinity,
+                            // productDetail?.,
                             'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
                             height: Get.height * .24,
                             fit: BoxFit.cover,
