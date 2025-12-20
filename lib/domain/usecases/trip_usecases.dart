@@ -40,6 +40,7 @@ class TripUsecases {
     bool isLoading = false,
   }) async => await repository.getExpenseCategory(isLoading: isLoading);
 
+
   Future<GetOneExpenseCategory?> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,

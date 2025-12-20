@@ -1,9 +1,14 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getOrderList_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 
 class OrderHistoryScreen extends StatelessWidget {
   const OrderHistoryScreen({super.key});
@@ -12,6 +17,23 @@ class OrderHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _debouncer = Debouncer(milliseconds: 500);
     return GetBuilder<OrderHistoryController>(
+      initState: (state) {
+        final controller = Get.find<OrderHistoryController>();
+        controller.orderHistoryPagingController = PagingController(
+          firstPageKey: 1,
+        );
+        controller.orderHistoryPagingController.addPageRequestListener((
+          pageKey,
+        ) async {
+          await controller.postGetAllTripList(
+            pageKey,
+            fromDate: '',
+            toDate: '',
+          );
+        });
+
+        // controller.postGetProductList(fromDate: '', toDate: '');
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.textFieldBg,
@@ -508,186 +530,211 @@ class OrderHistoryScreen extends StatelessWidget {
                   ),
                   Dimens.boxHeight10,
                   Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            RouteManagement.goToOrderHistoryDetailsScreen();
-                          },
-                          child: Container(
-                            margin: Dimens.edgeInsetsBottom10,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(Dimens.ten),
-                              color: ColorsValue.whiteColor,
+                    child: PagedListView<int, GetOrderListDoc>(
+                      pagingController: controller.orderHistoryPagingController,
+                      builderDelegate: PagedChildBuilderDelegate<
+                        GetOrderListDoc
+                      >(
+                        noItemsFoundIndicatorBuilder: (context) {
+                          return Center(
+                            child: Text(
+                              "Order History is Empty Order Now..!",
+                              style: Styles.txtBlackColorW50016,
+                              textAlign: TextAlign.center,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: Dimens.edgeInsets10,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Sagar Miyani",
-                                            style: Styles.txtBlackColorW70016,
-                                          ),
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                AssetConstants.ic_date,
-                                                height: Dimens.twenty,
-                                                width: Dimens.twenty,
-                                                colorFilter: ColorFilter.mode(
-                                                  ColorsValue.txtGreyColor,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                              Dimens.boxWidth6,
-                                              Text(
-                                                "25-05-2025",
-                                                style:
-                                                    Styles.txtGreyColorW60014,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Dimens.boxHeight6,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Order No. :- ",
-                                                style:
-                                                    Styles.txtBlackColorW60014,
-                                              ),
-                                              Text(
-                                                "py-166-2025",
-                                                style:
-                                                    Styles.txtGreyColorW60014,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Qty :- ",
-                                                style:
-                                                    Styles.txtBlackColorW60014,
-                                              ),
-                                              Text(
-                                                "15",
-                                                style:
-                                                    Styles.txtGreyColorW60014,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Dimens.boxHeight6,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Total Amount :- ",
-                                                style:
-                                                    Styles.txtBlackColorW60014,
-                                              ),
-                                              Text(
-                                                "\$1100",
-                                                style:
-                                                    Styles.txtGreyColorW60014,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Due Amount :- ",
-                                                style:
-                                                    Styles.txtBlackColorW60014,
-                                              ),
-                                              Text(
-                                                "\$600",
-                                                style:
-                                                    Styles.txtGreyColorW60014,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Dimens.boxHeight20,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Status :- ",
-                                                style:
-                                                    Styles.txtBlackColorW60014,
-                                              ),
-                                              Container(
-                                                padding:
-                                                    Dimens
-                                                        .edgeInsets08_04_08_04,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      ColorsValue
-                                                          .lightYellowColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        Dimens.four,
-                                                      ),
-                                                ),
-                                                child: Text(
-                                                  "Pending",
-                                                  style:
-                                                      Styles.yellowColorW70012,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          CustomButton(
-                                            heightBtn: Dimens.thirtyTwo,
-                                            widthBtn: Dimens.hundredFourty,
-                                            onPressed: () {},
-                                            text: "Get Invoice",
-                                            textStyle:
-                                                Styles.txtBlackColorW60014,
-                                            isBorder: true,
-                                            borderColor: ColorsValue.appColor,
-                                            radius: Dimens.four,
-                                            leading: SvgPicture.asset(
-                                              AssetConstants.ic_download,
+                          );
+                        },
+                        itemBuilder: (context, item, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              RouteManagement.goToOrderHistoryDetailsScreen(
+                                orderId: item.id ?? "",
+                              );
+                            },
+                            child: Container(
+                              margin: Dimens.edgeInsetsBottom10,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(Dimens.ten),
+                                color: ColorsValue.whiteColor,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: Dimens.edgeInsets10,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              item.customerid?.name ?? "",
+                                              // "Sagar Miyani",
+                                              style: Styles.txtBlackColorW70016,
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  AssetConstants.ic_date,
+                                                  height: Dimens.twenty,
+                                                  width: Dimens.twenty,
+                                                  colorFilter: ColorFilter.mode(
+                                                    ColorsValue.txtGreyColor,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                ),
+                                                Dimens.boxWidth6,
+                                                Text(
+                                                  Utility.dateStringConvertDate(
+                                                    item.createdAt.toString(),
+                                                  ),
+                                                  style:
+                                                      Styles.txtGreyColorW60014,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Dimens.boxHeight6,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Order No. :- ",
+                                                  style:
+                                                      Styles
+                                                          .txtBlackColorW60014,
+                                                ),
+                                                Text(
+                                                  item.orderno ?? "py-166-2025",
+                                                  style:
+                                                      Styles.txtGreyColorW60014,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Item :- ",
+                                                  style:
+                                                      Styles
+                                                          .txtBlackColorW60014,
+                                                ),
+                                                Text(
+                                                  item.quantity.toString(),
+                                                  style:
+                                                      Styles.txtGreyColorW60014,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Dimens.boxHeight6,
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Total Amount :- ",
+                                              style: Styles.txtBlackColorW60014,
+                                            ),
+                                            Text(
+                                              '\$${item.summary?.finalamount.toString()}',
+                                              style: Styles.txtGreyColorW60014,
+                                            ),
+                                          ],
+                                        ),
+                                        Dimens.boxHeight20,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Status :- ",
+                                                  style:
+                                                      Styles
+                                                          .txtBlackColorW60014,
+                                                ),
+                                                Container(
+                                                  padding:
+                                                      Dimens
+                                                          .edgeInsets08_04_08_04,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        getStatusColors(
+                                                          item.status ?? "",
+                                                        ).backgroundColor,
+
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          Dimens.four,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    item.status?.capitalize ??
+                                                        " - ",
+                                                    style: Styles
+                                                        .yellowColorW70012
+                                                        .copyWith(
+                                                          color:
+                                                              getStatusColors(
+                                                                item.status ??
+                                                                    "",
+                                                              ).textColor,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            CustomButton(
+                                              heightBtn: Dimens.thirtyTwo,
+                                              widthBtn: Dimens.hundredFourty,
+                                              onPressed:
+                                                  () => controller.getInvoiceApi(
+                                                    jobNo: item.orderno ?? "",
+                                                    pricemasternameid:
+                                                        item.pricemasternameid
+                                                            .toString(),
+                                                  ),
+                                              text: "Get Invoice",
+                                              textStyle:
+                                                  Styles.txtBlackColorW60014,
+                                              isBorder: true,
+                                              borderColor: ColorsValue.appColor,
+                                              radius: Dimens.four,
+                                              leading: SvgPicture.asset(
+                                                AssetConstants.ic_download,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
+                  // Expanded(
+                  //   child: ListView.builder(
+                  //     itemCount: controller.getAllOrderHistoryList.length,
+                  //     itemBuilder: (context, index) {
+                  //       final element =
+                  //           controller.getAllOrderHistoryList[index];
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -695,5 +742,75 @@ class OrderHistoryScreen extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class StatusColors {
+  final Color backgroundColor;
+  final Color textColor;
+
+  StatusColors({required this.backgroundColor, required this.textColor});
+}
+
+// Main function to get status colors
+StatusColors getStatusColors(String status) {
+  // Convert status to lowercase for case-insensitive comparison
+  final statusLower = status.toLowerCase().trim();
+
+  switch (statusLower) {
+    case 'pending':
+      return StatusColors(
+        backgroundColor: const Color(0xFFFFF4E6), // Light orange
+        textColor: const Color(0xFFFF9800), // Orange
+      );
+
+    case 'complete':
+    case 'completed':
+      return StatusColors(
+        backgroundColor: const Color(0xFFE8F5E9), // Light green
+        textColor: const Color(0xFF4CAF50), // Green
+      );
+
+    case 'cancel':
+    case 'cancelled':
+    case 'canceled':
+      return StatusColors(
+        backgroundColor: const Color(0xFFFFEBEE), // Light red
+        textColor: const Color(0xFFF44336), // Red
+      );
+
+    case 'processing':
+    case 'in progress':
+      return StatusColors(
+        backgroundColor: const Color(0xFFE3F2FD), // Light blue
+        textColor: const Color(0xFF2196F3), // Blue
+      );
+
+    case 'shipped':
+    case 'delivered':
+      return StatusColors(
+        backgroundColor: const Color(0xFFE1F5FE), // Light cyan
+        textColor: const Color(0xFF00BCD4), // Cyan
+      );
+
+    case 'failed':
+    case 'error':
+      return StatusColors(
+        backgroundColor: const Color(0xFFFCE4EC), // Light pink
+        textColor: const Color(0xFFE91E63), // Pink
+      );
+
+    case 'refunded':
+      return StatusColors(
+        backgroundColor: const Color(0xFFF3E5F5), // Light purple
+        textColor: const Color(0xFF9C27B0), // Purple
+      );
+
+    default:
+      // Default colors for unknown status
+      return StatusColors(
+        backgroundColor: const Color(0xFFF5F5F5), // Light grey
+        textColor: const Color(0xFF757575), // Grey
+      );
   }
 }

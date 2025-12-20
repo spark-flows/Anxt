@@ -9,6 +9,11 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OrderHistoryController>(
+      initState: (state) {
+        final controller = Get.find<OrderHistoryController>();
+        final argument = Get.arguments;
+        controller.postOrderDetail(orderId: argument);
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.whiteColor,
@@ -16,7 +21,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
             onTapBack: () {
               Get.back();
             },
-            title: 'Sagar Miyani'.tr,
+            title: controller.getOneOrderData?.customerid?.name ?? ' - ',
             isCenter: true,
           ),
           body: ListView(
@@ -26,9 +31,12 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Product Items (10)", style: Styles.txtBlackColorW50016),
                   Text(
-                    "Order No. :- py-166-2025",
+                    "Product Items (${controller.getOneOrderData?.summary?.quantity})",
+                    style: Styles.txtBlackColorW50016,
+                  ),
+                  Text(
+                    "Order No. :- ${controller.getOneOrderData?.orderno}",
                     style: Styles.txtBlackColorW50016,
                   ),
                 ],
@@ -36,7 +44,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
               Dimens.boxHeight10,
               Wrap(
                 children:
-                    controller.filterInterType.map((e) {
+                    controller.getOneOrderData!.items!.map((e) {
                       return GestureDetector(
                         onTap: () {
                           RouteManagement.goToOrderDetailScreen(srjNum: 'G22K');
@@ -102,19 +110,28 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         _buildRow(
-                                          'Sr. Job No. :- ',
-                                          '1/5987',
+                                          'Job No. :- ',
+                                          e.jobno ?? '',
                                           isBold: true,
                                         ),
-                                        _buildRow('Qta :- ', '1'),
+                                        _buildRow(
+                                          'Qta :- ',
+                                          e.quantity.toString(),
+                                        ),
                                       ],
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        _buildRow('Quality :- ', '14KT'),
-                                        _buildRow('G.W :- ', '120'),
+                                        _buildRow(
+                                          'Quality :- ',
+                                          e.metalQuality ?? '',
+                                        ),
+                                        _buildRow(
+                                          'G.W :- ',
+                                          e.grossweight ?? ' - ',
+                                        ),
                                       ],
                                     ),
                                     Dimens.boxHeight2,
@@ -122,8 +139,14 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        _buildRow('D.W :- ', '120'),
-                                        _buildRow('O.W :- ', '120'),
+                                        _buildRow(
+                                          'D.W :- ',
+                                          e.fineweight ?? ' - ',
+                                        ),
+                                        _buildRow(
+                                          'O.W :- ',
+                                          e.fineweight ?? ' - ',
+                                        ),
                                       ],
                                     ),
                                     Dimens.boxHeight2,
@@ -131,8 +154,16 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        _buildRow('N.W :- ', '120'),
-                                        _buildRow('Price :- ', '1,65,000'),
+                                        _buildRow(
+                                          'N.W :- ',
+                                          e.netweight ?? ' - ',
+                                        ),
+                                        _buildRow(
+                                          'Price :- ',
+                                          Utility.formatIndianCurrency(
+                                            e.diamondamount ?? 0,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -173,13 +204,35 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                 ),
               ),
               Dimens.boxHeight10,
-              CustomButton(
-                onPressed: () {},
-                text: "Pay Payment",
-                textStyle: Styles.whiteColorW60016,
-                backgroundColor: ColorsValue.appColor,
-                radius: Dimens.four,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                  color: ColorsValue.colorDCAC75,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Total Amount", style: Styles.whiteColorW70018),
+                      Text(
+                        Utility.formatIndianCurrency(
+                          controller.getOneOrderData?.summary?.totalamount ?? 0,
+                        ),
+                        style: Styles.whiteColorW70018,
+                      ),
+                    ],
+                  ),
+                ),
               ),
+              // CustomButton(
+              //   onPressed: () {},
+              //   text: "Pay Payment",
+              //   textStyle: Styles.whiteColorW60016,
+              //   backgroundColor: ColorsValue.appColor,
+              //   radius: Dimens.four,
+              // ),
               // Text("Payment Details", style: Styles.txtBlackColorW70016),
               // Dimens.boxHeight10,
               // Container(

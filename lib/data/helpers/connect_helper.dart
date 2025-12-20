@@ -354,6 +354,23 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postStockCatalogue({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+  }) async {
+    var data = {"page": page, "limit": limit, "search": search};
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postStockCatalogue,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postGetProductList({
     bool isLoading = false,
     required int page,
@@ -420,6 +437,59 @@ class ConnectHelper {
 
     var response = await apiWrapper.makeRequest(
       EndPoints.postGetOneTrips,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postOrderHistoryList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String fromDate,
+    required String toDate,
+  }) async {
+    var data = {
+      "page": page,
+      "limit": limit,
+      "fromDate": fromDate,
+      "toDate": toDate,
+      "sortfield": "createdAt",
+      "sortoption": -1,
+    };
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postOrderHistory,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> getDownloadInvoice({bool isLoading = false, required String jobNo,required String pricemasternameid}) async {
+    var response = await apiWrapper.makeRequest(
+      '${EndPoints.getInvoice}=$jobNo&pricemasternameid=$pricemasternameid&slectedKt&makingrate&stonerate&diamondrates',
+      Request.get,
+      null,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postOrderDetail({
+    bool isLoading = false,
+    required String orderid,
+  }) async {
+    var data = {'orderid': orderid};
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postGetOneOrderHistory,
       Request.post,
       data,
       isLoading,

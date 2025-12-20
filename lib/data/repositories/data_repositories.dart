@@ -237,6 +237,37 @@ class DataRepository extends DomainRepository {
     tripId: tripId,
   );
 
+  Future<ResponseModel> postOrderHistoryList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String fromDate,
+    required String toDate,
+  }) async => await connectHelper.postOrderHistoryList(
+    page: page,
+    limit: limit,
+    toDate: toDate,
+    fromDate: fromDate,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> getInvoiceApi({
+    bool isLoading = false,
+    required String jobNo,
+    required String pricemasternameid,
+  }) async => await connectHelper.getDownloadInvoice(
+    jobNo: jobNo,
+    pricemasternameid: pricemasternameid,
+  );
+
+  Future<ResponseModel> postOrderDetail({
+    bool isLoading = false,
+    required String orderId,
+  }) async => await connectHelper.postOrderDetail(
+    isLoading: isLoading,
+    orderid: orderId,
+  );
+
   Future<ResponseModel> postTripDelete({
     bool isLoading = false,
     required String tripId,
@@ -302,6 +333,18 @@ class DataRepository extends DomainRepository {
     limit: limit,
     search: search,
     parentid: parentid,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> postStockCatalogue({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+  }) async => await connectHelper.postStockCatalogue(
+    page: page,
+    limit: limit,
+    search: search,
     isLoading: isLoading,
   );
 

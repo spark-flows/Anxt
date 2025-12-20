@@ -62,6 +62,57 @@ abstract class Utility {
     return header;
   }
 
+  static String formatIndianCurrency(dynamic amount) {
+    // Convert to double if it's a string or int
+    double value;
+    if (amount is String) {
+      value = double.tryParse(amount) ?? 0.0;
+    } else if (amount is int) {
+      value = amount.toDouble();
+    } else {
+      value = amount as double;
+    }
+
+    // Round to 2 decimal places
+    String amountStr = value.toStringAsFixed(2);
+
+    // Split into integer and decimal parts
+    List<String> parts = amountStr.split('.');
+    String integerPart = parts[0];
+    String decimalPart = parts[1];
+
+    // Remove trailing zeros from decimal part
+    decimalPart = decimalPart.replaceAll(RegExp(r'0+$'), '');
+
+    // Format integer part with Indian numbering system
+    String formattedInteger = '';
+    int length = integerPart.length;
+
+    if (length <= 3) {
+      formattedInteger = integerPart;
+    } else {
+      // Last 3 digits
+      formattedInteger = integerPart.substring(length - 3);
+      int remaining = length - 3;
+
+      // Add commas every 2 digits for remaining part
+      while (remaining > 0) {
+        int start = remaining - 2;
+        if (start < 0) start = 0;
+        formattedInteger =
+            integerPart.substring(start, remaining) + ',' + formattedInteger;
+        remaining = start;
+      }
+    }
+
+    // Combine with decimal part if exists
+    if (decimalPart.isNotEmpty) {
+      return '$formattedInteger.$decimalPart';
+    } else {
+      return formattedInteger;
+    }
+  }
+
   //Password validation
   static String? validatePassword(String value) {
     if (value.trim().isNotEmpty) {

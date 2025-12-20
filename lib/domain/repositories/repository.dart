@@ -5,11 +5,14 @@ import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
+import 'package:a_nxt/domain/models/downlaod_invoice_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/getOrderList_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
+import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:flutter/material.dart';
 
@@ -472,6 +475,68 @@ class Repository {
     }
   }
 
+  Future<GetOrderListModel?> postOrderHistoryList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String toDate,
+    required String fromDate,
+  }) async {
+    try {
+      var response = await _dataRepository.postOrderHistoryList(
+        isLoading: isLoading,
+        page: page,
+        limit: limit,
+        toDate: toDate,
+        fromDate: fromDate,
+      );
+      var getOrderListModel = getOrderListModelFromJson(response.data);
+      return getOrderListModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<DownloadInvoiceModel?> getInvoiceApi({
+    bool isLoading = false,
+    required String jobNo,
+    required String pricemasternameid,
+  }) async {
+    try {
+      var response = await _dataRepository.getInvoiceApi(
+        isLoading: isLoading,
+        jobNo: jobNo,
+        pricemasternameid: pricemasternameid,
+      );
+      var getOrderListModel = downloadInvoiceModelFromJson(response.data);
+      return getOrderListModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetOneOrderModel?> postOrderDetail({
+    bool isLoading = false,
+    required String orderId,
+  }) async {
+    try {
+      var response = await _dataRepository.postOrderDetail(
+        isLoading: isLoading,
+        orderId: orderId,
+      );
+      var getOrderDetailModel = getOneOrderModelFromJson(response.data);
+      return getOrderDetailModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<ResponseModel?> postTripDelete({
     bool isLoading = false,
     required String tripId,
@@ -558,6 +623,27 @@ class Repository {
       );
       var getAllFileAndFolder = getAllFileAndFolderFromJson(response.data);
       return getAllFileAndFolder;
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ResponseModel?> postStockCatalogue({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String search,
+  }) async {
+    try {
+      var response = await _dataRepository.postStockCatalogue(
+        limit: limit,
+        page: page,
+        search: search,
+        isLoading: isLoading,
+      );
+      return response;
     } catch (_) {
       Utility.closeDialog();
       UnimplementedError();
