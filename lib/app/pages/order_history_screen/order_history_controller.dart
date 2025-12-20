@@ -1,8 +1,6 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/models/downlaod_invoice_model.dart';
 import 'package:a_nxt/domain/models/getOrderList_model.dart';
-import 'package:a_nxt/domain/models/get_all_tripe_model.dart';
-import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -100,26 +98,21 @@ class OrderHistoryController extends GetxController {
 
   DownloadInvoiceData? downloadedInvoiceData;
 
-  Future<void> getInvoiceApi({
-    required String jobNo,
-    required String pricemasternameid,
-  }) async {
+  Future<void> getInvoiceApi({required String orderNo}) async {
     var response = await orderHistoryPresenter.getInvoiceApi(
       isLoading: false,
-      jobNo: jobNo,
-      pricemasternameid: pricemasternameid,
+      orderNo: orderNo,
     );
     downloadedInvoiceData = null;
     if (response?.data != null) {
       downloadedInvoiceData = response?.data;
       downloadPdf(downloadedInvoiceData?.pdfUrl ?? "");
       Utility.closeLoader();
-      update();
     } else {
       Utility.closeLoader();
       Utility.errorMessage(response?.message ?? "");
     }
-    Utility.errorMessage(response?.message ?? "");
+    update();
   }
 
   Future<void> downloadPdf(String pdfUrl) async {

@@ -25,6 +25,8 @@ class EndPoints {
 
   static String postOrderHistory = 'api/order';
   static String postGetOneOrderHistory = 'api/order/getone';
-  static String getInvoice = 'api/stock/scan?jobno';
-  
+  static String getInvoice = 'api/order/pdf?orderno=';
+
+  static String getScaneData = 'api/stock/scan?jobno=';
+
 }

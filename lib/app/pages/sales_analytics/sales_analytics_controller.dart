@@ -5,7 +5,7 @@ import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -63,6 +63,8 @@ class SalesAnalyticsController extends GetxController {
   TextEditingController cityController = TextEditingController();
   TextEditingController areaController = TextEditingController();
   TextEditingController zipCodeController = TextEditingController();
+
+  TextEditingController jobNoController = TextEditingController();
 
   int pageCount = 1;
   bool isLastPage = false;
@@ -410,25 +412,31 @@ class SalesAnalyticsController extends GetxController {
     update();
   }
 
-  GetStockProductDatum? productDetail;
+  ProductDetailData? oneProductDetail;
 
-  Future<void> getProductApi({required String srjobno}) async {
-    var response = await salesAnalyticsPresenter.getProductApi(
+  Future<void> getScaneData({
+    required String jobNo,
+    required String pricemasternameId,
+  }) async {
+    var response = await salesAnalyticsPresenter.getScaneData(
       isLoading: false,
-      srjobno: srjobno,
+      jobNo: jobNo,
+      pricemasternameId: pricemasternameId,
     );
-    productDetail = null;
+    oneProductDetail = null;
     if (response?.data != null) {
-      productDetail = response?.data?[0];
-      if (productDetail != null) {
-        RouteManagement.goToProductDetailScreen(productDetail: productDetail!);
+      oneProductDetail = response?.data;
+      if (oneProductDetail != null) {
+        RouteManagement.goToProductDetailScreen(
+          productDetail: oneProductDetail!,
+        );
       }
       Utility.closeLoader();
-      update();
     } else {
       Utility.closeLoader();
       Utility.errorMessage(response?.message ?? "");
     }
+    update();
   }
 }
 

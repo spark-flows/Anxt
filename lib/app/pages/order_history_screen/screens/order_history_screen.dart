@@ -1,14 +1,11 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/getOrderList_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 
 class OrderHistoryScreen extends StatelessWidget {
   const OrderHistoryScreen({super.key});
@@ -697,12 +694,11 @@ class OrderHistoryScreen extends StatelessWidget {
                                               heightBtn: Dimens.thirtyTwo,
                                               widthBtn: Dimens.hundredFourty,
                                               onPressed:
-                                                  () => controller.getInvoiceApi(
-                                                    jobNo: item.orderno ?? "",
-                                                    pricemasternameid:
-                                                        item.pricemasternameid
-                                                            .toString(),
-                                                  ),
+                                                  () =>
+                                                      controller.getInvoiceApi(
+                                                        orderNo:
+                                                            item.orderno ?? "",
+                                                      ),
                                               text: "Get Invoice",
                                               textStyle:
                                                   Styles.txtBlackColorW60014,

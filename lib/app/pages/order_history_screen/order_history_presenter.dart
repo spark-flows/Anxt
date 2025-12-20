@@ -25,12 +25,10 @@ class OrderHistoryPresenter {
 
   Future<DownloadInvoiceModel?> getInvoiceApi({
     bool isLoading = false,
-    required String jobNo,
-    required String pricemasternameid,
+    required String orderNo,
   }) async => await orderHistoryUsecases.getInvoiceApi(
     isLoading: isLoading,
-    jobNo: jobNo,
-    pricemasternameid: pricemasternameid,
+    orderNo: orderNo,
   );
 
   Future<GetOneOrderModel?> postOrderDetail({

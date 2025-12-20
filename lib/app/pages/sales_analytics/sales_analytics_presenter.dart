@@ -4,6 +4,7 @@ import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/product_detail_model.dart';
 
 class SalesAnalyticsPresenter {
   SalesAnalyticsPresenter(this.salesAnalyticsUsecases);
@@ -126,11 +127,13 @@ class SalesAnalyticsPresenter {
     search: search,
   );
 
-  Future<GetStockProductModel?> getProductApi({
+  Future<ProductDetailModel?> getScaneData({
     bool isLoading = false,
-    required String srjobno,
-  }) async => await salesAnalyticsUsecases.getProductApi(
-    srjobno: srjobno,
+    required String jobNo,
+    required String pricemasternameId,
+  }) async => await salesAnalyticsUsecases.getScaneData(
     isLoading: isLoading,
+    jobNo: jobNo,
+    pricemasternameId: pricemasternameId,
   );
 }

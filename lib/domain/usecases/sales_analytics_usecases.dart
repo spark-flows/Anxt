@@ -6,6 +6,7 @@ import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
+import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:a_nxt/domain/repositories/repository.dart';
 
 class SalesAnalyticsUsecases {
@@ -132,9 +133,13 @@ class SalesAnalyticsUsecases {
     search: search,
   );
 
-  Future<GetStockProductModel?> getProductApi({
+  Future<ProductDetailModel?> getScaneData({
     bool isLoading = false,
-    required String srjobno,
-  }) async =>
-      await repository.getProductApi(srjobno: srjobno, isLoading: isLoading);
+    required String jobNo,
+    required String pricemasternameId,
+  }) async => await repository.getScaneData(
+    isLoading: isLoading,
+    jobNo: jobNo,
+    pricemasternameId: pricemasternameId,
+  );
 }

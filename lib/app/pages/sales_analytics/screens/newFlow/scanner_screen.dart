@@ -22,8 +22,9 @@ class ScannerScreen extends StatelessWidget {
             ),
             fit: BoxFit.cover,
             onDetect: (BarcodeCapture capture) {
-              controller.getProductApi(
-                srjobno: capture.barcodes.first.rawValue ?? '',
+              controller.getScaneData(
+                jobNo: capture.barcodes.first.rawValue ?? '',
+                pricemasternameId: '',
               );
               Get.back();
             },

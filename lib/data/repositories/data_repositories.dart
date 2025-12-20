@@ -119,12 +119,6 @@ class DataRepository extends DomainRepository {
     expenseCatid: expenseCatid,
   );
 
-  Future<ResponseModel> getProductApi({
-    bool isLoading = false,
-    required String srjobno,
-  }) async =>
-      await connectHelper.getProductApi(srjobno: srjobno, isLoading: isLoading);
-
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -253,9 +247,14 @@ class DataRepository extends DomainRepository {
 
   Future<ResponseModel> getInvoiceApi({
     bool isLoading = false,
+    required String orderNo,
+  }) async => await connectHelper.getDownloadInvoice(orderNo: orderNo);
+
+  Future<ResponseModel> getScaneData({
+    bool isLoading = false,
     required String jobNo,
     required String pricemasternameid,
-  }) async => await connectHelper.getDownloadInvoice(
+  }) async => await connectHelper.getScaneData(
     jobNo: jobNo,
     pricemasternameid: pricemasternameid,
   );

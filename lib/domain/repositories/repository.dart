@@ -14,6 +14,7 @@ import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/app.dart';
@@ -283,24 +284,6 @@ class Repository {
     }
   }
 
-  Future<GetStockProductModel?> getProductApi({
-    bool isLoading = false,
-    required String srjobno,
-  }) async {
-    try {
-      var response = await _dataRepository.getProductApi(
-        isLoading: isLoading,
-        srjobno: srjobno,
-      );
-      var productDetailModel = getStockProductModelFromJson(response.data);
-      return productDetailModel;
-    } catch (_, e) {
-      Utility.closeDialog();
-      Utility.snacBar(e.toString(), Colors.deepOrange);
-      return null;
-    }
-  }
-
   Future<CreateCustomerModel?> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -501,16 +484,34 @@ class Repository {
 
   Future<DownloadInvoiceModel?> getInvoiceApi({
     bool isLoading = false,
-    required String jobNo,
-    required String pricemasternameid,
+    required String orderNo,
   }) async {
     try {
       var response = await _dataRepository.getInvoiceApi(
         isLoading: isLoading,
-        jobNo: jobNo,
-        pricemasternameid: pricemasternameid,
+        orderNo: orderNo,
       );
       var getOrderListModel = downloadInvoiceModelFromJson(response.data);
+      return getOrderListModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ProductDetailModel?> getScaneData({
+    bool isLoading = false,
+    required String jobNo,
+    required String pricemasternameId,
+  }) async {
+    try {
+      var response = await _dataRepository.getScaneData(
+        isLoading: isLoading,
+        jobNo: jobNo,
+        pricemasternameid: pricemasternameId,
+      );
+      var getOrderListModel = productDetailModelFromJson(response.data);
       return getOrderListModel;
     } catch (e) {
       Utility.closeDialog();

@@ -1,6 +1,8 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
+import 'package:a_nxt/domain/models/product_detail_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -8,7 +10,7 @@ import 'package:lottie/lottie.dart';
 class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
 
-  GetStockProductDatum? productDetail;
+  ProductDetailData? productDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,28 @@ class ProductDetailScreen extends StatelessWidget {
                       alignment: Alignment.bottomLeft,
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            width: double.infinity,
-                            // productDetail?.,
-                            'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-                            height: Get.height * .24,
+                          borderRadius: BorderRadius.circular(Dimens.ten),
+                          child: CachedNetworkImage(
+                            imageUrl: productDetail?.image ?? "",
                             fit: BoxFit.cover,
+                            height: Get.height * .24,
+                            width: double.infinity,
+                            placeholder: (context, url) {
+                              return Image.asset(
+                                'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+                                fit: BoxFit.cover,
+                                height: Get.height * .24,
+                                width: double.infinity,
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return Image.asset(
+                                'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+                                fit: BoxFit.cover,
+                                height: Get.height * .24,
+                                width: double.infinity,
+                              );
+                            },
                           ),
                         ),
                         Align(

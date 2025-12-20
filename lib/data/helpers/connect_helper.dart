@@ -215,20 +215,6 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> getProductApi({
-    bool isLoading = false,
-    String? srjobno,
-  }) async {
-    var response = await apiWrapper.makeRequest(
-      '${EndPoints.getScan}?jobno=$srjobno',
-      Request.get,
-      null,
-      isLoading,
-      Utility.commonHeader(),
-    );
-    return response;
-  }
-
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,
@@ -471,9 +457,27 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> getDownloadInvoice({bool isLoading = false, required String jobNo,required String pricemasternameid}) async {
+  Future<ResponseModel> getDownloadInvoice({
+    bool isLoading = false,
+    required String orderNo,
+  }) async {
     var response = await apiWrapper.makeRequest(
-      '${EndPoints.getInvoice}=$jobNo&pricemasternameid=$pricemasternameid&slectedKt&makingrate&stonerate&diamondrates',
+      '${EndPoints.getInvoice}$orderNo',
+      Request.get,
+      null,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> getScaneData({
+    bool isLoading = false,
+    required String jobNo,
+    required String pricemasternameid,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      '${EndPoints.getScaneData}$jobNo&pricemasternameid=$pricemasternameid&slectedKt&makingrate&stonerate&diamondrates',
       Request.get,
       null,
       isLoading,

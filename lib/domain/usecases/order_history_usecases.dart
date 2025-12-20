@@ -24,13 +24,9 @@ class OrderHistoryUsecases {
 
   Future<DownloadInvoiceModel?> getInvoiceApi({
     bool isLoading = false,
-    required String jobNo,
-    required String pricemasternameid,
-  }) async => await repository.getInvoiceApi(
-    isLoading: isLoading,
-    jobNo: jobNo,
-    pricemasternameid: pricemasternameid,
-  );
+    required String orderNo,
+  }) async =>
+      await repository.getInvoiceApi(isLoading: isLoading, orderNo: orderNo);
 
   Future<GetOneOrderModel?> postOrderDetail({
     bool isLoading = false,
