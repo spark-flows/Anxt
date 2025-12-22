@@ -49,7 +49,7 @@ class ProductDetailData {
   List<ProductDetailDiamondcomponent>? diamondcomponents;
   List<dynamic>? stonecomponents;
   List<ProductDetailMakingcomponent>? makingcomponents;
-  List<dynamic>? huidcomponents;
+  List<Component>? huidcomponents;
   String? grossweight;
   String? netweight;
   String? fineweight;
@@ -124,7 +124,7 @@ class ProductDetailData {
         stonecomponents:
             json["stonecomponents"] == null
                 ? []
-                : List<dynamic>.from(json["stonecomponents"]!.map((x) => x)),
+                : List<Component>.from(json["stonecomponents"]!.map((x) => x)),
         makingcomponents:
             json["makingcomponents"] == null
                 ? []
@@ -136,7 +136,9 @@ class ProductDetailData {
         huidcomponents:
             json["huidcomponents"] == null
                 ? []
-                : List<dynamic>.from(json["huidcomponents"]!.map((x) => x)),
+                : List<Component>.from(
+                  json["huidcomponents"]!.map((x) => Component.fromJson(x)),
+                ),
         grossweight: json["grossweight"],
         netweight: json["netweight"],
         fineweight: json["fineweight"],
@@ -183,7 +185,7 @@ class ProductDetailData {
     "huidcomponents":
         huidcomponents == null
             ? []
-            : List<dynamic>.from(huidcomponents!.map((x) => x)),
+            : List<Component>.from(huidcomponents!.map((x) => x)),
     "grossweight": grossweight,
     "netweight": netweight,
     "fineweight": fineweight,
@@ -364,5 +366,31 @@ class ProductDetailMetalcomponent {
     "fineweight": fineweight,
     "rate": rate,
     "amount": amount,
+  };
+}
+
+class Component {
+  String? material;
+  String? number;
+  int? rate;
+  int? amount;
+  double? weight;
+
+  Component({this.material, this.number, this.rate, this.amount, this.weight});
+
+  factory Component.fromJson(Map<String, dynamic> json) => Component(
+    material: json["material"] ?? "",
+    number: json["number"] ?? '',
+    rate: json["rate"] ?? 0,
+    amount: json["amount"] ?? 0,
+    weight: json["weight"]?.toDouble() ?? 0.0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "material": material,
+    "number": number,
+    "rate": rate,
+    "amount": amount,
+    "weight": weight,
   };
 }

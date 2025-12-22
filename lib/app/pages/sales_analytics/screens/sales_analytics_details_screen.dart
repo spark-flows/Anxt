@@ -42,23 +42,14 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
             padding: Dimens.edgeInsets20,
             child: Row(
               children: [
-                // Expanded(
-                //   child: CustomButton(
-                //     heightBtn: Dimens.fifty,
-                //     radius: Dimens.zero,
-                //     onPressed: () {},
-                //     text: 'Save',
-                //     textStyle: Styles.whiteColorW60016,
-                //     backgroundColor: ColorsValue.appColor,
-                //   ),
-                // ),
-                // Dimens.boxWidth20,
                 Expanded(
                   child: CustomButton(
                     heightBtn: Dimens.fifty,
                     radius: Dimens.zero,
                     onPressed: () {
-                      RouteManagement.goToFindProductScreen();
+                      RouteManagement.goToFindProductScreen(
+                        customerDetail: user,
+                      );
                       // RouteManagement.goToSalesAnalyticsProductScreen();
                     },
                     text: 'Next',

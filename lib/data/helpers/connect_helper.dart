@@ -231,6 +231,41 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postAddToCart({
+    bool isLoading = false,
+    required String cartId,
+    required String jobNo,
+    required String customerid,
+    required String salesmanid,
+    required String salesid,
+    required String salesexecutiveid,
+    required String pricemasternameid,
+    required String diamondrates,
+    required String makingrate,
+    required String stonerate,
+  }) async {
+    var data = {
+      "cartid": cartId,
+      'jobno': jobNo,
+      "customerid": customerid,
+      "salesmanid": salesmanid,
+      "salesid": salesid,
+      "salesexecutiveid": salesexecutiveid,
+      "pricemasternameid": pricemasternameid,
+      "diamondrates": diamondrates,
+      "makingrate": makingrate,
+      "stonerate": stonerate,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postAddToCart,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
     required String customerId,

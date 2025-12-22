@@ -1,5 +1,6 @@
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/add_to_cart_model.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
@@ -146,5 +147,31 @@ class SalesAnalyticsPresenter {
     isLoading: isLoading,
     page: page,
     limit: limit,
+  );
+
+  Future<AddToCartModel?> postAddToCart({
+    bool isLoading = false,
+    required String cartId,
+    required String jobNo,
+    required String customerid,
+    required String salesmanid,
+    required String salesid,
+    required String salesexecutiveid,
+    required String pricemasternameid,
+    required String diamondrates,
+    required String makingrate,
+    required String stonerate,
+  }) async => await salesAnalyticsUsecases.postAddToCart(
+    isLoading: isLoading,
+    cartId: cartId,
+    jobNo: jobNo,
+    customerid: customerid,
+    salesmanid: salesmanid,
+    salesid: salesid,
+    salesexecutiveid: salesexecutiveid,
+    pricemasternameid: pricemasternameid,
+    diamondrates: diamondrates,
+    makingrate: makingrate,
+    stonerate: stonerate,
   );
 }

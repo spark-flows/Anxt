@@ -45,14 +45,22 @@ abstract class RouteManagement {
   static void goToStockCatalogueDetailScreen(String id) =>
       Get.toNamed<void>(Routes.stockCatalogueDetailScreen, arguments: id);
 
-  static void goToFindProductScreen() =>
-      Get.toNamed<void>(Routes.findProductSRJOScreen);
+  static void goToFindProductScreen({GetOneUserData? customerDetail}) =>
+      Get.toNamed<void>(
+        Routes.findProductSRJOScreen,
+        arguments: customerDetail,
+      );
 
-  static void goToScannerScreen() => Get.toNamed<void>(Routes.scannerScreen);
+  static void goToScannerScreen({GetOneUserData? customerDetail}) =>
+      Get.toNamed<void>(Routes.scannerScreen, arguments: customerDetail);
 
   static void goToProductDetailScreen({
     required ProductDetailData productDetail,
-  }) => Get.toNamed<void>(Routes.productDetailScreen, arguments: productDetail);
+    GetOneUserData? customerDetail,
+  }) => Get.toNamed<void>(
+    Routes.productDetailScreen,
+    arguments: [productDetail, customerDetail],
+  );
 
   static void goToOrderDetailScreen({required String srjNum}) =>
       Get.toNamed<void>(Routes.orderDetailScreen, arguments: srjNum);

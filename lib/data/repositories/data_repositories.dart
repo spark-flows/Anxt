@@ -111,7 +111,6 @@ class DataRepository extends DomainRepository {
   Future<ResponseModel> getExpenseCategory({bool isLoading = false}) async =>
       await connectHelper.getExpenseCategory(isLoading: isLoading);
 
-
   Future<ResponseModel> getOneExpense({
     bool isLoading = false,
     required String expenseCatid,
@@ -119,6 +118,7 @@ class DataRepository extends DomainRepository {
     isLoading: isLoading,
     expenseCatid: expenseCatid,
   );
+
 
   Future<ResponseModel> postPriceMasterList({
     bool isLoading = false,
@@ -128,6 +128,32 @@ class DataRepository extends DomainRepository {
     isLoading: isLoading,
     page: page,
     limit: limit,
+  );
+
+  Future<ResponseModel> postAddToCart({
+    bool isLoading = false,
+    required String cartId,
+    required String jobNo,
+    required String customerid,
+    required String salesmanid,
+    required String salesid,
+    required String salesexecutiveid,
+    required String pricemasternameid,
+    required String diamondrates,
+    required String makingrate,
+    required String stonerate,
+  }) async => await connectHelper.postAddToCart(
+    isLoading: isLoading,
+    cartId: cartId,
+    jobNo: jobNo,
+    customerid: customerid,
+    salesmanid: salesmanid,
+    salesid: salesid,
+    salesexecutiveid: salesexecutiveid,
+    pricemasternameid: pricemasternameid,
+    diamondrates: diamondrates,
+    makingrate: makingrate,
+    stonerate: stonerate,
   );
 
   Future<ResponseModel> postCreateCustomer({

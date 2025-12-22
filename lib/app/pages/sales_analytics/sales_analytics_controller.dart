@@ -3,6 +3,7 @@ import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/cart_screen.dart
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/add_to_cart_model.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
@@ -344,9 +345,16 @@ class SalesAnalyticsController extends GetxController {
   bool is18KSelected = false;
   bool is14KSelected = false;
 
-  int calculateTotal(int total) {
-    if (is18KSelected) total += 1500;
-    if (is14KSelected) total += 1000;
+  double calculateTotal(double baseTotal, double rate18kt, double rate14kt) {
+    double total = baseTotal;
+
+    if (is18KSelected) {
+      total += rate18kt;
+    }
+    if (is14KSelected) {
+      total += rate14kt;
+    }
+
     return total;
   }
 
@@ -408,14 +416,15 @@ class SalesAnalyticsController extends GetxController {
 
   ProductDetailData? oneProductDetail;
 
+
   Future<void> getScaneData({
     required String jobNo,
-    required String pricemasternameId,
+    GetOneUserData? customerId,
   }) async {
     var response = await salesAnalyticsPresenter.getScaneData(
       isLoading: false,
       jobNo: jobNo,
-      pricemasternameId: pricemasternameId,
+      pricemasternameId: 'cbf675c0-8e43-4555-a9b8-d8f33928989b',
     );
     oneProductDetail = null;
     if (response?.data != null) {
@@ -423,6 +432,7 @@ class SalesAnalyticsController extends GetxController {
       if (oneProductDetail != null) {
         RouteManagement.goToProductDetailScreen(
           productDetail: oneProductDetail!,
+          customerDetail: customerId,
         );
       }
       Utility.closeLoader();
@@ -435,8 +445,7 @@ class SalesAnalyticsController extends GetxController {
 
   List<PriceMasterListDoc> paymentMasterList = [];
   PriceMasterListData? priceMasterListData;
-  String? paymentMaster;
-
+  PriceMasterListDoc? paymentMaster;
 
   Future<void> postPriceMasterList() async {
     var response = await salesAnalyticsPresenter.postPriceMasterList(
@@ -447,6 +456,37 @@ class SalesAnalyticsController extends GetxController {
     paymentMasterList.clear();
     if (response?.data != null) {
       paymentMasterList.addAll(response?.data?.docs ?? []);
+      Utility.closeLoader();
+    } else {
+      Utility.closeLoader();
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  AddToCartData? addToCartData;
+
+  Future<void> postAddToCart({
+    required String jobNo,
+    required String customerId,
+    required String pricemasternameid,
+  }) async {
+    var response = await salesAnalyticsPresenter.postAddToCart(
+      isLoading: false,
+      cartId: '',
+      jobNo: jobNo,
+      customerid: customerId,
+      salesmanid: getOneUser?.sales?.first.salesperson?.id ?? "",
+      salesid: '',
+      salesexecutiveid: '',
+      pricemasternameid: pricemasternameid,
+      diamondrates: '',
+      makingrate: '',
+      stonerate: '',
+    );
+    addToCartData = null;
+    if (response?.data != null) {
+      addToCartData = response?.data;
       Utility.closeLoader();
     } else {
       Utility.closeLoader();

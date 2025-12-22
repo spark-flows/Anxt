@@ -47,7 +47,6 @@ abstract class _Paths {
   static const tripDetailsScreen = '/tripDetailsScreen';
   static const addTripScreen = '/addTripScreen';
   static const addExpenseTripScreen = '/addExpenseTripScreen';
-
   static const documentScreen = '/documentScreen';
   static const documentDetailScreen = '/documentDetailScreen';
   static const stockCatalogueScreen = '/stockCatalogueScreen';

@@ -1,5 +1,6 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/widgets/custom_listtileView.dart';
+import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,13 +12,15 @@ class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
 
   ProductDetailData? productDetail;
+  GetOneUserData customerId = GetOneUserData();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
       initState: (state) {
         final controller = Get.find<SalesAnalyticsController>();
-        productDetail = Get.arguments;
+        productDetail = Get.arguments[0];
+        customerId = Get.arguments[1];
         controller.postPriceMasterList();
       },
       builder: (controller) {
@@ -205,14 +208,27 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
 
                     // Other Details
-                    DetailsExpansion(
-                      title: "Other Details",
-                      header: const ["Code", "Amount"],
-                      rows: const [
-                        ["G14KTR", "11560"],
-                      ],
-                      totalRow: const ["", "11560"],
-                    ),
+                    if ((productDetail?.huidcomponents ?? []).isNotEmpty)
+                      DetailsExpansion(
+                        title: "Other Details",
+                        header: const ["Code", "Amount"],
+                        rows:
+                            (productDetail?.huidcomponents ?? []).map((huid) {
+                              return [
+                                huid.material ?? "",
+                                Utility.formatIndianCurrency(huid.amount ?? 0),
+                              ];
+                            }).toList(),
+                        totalRow: [
+                          "",
+                          Utility.formatIndianCurrency(
+                            double.tryParse(
+                                  productDetail?.huidcharges ?? "0",
+                                ) ??
+                                0,
+                          ),
+                        ],
+                      ),
 
                     // Making Details
                     if ((productDetail?.makingcomponents ?? []).isNotEmpty)
@@ -261,7 +277,7 @@ class ProductDetailScreen extends StatelessWidget {
                         //         ? Border.all(color: Colors.red)
                         //         : null,
                       ),
-                      child: DropdownButton<String>(
+                      child: DropdownButton<PriceMasterListDoc>(
                         underline: Container(),
                         isDense: true,
                         isExpanded: true,
@@ -269,8 +285,8 @@ class ProductDetailScreen extends StatelessWidget {
                         hint: Text('Select Price Master'),
                         onChanged: (value) {
                           controller.paymentMaster = value;
-                          controller.paymentMaster = null;
-                          controller.nextDateController.clear();
+                          // controller.paymentMaster = null;
+                          // controller.nextDateController.clear();
                           // showError = false;
                           controller.update();
                           // setState(() {});
@@ -278,10 +294,11 @@ class ProductDetailScreen extends StatelessWidget {
                         items:
                             controller.paymentMasterList
                                 .map(
-                                  (option) => DropdownMenuItem(
-                                    value: option.name,
-                                    child: Text(option.name ?? ''),
-                                  ),
+                                  (option) =>
+                                      DropdownMenuItem<PriceMasterListDoc>(
+                                        value: option,
+                                        child: Text(option.name ?? ''),
+                                      ),
                                 )
                                 .toList(),
                       ),
@@ -330,7 +347,8 @@ class ProductDetailScreen extends StatelessWidget {
                                   Expanded(
                                     child: _buildOptionTile(
                                       label: '18K :-',
-                                      price: '\$1500',
+                                      price:
+                                          '\$${productDetail?.labGrownDiamondRates?['18kt'] ?? 0}',
                                       isSelected: controller.is18KSelected,
                                       onTap: () {
                                         controller.is18KSelected =
@@ -346,7 +364,8 @@ class ProductDetailScreen extends StatelessWidget {
                                   Expanded(
                                     child: _buildOptionTile(
                                       label: '14K :-',
-                                      price: '\$1000',
+                                      price:
+                                          '\$${productDetail?.labGrownDiamondRates?['14kt'] ?? 0}',
                                       isSelected: controller.is14KSelected,
                                       onTap: () {
                                         controller.is14KSelected =
@@ -423,15 +442,23 @@ class ProductDetailScreen extends StatelessWidget {
                         children: [
                           Text('Final Amount', style: Styles.whiteColorW70018),
                           Text(
-                            controller.calculateTotal(41630).toString(),
+                            controller
+                                .calculateTotal(
+                                  double.tryParse(
+                                        productDetail?.totalamount ?? "0",
+                                      ) ??
+                                      0,
+                                  productDetail
+                                          ?.labGrownDiamondRates?['18kt'] ??
+                                      0,
+                                  productDetail
+                                          ?.labGrownDiamondRates?['14kt'] ??
+                                      0,
+                                )
+                                .toString(),
                             style: Styles.whiteColorW70018.copyWith(
                               fontSize: 20,
                             ),
-                            // const TextStyle(
-                            //   fontSize: 20,
-                            //   fontWeight: FontWeight.w700,
-                            //   color: Colors.white,
-                            // ),
                           ),
                         ],
                       ),
@@ -496,10 +523,13 @@ class ProductDetailScreen extends StatelessWidget {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                                RouteManagement.goToCartScreen();
-                                // await dbHelper.insertProduct(element);
-                                // await ProductDBManager.instance.insert(element);
-                                // RouteManagement.goToAddNewCustomerScreen();
+                                // RouteManagement.goToCartScreen();
+                                controller.postAddToCart(
+                                  jobNo: productDetail?.jobno ?? "",
+                                  customerId: customerId.id ?? "",
+                                  pricemasternameid:
+                                      controller.paymentMaster?.id ?? "",
+                                );
                               },
                               child: Container(
                                 alignment: Alignment.center,

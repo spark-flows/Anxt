@@ -47,7 +47,9 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                     (controller.getOneOrderData?.items ?? []).map((e) {
                       return GestureDetector(
                         onTap: () {
-                          RouteManagement.goToOrderDetailScreen(srjNum: 'G22K');
+                          RouteManagement.goToOrderDetailScreen(
+                            srjNum: e.jobno ?? "",
+                          );
                         },
                         child: Container(
                           margin: Dimens.edgeInsetsBottom5,

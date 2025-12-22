@@ -1,13 +1,20 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FindProductSRJO extends StatelessWidget {
-  const FindProductSRJO({super.key});
+  FindProductSRJO({super.key});
+
+  GetOneUserData? getOneUserData;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
+      initState: (state) {
+        getOneUserData = Get.arguments;
+        // RouteManagement.goToProductDetailScreen(srjNum: 'G22K');
+      },
       builder: (controller) {
         return Scaffold(
           appBar: AppBarWidget(
@@ -70,7 +77,9 @@ class FindProductSRJO extends StatelessWidget {
                           child: CustomButton(
                             text: "By Scan",
                             onPressed: () {
-                              RouteManagement.goToScannerScreen();
+                              RouteManagement.goToScannerScreen(
+                                customerDetail: getOneUserData,
+                              );
                             },
                             heightBtn: 48,
                             radius: 14,
@@ -85,7 +94,10 @@ class FindProductSRJO extends StatelessWidget {
                           child: CustomButton(
                             text: "By Job No.",
                             onPressed: () {
-                              showSrJobPopup(context);
+                              showSrJobPopup(
+                                context,
+                                getOneUserData: getOneUserData!,
+                              );
                             },
                             heightBtn: 48,
                             radius: 14,
@@ -107,19 +119,24 @@ class FindProductSRJO extends StatelessWidget {
     );
   }
 
-  void showSrJobPopup(BuildContext context) {
+  void showSrJobPopup(
+    BuildContext context, {
+    required GetOneUserData getOneUserData,
+  }) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const SrJobPopup();
+        return SrJobPopup(getOneUserData: getOneUserData);
       },
     );
   }
 }
 
 class SrJobPopup extends StatelessWidget {
-  const SrJobPopup({super.key});
+  SrJobPopup({super.key, required this.getOneUserData});
+
+  GetOneUserData? getOneUserData;
 
   @override
   Widget build(BuildContext context) {
@@ -167,12 +184,11 @@ class SrJobPopup extends StatelessWidget {
                   ),
                   Dimens.boxHeight20,
                   CustomButton(
-                    text: "View Details",
+                    text: "Search Product",
                     onPressed: () {
                       controller.getScaneData(
                         jobNo: controller.jobNoController.text,
-                        pricemasternameId:
-                            'cbf675c0-8e43-4555-a9b8-d8f33928989b',
+                        customerId: getOneUserData,
                       );
                     },
                     radius: 0,
