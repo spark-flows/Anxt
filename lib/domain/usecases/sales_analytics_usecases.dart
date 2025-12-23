@@ -5,6 +5,7 @@ import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/getoneUser_Model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
@@ -180,4 +181,10 @@ class SalesAnalyticsUsecases {
     makingrate: makingrate,
     stonerate: stonerate,
   );
+
+  Future<GetOneCartModel?> postGetOneCart({
+    bool isLoading = false,
+    required String orderId,
+  }) async =>
+      await repository.postGetOneCart(isLoading: isLoading, orderId: orderId);
 }

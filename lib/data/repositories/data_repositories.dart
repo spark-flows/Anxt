@@ -119,7 +119,6 @@ class DataRepository extends DomainRepository {
     expenseCatid: expenseCatid,
   );
 
-
   Future<ResponseModel> postPriceMasterList({
     bool isLoading = false,
     required int page,
@@ -154,6 +153,14 @@ class DataRepository extends DomainRepository {
     diamondrates: diamondrates,
     makingrate: makingrate,
     stonerate: stonerate,
+  );
+
+  Future<ResponseModel> postGetOneCart({
+    bool isLoading = false,
+    required String orderId,
+  }) async => await connectHelper.postGetOneCart(
+    isLoading: isLoading,
+    orderId: orderId,
   );
 
   Future<ResponseModel> postCreateCustomer({

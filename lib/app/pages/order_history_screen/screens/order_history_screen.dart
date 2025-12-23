@@ -408,9 +408,15 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                 .filterInterValue = 0;
 
                                                             controller.update();
-                                                            // controller
-                                                            //     .attendancePagingController
-                                                            //     .refresh();
+                                                            await controller
+                                                                .postGetAllTripList(
+                                                                  1,
+                                                                  fromDate:
+                                                                      controller
+                                                                          .selectDateController
+                                                                          .text,
+                                                                  toDate: '',
+                                                                );
                                                             Get.back();
                                                           },
                                                           child: Container(
@@ -455,11 +461,20 @@ class OrderHistoryScreen extends StatelessWidget {
                                                       Expanded(
                                                         child: InkWell(
                                                           onTap: () async {
+                                                            await controller
+                                                                .postGetAllTripList(
+                                                                  1,
+                                                                  fromDate:
+                                                                      controller
+                                                                          .selectDateController
+                                                                          .text,
+                                                                  toDate: '',
+                                                                );
                                                             Get.back();
                                                             // controller
-                                                            //     .attendancePagingController
+                                                            //     .orderHistoryPagingController
                                                             //     .refresh();
-                                                            controller.update();
+                                                            // controller.update();
                                                           },
                                                           child: Container(
                                                             alignment:

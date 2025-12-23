@@ -12,6 +12,7 @@ import 'package:a_nxt/domain/models/getOrderList_model.dart';
 import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:a_nxt/domain/models/get_all_category_subcategory.dart';
 import 'package:a_nxt/domain/models/get_all_expences_category.dart';
+import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
@@ -338,6 +339,28 @@ class Repository {
         stonerate: stonerate,
       );
       var getOneExpenseCategory = addToCartModelFromJson(response.data);
+      if (getOneExpenseCategory.data != null) {
+        return getOneExpenseCategory;
+      } else {
+        return getOneExpenseCategory;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<GetOneCartModel?> postGetOneCart({
+    bool isLoading = false,
+    required String orderId,
+  }) async {
+    try {
+      var response = await _dataRepository.postGetOneCart(
+        isLoading: isLoading,
+        orderId: orderId,
+      );
+      var getOneExpenseCategory = getOneCartModelFromJson(response.data);
       if (getOneExpenseCategory.data != null) {
         return getOneExpenseCategory;
       } else {

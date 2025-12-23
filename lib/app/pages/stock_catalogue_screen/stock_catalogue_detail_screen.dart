@@ -66,6 +66,7 @@ class StockCatalogueDetailScreen extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () async {
+                                  print('object');
                                   // showDeleteDialog(
                                   //   context,
                                   //   selectedIndex: selectedIndex,

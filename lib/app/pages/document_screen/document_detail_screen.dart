@@ -70,6 +70,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
+                                  print('object');
                                   // showDeleteDialog(
                                   //   context,
                                   //   selectedIndex: selectedIndex,

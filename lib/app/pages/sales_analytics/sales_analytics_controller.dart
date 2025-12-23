@@ -6,6 +6,7 @@ import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/add_to_cart_model.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
@@ -402,9 +403,9 @@ class SalesAnalyticsController extends GetxController {
     ),
   ];
 
-  void updateQuantity(int index, int delta) {
-    if (cartItems[index].quantity + delta > 0) {
-      cartItems[index].quantity += delta;
+  void updateQuantity(int quantity, int delta) {
+    if (quantity + delta > 0) {
+      quantity += delta;
     }
     update();
   }
@@ -415,7 +416,6 @@ class SalesAnalyticsController extends GetxController {
   }
 
   ProductDetailData? oneProductDetail;
-
 
   Future<void> getScaneData({
     required String jobNo,
@@ -446,6 +446,7 @@ class SalesAnalyticsController extends GetxController {
   List<PriceMasterListDoc> paymentMasterList = [];
   PriceMasterListData? priceMasterListData;
   PriceMasterListDoc? paymentMaster;
+  bool showPriceMasterError = false;
 
   Future<void> postPriceMasterList() async {
     var response = await salesAnalyticsPresenter.postPriceMasterList(
@@ -487,6 +488,25 @@ class SalesAnalyticsController extends GetxController {
     addToCartData = null;
     if (response?.data != null) {
       addToCartData = response?.data;
+      RouteManagement.goToCartScreen(orderId: addToCartData?.id ?? "");
+      Utility.closeLoader();
+    } else {
+      Utility.closeLoader();
+      Utility.errorMessage(response?.message ?? "");
+    }
+    update();
+  }
+
+  GetOneCartData? getOneCartData;
+
+  Future<void> postGetOneCart({required String orderId}) async {
+    var response = await salesAnalyticsPresenter.postGetOneCart(
+      isLoading: false,
+      orderId: orderId,
+    );
+    getOneCartData = null;
+    if (response?.data != null) {
+      getOneCartData = response?.data;
       Utility.closeLoader();
     } else {
       Utility.closeLoader();

@@ -272,10 +272,6 @@ class ProductDetailScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: ColorsValue.whiteColor,
                         borderRadius: BorderRadius.circular(Dimens.ten),
-                        // border:
-                        //     showError && controller.selectStatus == null
-                        //         ? Border.all(color: Colors.red)
-                        //         : null,
                       ),
                       child: DropdownButton<PriceMasterListDoc>(
                         underline: Container(),
@@ -285,11 +281,8 @@ class ProductDetailScreen extends StatelessWidget {
                         hint: Text('Select Price Master'),
                         onChanged: (value) {
                           controller.paymentMaster = value;
-                          // controller.paymentMaster = null;
-                          // controller.nextDateController.clear();
-                          // showError = false;
+                          controller.showPriceMasterError = false;
                           controller.update();
-                          // setState(() {});
                         },
                         items:
                             controller.paymentMasterList
@@ -303,6 +296,14 @@ class ProductDetailScreen extends StatelessWidget {
                                 .toList(),
                       ),
                     ),
+                    if (controller.showPriceMasterError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 5),
+                        child: Text(
+                          'Please select a price master',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      ),
 
                     Dimens.boxHeight10,
 
@@ -311,10 +312,6 @@ class ProductDetailScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        // border: Border.all(
-                        //   color: const Color(0xFFE0E0E0),
-                        //   width: 1.5,
-                        // ),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -524,12 +521,27 @@ class ProductDetailScreen extends StatelessWidget {
                             child: InkWell(
                               onTap: () async {
                                 // RouteManagement.goToCartScreen();
+                                if (controller.paymentMaster == null) {
+                                  controller.showPriceMasterError = true;
+                                  controller.update();
+                                  Get.snackbar(
+                                    'Validation Error',
+                                    'Please select a price master',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                    duration: const Duration(seconds: 2),
+                                  );
+                                  return;
+                                }
+                                controller.showPriceMasterError = false;
                                 controller.postAddToCart(
                                   jobNo: productDetail?.jobno ?? "",
                                   customerId: customerId.id ?? "",
                                   pricemasternameid:
                                       controller.paymentMaster?.id ?? "",
                                 );
+                                controller.update();
                               },
                               child: Container(
                                 alignment: Alignment.center,

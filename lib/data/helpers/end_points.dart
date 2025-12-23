@@ -33,4 +33,5 @@ class EndPoints {
 
   static String getPriceMasterList = 'api/pricemastername';
   static String postAddToCart = 'api/cart/addtocart';
+  static String postGetOneCart = 'api/cart';
 }

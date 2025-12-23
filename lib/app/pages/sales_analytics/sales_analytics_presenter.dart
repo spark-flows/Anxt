@@ -4,6 +4,7 @@ import 'package:a_nxt/domain/models/add_to_cart_model.dart';
 import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
+import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
@@ -173,5 +174,13 @@ class SalesAnalyticsPresenter {
     diamondrates: diamondrates,
     makingrate: makingrate,
     stonerate: stonerate,
+  );
+
+  Future<GetOneCartModel?> postGetOneCart({
+    bool isLoading = false,
+    required String orderId,
+  }) async => await salesAnalyticsUsecases.postGetOneCart(
+    isLoading: isLoading,
+    orderId: orderId,
   );
 }

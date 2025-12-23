@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -21,6 +22,13 @@ class OrderHistoryController extends GetxController {
   TextEditingController searchController = TextEditingController();
   TextEditingController selectDateController = TextEditingController();
   TextEditingController nextDateController = TextEditingController();
+
+  // TextEditingController fromOnboardController = TextEditingController(
+  //   text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  // );
+  // TextEditingController toOnboardController = TextEditingController(
+  //   text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  // );
 
   List<String> paymentMasterList = [
     'Price Master 01',

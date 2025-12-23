@@ -41,6 +41,11 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SalesAnalyticsController>(
+      initState: (state) {
+        final orderId = Get.arguments;
+        final controller = Get.find<SalesAnalyticsController>();
+        controller.postGetOneCart(orderId: orderId);
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.whiteColor,
@@ -66,23 +71,45 @@ class _CartScreenState extends State<CartScreen> {
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: controller.cartItems.length,
+                              itemCount:
+                                  controller
+                                      .getOneCartData
+                                      ?.items
+                                      ?.length, // controller.cartItems.length,
                               itemBuilder: (context, index) {
-                                final item = controller.cartItems[index];
+                                final item =
+                                    controller.getOneCartData?.items?[index];
                                 return CartProductCard(
-                                  designNo: item.jobNo,
-                                  imageUrl: item.imageUrl,
-                                  nw: item.nw,
-                                  amount: item.amount.toString(),
-                                  totalAmount: item.totalAmount.toString(),
-                                  quality: item.quality.toString(),
-                                  jobNo: item.jobNo,
-                                  count: item.quantity,
+                                  designNo: item?.jobno ?? "",
+                                  imageUrl: item?.image ?? '',
+                                  nw:
+                                      int.tryParse(
+                                        item?.calculation?.summary?.netweight ??
+                                            '',
+                                      ) ??
+                                      0,
+                                  amount:
+                                      item?.calculation?.summary?.totalamount ??
+                                      '',
+                                  totalAmount:
+                                      item?.calculation?.summary?.totalamount ??
+                                      '',
+                                  quality:
+                                      item?.calculation?.summary?.quantity
+                                          .toString() ??
+                                      '',
+                                  jobNo: item?.jobno ?? '',
+                                  count: item?.quantity ?? 0,
                                   onIncrease:
-                                      () => controller.updateQuantity(index, 1),
+                                      () => controller.updateQuantity(
+                                        item?.quantity ?? 0,
+                                        1,
+                                      ),
                                   onDecrease:
-                                      () =>
-                                          controller.updateQuantity(index, -1),
+                                      () => controller.updateQuantity(
+                                        item?.quantity ?? 0,
+                                        -1,
+                                      ),
                                   onRemove: () => controller.removeItem(index),
                                 );
                               },
