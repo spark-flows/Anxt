@@ -363,6 +363,97 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                         return null;
                                                                       },
                                                                     ),
+                                                                    Dimens
+                                                                        .boxHeight10,
+                                                                    CustomTextFormField(
+                                                                      controller:
+                                                                          controller
+                                                                              .selectToDateController,
+                                                                      isTitle:
+                                                                          true,
+                                                                      readOnly:
+                                                                          true,
+                                                                      titleStyle: Styles
+                                                                          .txtBlackColorW70014
+                                                                          .copyWith(
+                                                                            fontSize:
+                                                                                Dimens.fourteen,
+                                                                          ),
+                                                                      hintStyle: Styles
+                                                                          .txtGreyColorW50012
+                                                                          .copyWith(
+                                                                            fontSize:
+                                                                                Dimens.twelve,
+                                                                          ),
+                                                                      hintText:
+                                                                          'To Date'
+                                                                              .tr,
+                                                                      title:
+                                                                          'To Date'
+                                                                              .tr,
+                                                                      fillColor:
+                                                                          ColorsValue
+                                                                              .textFieldBg,
+                                                                      filled:
+                                                                          true,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .phone,
+                                                                      suffixIcon: Padding(
+                                                                        padding:
+                                                                            Dimens.edgeInsets8,
+                                                                        child: GestureDetector(
+                                                                          onTap: () async {
+                                                                            final DateTime?
+                                                                            picked = await showDatePicker(
+                                                                              context:
+                                                                                  context,
+                                                                              initialDate:
+                                                                                  controller.fromInterDate,
+                                                                              firstDate: DateTime(
+                                                                                1920,
+                                                                              ),
+                                                                              lastDate: DateTime(
+                                                                                2100,
+                                                                              ),
+                                                                              initialEntryMode:
+                                                                                  DatePickerEntryMode.calendarOnly,
+                                                                            );
+                                                                            if (picked !=
+                                                                                    null &&
+                                                                                picked !=
+                                                                                    controller.fromInterDate) {
+                                                                              controller.fromInterDate = picked;
+                                                                              controller.selectToDateController.text = DateFormat(
+                                                                                "yyyy-MM-dd",
+                                                                              ).format(
+                                                                                controller.fromInterDate,
+                                                                              );
+                                                                              setState(
+                                                                                () {},
+                                                                              );
+                                                                            }
+                                                                          },
+                                                                          child: SvgPicture.asset(
+                                                                            AssetConstants.ic_date,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+
+                                                                      validator: (
+                                                                        val,
+                                                                      ) {
+                                                                        if (val!
+                                                                            .isEmpty) {
+                                                                          return 'Select To Date'
+                                                                              .tr;
+                                                                        }
+                                                                        return null;
+                                                                      },
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               );
@@ -415,7 +506,10 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                       controller
                                                                           .selectDateController
                                                                           .text,
-                                                                  toDate: '',
+                                                                  toDate:
+                                                                      controller
+                                                                          .selectToDateController
+                                                                          .text,
                                                                 );
                                                             Get.back();
                                                           },
@@ -468,7 +562,10 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                       controller
                                                                           .selectDateController
                                                                           .text,
-                                                                  toDate: '',
+                                                                  toDate:
+                                                                      controller
+                                                                          .selectToDateController
+                                                                          .text,
                                                                 );
                                                             Get.back();
                                                             // controller

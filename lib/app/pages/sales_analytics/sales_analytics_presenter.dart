@@ -8,6 +8,7 @@ import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
+import 'package:a_nxt/domain/models/reqmove_from_cart_model.dart';
 
 class SalesAnalyticsPresenter {
   SalesAnalyticsPresenter(this.salesAnalyticsUsecases);
@@ -138,6 +139,13 @@ class SalesAnalyticsPresenter {
     isLoading: isLoading,
     jobNo: jobNo,
     pricemasternameId: pricemasternameId,
+  );
+  Future<RemoveFromCartModel?> postRemoveCart({
+    bool isLoading = false,
+    required String jobNo,
+  }) async => await salesAnalyticsUsecases.postRemoveCart(
+    isLoading: isLoading,
+    jobNo: jobNo,
   );
 
   Future<PriceMasterListModel?> postPriceMasterList({

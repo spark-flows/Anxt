@@ -367,41 +367,41 @@ class SalesAnalyticsController extends GetxController {
   bool invoiceSummaryExpanded = true;
   bool discountChecked = false;
 
-  List<CartItem> cartItems = [
-    CartItem(
-      jobNo: '175987',
-      quality: '14 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 1,
-      totalAmount: 165000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-    CartItem(
-      jobNo: '175987',
-      quality: '15 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 2,
-      totalAmount: 165000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-    CartItem(
-      jobNo: '175987',
-      quality: '16 KT',
-      nw: 120,
-      amount: 165000,
-      quantity: 12,
-      totalAmount: 1980000,
-      designNo: '',
-      imageUrl:
-          'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-    ),
-  ];
+  // List<CartItem> cartItems = [
+  //   CartItem(
+  //     jobNo: '175987',
+  //     quality: '14 KT',
+  //     nw: 120,
+  //     amount: 165000,
+  //     quantity: 1,
+  //     totalAmount: 165000,
+  //     designNo: '',
+  //     imageUrl:
+  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+  //   ),
+  //   CartItem(
+  //     jobNo: '175987',
+  //     quality: '15 KT',
+  //     nw: 120,
+  //     amount: 165000,
+  //     quantity: 2,
+  //     totalAmount: 165000,
+  //     designNo: '',
+  //     imageUrl:
+  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+  //   ),
+  //   CartItem(
+  //     jobNo: '175987',
+  //     quality: '16 KT',
+  //     nw: 120,
+  //     amount: 165000,
+  //     quantity: 12,
+  //     totalAmount: 1980000,
+  //     designNo: '',
+  //     imageUrl:
+  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
+  //   ),
+  // ];
 
   void updateQuantity(int quantity, int delta) {
     if (quantity + delta > 0) {
@@ -410,8 +410,19 @@ class SalesAnalyticsController extends GetxController {
     update();
   }
 
-  void removeItem(int index) {
-    cartItems.removeAt(index);
+  Future<void> removeItem({required String jobNo}) async {
+    var response = await salesAnalyticsPresenter.postRemoveCart(
+      isLoading: false,
+      jobNo: jobNo,
+    );
+    oneProductDetail = null;
+    if (response?.data != null) {
+      Utility.getRawSnackBar(response?.message ?? "", ColorsValue.appColor);
+      postGetOneCart(orderId: response?.data?.id ?? "");
+    } else {
+      Utility.closeLoader();
+      Utility.errorMessage(response?.message ?? "");
+    }
     update();
   }
 

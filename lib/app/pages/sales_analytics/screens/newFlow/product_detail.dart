@@ -146,6 +146,7 @@ class ProductDetailScreen extends StatelessWidget {
                             diamond,
                           ) {
                             return [
+                              diamond.shape ?? ' - '.trim(),
                               diamond.size ?? "",
                               diamond.pcs?.toString() ?? "0",
                               diamond.weight?.toString() ?? "0",

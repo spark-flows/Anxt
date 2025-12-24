@@ -303,6 +303,11 @@ class DataRepository extends DomainRepository {
     pricemasternameid: pricemasternameid,
   );
 
+  Future<ResponseModel> postRemoveCart({
+    bool isLoading = false,
+    required String jobNo,
+  }) async => await connectHelper.postRemoveCart(jobNo: jobNo);
+
   Future<ResponseModel> postOrderDetail({
     bool isLoading = false,
     required String orderId,

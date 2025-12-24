@@ -552,6 +552,36 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postRemoveCart({
+    bool isLoading = false,
+    required String jobNo,
+  }) async {
+    var data = {'jobno': jobNo};
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postRemoveCart,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  // Future<ResponseModel> postRemoveCart({
+  //   bool isLoading = false,
+  //   required String jobNo,
+  // }) async {
+  //   var data = {'jobno': jobNo};
+  //   var response = await apiWrapper.makeRequest(
+  //     EndPoints.postRemoveCart,
+  //     Request.post,
+  //     data,
+  //     isLoading,
+  //     Utility.commonHeader(),
+  //   );
+  //   return response;
+  // }ORD-2B71E9
+
   Future<ResponseModel> postOrderDetail({
     bool isLoading = false,
     required String orderid,

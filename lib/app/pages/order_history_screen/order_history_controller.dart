@@ -21,6 +21,7 @@ class OrderHistoryController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
   TextEditingController selectDateController = TextEditingController();
+  TextEditingController  selectToDateController = TextEditingController();
   TextEditingController nextDateController = TextEditingController();
 
   // TextEditingController fromOnboardController = TextEditingController(

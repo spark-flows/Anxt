@@ -18,6 +18,7 @@ import 'package:a_nxt/domain/models/get_one_order_model.dart';
 import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
+import 'package:a_nxt/domain/models/reqmove_from_cart_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/app.dart';
@@ -601,6 +602,24 @@ class Repository {
         pricemasternameid: pricemasternameId,
       );
       var getOrderListModel = productDetailModelFromJson(response.data);
+      return getOrderListModel;
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<RemoveFromCartModel?> postRemoveCart({
+    bool isLoading = false,
+    required String jobNo,
+  }) async {
+    try {
+      var response = await _dataRepository.postRemoveCart(
+        isLoading: isLoading,
+        jobNo: jobNo,
+      );
+      var getOrderListModel = removeFromCartModelFromJson(response.data);
       return getOrderListModel;
     } catch (e) {
       Utility.closeDialog();

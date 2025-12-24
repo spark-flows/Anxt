@@ -8,27 +8,27 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CartItem {
-  final String jobNo;
-  final String quality;
-  final int nw;
-  final int amount;
-  final String designNo;
-  final String imageUrl;
-  int quantity;
-  int totalAmount;
+// class CartItem {
+//   final String jobNo;
+//   final String quality;
+//   final int nw;
+//   final int amount;
+//   final String designNo;
+//   final String imageUrl;
+//   int quantity;
+//   int totalAmount;
 
-  CartItem({
-    required this.jobNo,
-    required this.quality,
-    required this.nw,
-    required this.amount,
-    required this.quantity,
-    required this.totalAmount,
-    required this.designNo,
-    required this.imageUrl,
-  });
-}
+//   CartItem({
+//     required this.jobNo,
+//     required this.quality,
+//     required this.nw,
+//     required this.amount,
+//     required this.quantity,
+//     required this.totalAmount,
+//     required this.designNo,
+//     required this.imageUrl,
+//   });
+// }
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -110,7 +110,10 @@ class _CartScreenState extends State<CartScreen> {
                                         item?.quantity ?? 0,
                                         -1,
                                       ),
-                                  onRemove: () => controller.removeItem(index),
+                                  onRemove:
+                                      () => controller.removeItem(
+                                        jobNo: item?.jobno ?? '',
+                                      ),
                                 );
                               },
                             ),
