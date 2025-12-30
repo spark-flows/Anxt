@@ -1,5 +1,4 @@
 import 'package:a_nxt/domain/domain.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:get/get.dart';
 
@@ -67,4 +66,6 @@ abstract class RouteManagement {
 
   static void goToCartScreen({required String orderId}) =>
       Get.toNamed<void>(Routes.cartScreen, arguments: orderId);
+
+  static void goToDeleteScreen() => Get.toNamed<void>(Routes.deleteScreen);
 }

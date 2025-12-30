@@ -1,5 +1,4 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -40,25 +39,25 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ),
                 Dimens.boxHeight5,
-                Center(
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Don’t have an account? ',
-                      style: Styles.txtGreyColorW40014,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Sign Up',
-                          style: Styles.appColorW70016,
-                          recognizer:
-                              TapGestureRecognizer()
-                                ..onTap = () {
-                                  RouteManagement.goToRegisterScreen();
-                                },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: RichText(
+                //     text: TextSpan(
+                //       text: 'Don’t have an account? ',
+                //       style: Styles.txtGreyColorW40014,
+                //       children: <TextSpan>[
+                //         TextSpan(
+                //           text: 'Sign Up',
+                //           style: Styles.appColorW70016,
+                //           recognizer:
+                //               TapGestureRecognizer()
+                //                 ..onTap = () {
+                //                   RouteManagement.goToRegisterScreen();
+                //                 },
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -166,25 +165,25 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ),
                   Dimens.boxHeight20,
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Forgot your Sign in details? ',
-                        style: Styles.txtGreyColorW40014,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Get help Sign In.',
-                            style: Styles.appColorW70016,
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    RouteManagement.goToForgotScreen();
-                                  },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: RichText(
+                  //     text: TextSpan(
+                  //       text: 'Forgot your Sign in details? ',
+                  //       style: Styles.txtGreyColorW40014,
+                  //       children: <TextSpan>[
+                  //         TextSpan(
+                  //           text: 'Get help Sign In.',
+                  //           style: Styles.appColorW70016,
+                  //           recognizer:
+                  //               TapGestureRecognizer()
+                  //                 ..onTap = () {
+                  //                   RouteManagement.goToForgotScreen();
+                  //                 },
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

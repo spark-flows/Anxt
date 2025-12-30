@@ -216,5 +216,11 @@ class AppPages {
       binding: StockCatalogueBindings(),
       transition: Transition.fadeIn,
     ),
+    GetPage<DeleteScreen>(
+      name: _Paths.deleteScreen,
+      page: DeleteScreen.new,
+      binding: ProfileBindings(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }

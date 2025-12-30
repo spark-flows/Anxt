@@ -10,6 +10,9 @@ class ProfileController extends GetxController {
 
   ProfilePreneter profilePreneter;
 
+  GlobalKey<FormState> deleteKey = GlobalKey<FormState>();
+  TextEditingController deleteController = TextEditingController();
+
   showLogoutDialog(BuildContext context) {
     return showDialog(
       context: context,

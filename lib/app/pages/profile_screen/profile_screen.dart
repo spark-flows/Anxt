@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/app/pages/profile_screen/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -141,6 +143,22 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (Platform.isIOS) ...[
+                        Dimens.boxHeight20,
+                        CustomButton(
+                          onPressed: () {
+                            RouteManagement.goToDeleteScreen();
+                          },
+                          heightBtn: Dimens.fourtyFive,
+                          text: "Delete Account",
+                          backgroundColor: ColorsValue.redColor,
+                          widthBtn: Dimens.hundred,
+                          textStyle: Styles.whiteColorW60016.copyWith(
+                            fontSize: Dimens.sixteen,
+                          ),
+                          isColor: true,
+                        ),
+                      ],
                       // Dimens.boxHeight20,
                       // Text(
                       //   "Branch",
