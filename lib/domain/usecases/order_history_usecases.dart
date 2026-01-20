@@ -12,7 +12,7 @@ class OrderHistoryUsecases {
   Future<GetOrderListModel?> postOrderHistoryList({
     bool isLoading = false,
     required int page,
-    required int limit,
+    required int limit, 
     required String toDate,
     required String fromDate,
   }) async => await repository.postOrderHistoryList(
@@ -28,7 +28,10 @@ class OrderHistoryUsecases {
     bool isLoading = false,
     required String orderNo,
   }) async =>
-      await repository.getInvoiceApi(isLoading: isLoading, orderNo: orderNo);
+      await repository.getInvoiceApi(
+        isLoading: isLoading, 
+        orderNo: orderNo
+        );
 
   Future<GetOneOrderModel?> postOrderDetail({
     bool isLoading = false,
