@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/device/device.dart';
@@ -15,11 +16,9 @@ import 'package:a_nxt/domain/models/get_all_expences_category.dart';
 import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/get_one_order_model.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:a_nxt/domain/models/reqmove_from_cart_model.dart';
-import 'package:flutter/material.dart';
 
 import '../../app/app.dart';
 
@@ -276,6 +275,32 @@ class Repository {
         expenseCatid: expenseCatid,
       );
       var getOneExpenseCategory = getOneExpenseCategoryFromJson(response.data);
+      if (getOneExpenseCategory.data != null) {
+        return getOneExpenseCategory;
+      } else {
+        return getOneExpenseCategory;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ExpenseModel?> postAllExpense({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String tripid,
+  }) async {
+    try {
+      var response = await _dataRepository.postAllExpense(
+        isLoading: isLoading,
+        page: page,
+        limit: limit,
+        tripid: tripid,
+      );
+      var getOneExpenseCategory = expenseModelFromJson(response.data);
       if (getOneExpenseCategory.data != null) {
         return getOneExpenseCategory;
       } else {
@@ -766,14 +791,14 @@ class Repository {
     required String tripname,
     required String purpose,
     required String status,
-    required String budget,
+    required int budget,
     required String start,
     required String end,
     required String location,
     required String remark,
     required List<String> participants,
     required String currency,
-    required List<ImageFormData> mediaFileList,
+    required String image,
   }) async {
     try {
       var response = await _dataRepository.postCreateTrip(
@@ -788,7 +813,7 @@ class Repository {
         remark: remark,
         participants: participants,
         currency: currency,
-        mediaFileList: mediaFileList,
+        image: image,
         isLoading: isLoading,
       );
       return response;
@@ -809,7 +834,7 @@ class Repository {
     required String userid,
     required String amount,
     required String remark,
-    required List<ImageFormData> mediaFileList,
+    required String receipt,
   }) async {
     try {
       var response = await _dataRepository.postExpenseCreate(
@@ -821,7 +846,24 @@ class Repository {
         userid: userid,
         amount: amount,
         remark: remark,
-        mediaFileList: mediaFileList,
+        receipt: receipt,
+        isLoading: isLoading,
+      );
+      return response;
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ResponseModel?> postExpenseDelete({
+    bool isLoading = false,
+    required String? expenseid,
+  }) async {
+    try {
+      var response = await _dataRepository.postExpenseDelete(
+        expenseid: expenseid,
         isLoading: isLoading,
       );
       return response;
@@ -854,6 +896,60 @@ class Repository {
         return productListModel;
       } else {
         return productListModel;
+      }
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<String?> uploadImage({
+    bool isLoading = false,
+    required String image,
+  }) async {
+    try {
+      var response = await _dataRepository.uploadImage(
+        image: image,
+        isLoading: isLoading,
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.data)['Data']['filepath'];
+      } else {
+        Utility.showMessage(
+          json.decode(response.data)['Message'].toString(),
+          MessageType.error,
+          () => null,
+          '',
+        );
+        return null;
+      }
+    } catch (_) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<String?> uploadExpenseImage({
+    bool isLoading = false,
+    required String image,
+  }) async {
+    try {
+      var response = await _dataRepository.uploadExpenseImage(
+        image: image,
+        isLoading: isLoading,
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.data)['Data']['filepath'];
+      } else {
+        Utility.showMessage(
+          json.decode(response.data)['Message'].toString(),
+          MessageType.error,
+          () => null,
+          '',
+        );
+        return null;
       }
     } catch (_) {
       Utility.closeDialog();

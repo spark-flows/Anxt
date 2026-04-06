@@ -10,6 +10,11 @@ class AddExpenseTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TripController>(
+      initState: (state) {
+        var controller = Get.find<TripController>();
+        controller.expenseid = Get.arguments;
+        controller.getExpenseCategory();
+      },
       builder: (controller) {
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
@@ -17,7 +22,8 @@ class AddExpenseTripScreen extends StatelessWidget {
             onTapBack: () {
               Get.back();
             },
-            title: "Dubai Trip’s Expanse",
+            title:
+                controller.expenseid != null ? "Edit Expanse" : "Add Expanse",
             isCenter: true,
           ),
           bottomNavigationBar: SafeArea(
@@ -27,7 +33,10 @@ class AddExpenseTripScreen extends StatelessWidget {
                 onPressed: () {
                   controller.postExpenseCreate();
                 },
-                text: 'Save',
+                text:
+                    controller.expenseid != null
+                        ? "Edit Expanse"
+                        : "Add Expanse",
                 backgroundColor: ColorsValue.appColor,
                 textStyle: Styles.whiteColorW60016,
                 radius: Dimens.zero,
@@ -42,14 +51,13 @@ class AddExpenseTripScreen extends StatelessWidget {
               physics: ClampingScrollPhysics(),
               children: [
                 CustomTextFormField(
-                  controller: controller.dateController,
+                  controller: controller.titleController,
                   isTitle: true,
                   title: "Title",
                   titleStyle: Styles.txtBlackColorW70014,
                   hintText: 'Enter Title',
                   hintStyle: Styles.txtGreyColorW50012,
                   filled: true,
-                  readOnly: true,
                   fillColor: ColorsValue.textFieldBg,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.text,
@@ -233,7 +241,6 @@ class AddExpenseTripScreen extends StatelessWidget {
                   hintText: 'Enter Amount',
                   hintStyle: Styles.txtGreyColorW50012,
                   filled: true,
-                  readOnly: true,
                   fillColor: ColorsValue.textFieldBg,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
@@ -266,14 +273,37 @@ class AddExpenseTripScreen extends StatelessWidget {
                 Dimens.boxHeight5,
                 UploadWidgets(
                   txt: 'Upload File',
-                  height: Dimens.hundred,
+                  height: Dimens.fifty,
                   onTap: () {
                     controller.uploadinvoice();
                   },
                   bgColor: ColorsValue.textFieldBg,
                   svgPicture: AssetConstants.ic_export,
-                  image: controller.selectInvoice,
                 ),
+                if (controller.selectInvoice != null) ...[
+                  InkWell(
+                    onTap: () {
+                      RouteManagement.goToShowFullScareenImage(
+                        controller.selectInvoice,
+                        "Image",
+                      );
+                    },
+                    child: Image.network(
+                      controller.selectInvoice ?? "",
+                      fit: BoxFit.cover,
+                      height: Dimens.hundred,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          AssetConstants.placeholder,
+                          height: Dimens.hundred,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

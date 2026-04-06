@@ -43,4 +43,5 @@ abstract class AssetConstants {
   static const String ic_invoice = "assets/svg/ic_invoice.svg";
   static const String ic_view_img = "assets/svg/ic_view_img.svg";
   static const String srjo_img = "assets/image/srjo_number.png";
+  static const String ic_fill_catalogue = "assets/svg/ic_fill_catalogue.svg";
 }

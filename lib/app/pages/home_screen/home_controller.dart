@@ -17,13 +17,13 @@ class HomeController extends GetxController {
     HomeModel(
       name: "Catalogue",
       icon: AssetConstants.ic_catlogues,
-      activeIcon: AssetConstants.ic_fill_sales_analytics,
+      activeIcon: AssetConstants.ic_fill_catalogue,
     ),
 
     HomeModel(
       name: "Stock Catalogue",
       icon: AssetConstants.ic_catlogues,
-      activeIcon: AssetConstants.ic_stock_catlogues,
+      activeIcon: AssetConstants.ic_fill_catalogue,
     ),
     HomeModel(
       name: "Order History",

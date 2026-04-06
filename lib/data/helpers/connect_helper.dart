@@ -231,6 +231,28 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postAllExpense({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String tripid,
+  }) async {
+    var data = {
+      "page": page,
+      'limit': limit,
+      "tripid": tripid,
+      "sortOption": 1,
+    };
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postAllExpense,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postAddToCart({
     bool isLoading = false,
     required String cartId,
@@ -466,7 +488,7 @@ class ConnectHelper {
       "page": page,
       "limit": limit,
       "location": location,
-      "search": search,
+      "search": {"tripname": search},
       "sortfield": 'start',
       "sortoption": 1,
     };
@@ -670,14 +692,14 @@ class ConnectHelper {
     required String tripname,
     required String purpose,
     required String status,
-    required String budget,
+    required int budget,
     required String start,
     required String end,
     required String location,
     required String remark,
     required List<String> participants,
     required String currency,
-    required List<ImageFormData> mediaFileList,
+    required String image,
   }) async {
     var data = {
       "tripid": tripid,
@@ -691,14 +713,14 @@ class ConnectHelper {
       "remark": remark,
       "participants": participants,
       "currency": currency,
+      "image": image,
     };
     var response = await apiWrapper.makeRequest(
       EndPoints.postCreateTrip,
-      Request.postWithFormData,
+      Request.post,
       data,
       isLoading,
       Utility.commonHeader(),
-      mediaFileList: mediaFileList,
     );
     return response;
   }
@@ -713,7 +735,7 @@ class ConnectHelper {
     required String userid,
     required String amount,
     required String remark,
-    required List<ImageFormData> mediaFileList,
+    required String receipt,
   }) async {
     var data = {
       "expenseid": expenseid,
@@ -723,14 +745,58 @@ class ConnectHelper {
       "expense_catid": expenseCatid,
       "userid": userid,
       "amount": amount,
+      "receipt": receipt,
     };
     var response = await apiWrapper.makeRequest(
       EndPoints.postExpenseCreate,
-      Request.postWithFormData,
+      Request.post,
       data,
       isLoading,
       Utility.commonHeader(),
-      mediaFileList: mediaFileList,
+    );
+    return response;
+  }
+
+  Future<ResponseModel> uploadImage({
+    bool isLoading = false,
+    required String image,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.uploadImage,
+      Request.awsUpload,
+      image,
+      isLoading,
+      Utility.commonHeader(),
+      filename: "image",
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postExpenseDelete({
+    bool isLoading = false,
+    required String? expenseid,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postExpenseDelete,
+      Request.post,
+      {"expenseid": expenseid},
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> uploadExpenseImage({
+    bool isLoading = false,
+    required String image,
+  }) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.uploadExpenseImage,
+      Request.awsUpload,
+      image,
+      isLoading,
+      Utility.commonHeader(),
+      filename: "image",
     );
     return response;
   }

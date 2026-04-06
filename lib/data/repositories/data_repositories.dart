@@ -129,6 +129,18 @@ class DataRepository extends DomainRepository {
     limit: limit,
   );
 
+  Future<ResponseModel> postAllExpense({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String tripid,
+  }) async => await connectHelper.postAllExpense(
+    isLoading: isLoading,
+    page: page,
+    limit: limit,
+    tripid: tripid,
+  );
+
   Future<ResponseModel> postAddToCart({
     bool isLoading = false,
     required String cartId,
@@ -402,14 +414,14 @@ class DataRepository extends DomainRepository {
     required String tripname,
     required String purpose,
     required String status,
-    required String budget,
+    required int budget,
     required String start,
     required String end,
     required String location,
     required String remark,
     required List<String> participants,
     required String currency,
-    required List<ImageFormData> mediaFileList,
+    required String image,
   }) async => await connectHelper.postCreateTrip(
     tripid: tripid,
     tripname: tripname,
@@ -422,7 +434,7 @@ class DataRepository extends DomainRepository {
     remark: remark,
     participants: participants,
     currency: currency,
-    mediaFileList: mediaFileList,
+    image: image,
     isLoading: isLoading,
   );
 
@@ -436,7 +448,7 @@ class DataRepository extends DomainRepository {
     required String userid,
     required String amount,
     required String remark,
-    required List<ImageFormData> mediaFileList,
+    required String receipt,
   }) async => await connectHelper.postExpenseCreate(
     expenseid: expenseid,
     tripid: tripid,
@@ -446,7 +458,29 @@ class DataRepository extends DomainRepository {
     userid: userid,
     amount: amount,
     remark: remark,
-    mediaFileList: mediaFileList,
+    receipt: receipt,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> uploadImage({
+    bool isLoading = false,
+    required String image,
+  }) async =>
+      await connectHelper.uploadImage(image: image, isLoading: isLoading);
+
+  Future<ResponseModel> postExpenseDelete({
+    bool isLoading = false,
+    required String? expenseid,
+  }) async => await connectHelper.postExpenseDelete(
+    expenseid: expenseid,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel> uploadExpenseImage({
+    bool isLoading = false,
+    required String image,
+  }) async => await connectHelper.uploadExpenseImage(
+    image: image,
     isLoading: isLoading,
   );
 }

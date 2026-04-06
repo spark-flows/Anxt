@@ -27,6 +27,7 @@ class ApiWrapper {
     Map<String, String> headers, {
     media_type.MediaType? mediaType,
     List<ImageFormData>? mediaFileList,
+    String? filename,
   }) async {
     /// To see whether the network is available or not
     if (await Utility.isNetworkAvailable()) {
@@ -279,7 +280,7 @@ class ApiWrapper {
               var request = http.MultipartRequest('POST', Uri.parse(uri));
               request.files.add(
                 await http.MultipartFile.fromPath(
-                  'file',
+                  filename ?? 'file',
                   data ?? '',
                   contentType:
                       mediaType ?? media_type.MediaType("image", "jpeg"),

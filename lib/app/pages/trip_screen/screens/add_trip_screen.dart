@@ -222,6 +222,7 @@ class AddTripScreen extends StatelessWidget {
                   hintText: 'Enter Start Date',
                   hintStyle: Styles.txtGreyColorW50012,
                   filled: true,
+                  readOnly: true,
                   fillColor: ColorsValue.textFieldBg,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.datetime,
@@ -253,6 +254,7 @@ class AddTripScreen extends StatelessWidget {
                   controller: controller.endDateController,
                   isTitle: true,
                   title: "End Date",
+                  readOnly: true,
                   titleStyle: Styles.txtBlackColorW70014,
                   hintText: 'Enter End Date',
                   hintStyle: Styles.txtGreyColorW50012,
@@ -323,20 +325,35 @@ class AddTripScreen extends StatelessWidget {
                 Dimens.boxHeight5,
                 UploadWidgets(
                   txt: 'Upload File',
-                  height: Dimens.hundred,
+                  height: Dimens.fifty,
                   onTap: () {
                     controller.uploadInvoice();
                   },
                   bgColor: ColorsValue.textFieldBg,
                   svgPicture: AssetConstants.ic_export,
-                  image: controller.selectInvoice,
                 ),
-                if (controller.selectFile != null) ...[
-                  Image.file(
-                    controller.selectFile!,
-                    fit: BoxFit.cover,
-                    height: Dimens.hundred,
-                    width: double.infinity,
+                if (controller.selectImage != null) ...[
+                  InkWell(
+                    onTap: () {
+                      RouteManagement.goToShowFullScareenImage(
+                        controller.selectImage,
+                        "Image",
+                      );
+                    },
+                    child: Image.network(
+                      controller.selectImage ?? "",
+                      fit: BoxFit.cover,
+                      height: Dimens.hundred,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          AssetConstants.placeholder,
+                          height: Dimens.hundred,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
                   ),
                 ],
                 Dimens.boxHeight20,

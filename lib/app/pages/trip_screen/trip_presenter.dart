@@ -53,14 +53,14 @@ class TripPresenter {
     required String tripname,
     required String purpose,
     required String status,
-    required String budget,
+    required int budget,
     required String start,
     required String end,
     required String location,
     required String remark,
     required List<String> participants,
     required String currency,
-    required List<ImageFormData> mediaFileList,
+    required String image,
   }) async => await tripUsecases.postCreateTrip(
     tripid: tripid,
     tripname: tripname,
@@ -73,7 +73,15 @@ class TripPresenter {
     remark: remark,
     participants: participants,
     currency: currency,
-    mediaFileList: mediaFileList,
+    image: image,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel?> postExpenseDelete({
+    bool isLoading = false,
+    required String? expenseid,
+  }) async => await tripUsecases.postExpenseDelete(
+    expenseid: expenseid,
     isLoading: isLoading,
   );
 
@@ -87,7 +95,7 @@ class TripPresenter {
     required String userid,
     required String amount,
     required String remark,
-    required List<ImageFormData> mediaFileList,
+    required String receipt,
   }) async => await tripUsecases.postExpenseCreate(
     expenseid: expenseid,
     tripid: tripid,
@@ -97,10 +105,33 @@ class TripPresenter {
     userid: userid,
     amount: amount,
     remark: remark,
-    mediaFileList: mediaFileList,
+    receipt: receipt,
     isLoading: isLoading,
+  );
+
+  Future<ExpenseModel?> postAllExpense({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String tripid,
+  }) async => await tripUsecases.postAllExpense(
+    isLoading: isLoading,
+    page: page,
+    limit: limit,
+    tripid: tripid,
   );
 
   Future<UserModel?> getAllUser({bool isLoading = false}) async =>
       await tripUsecases.getAllUser(isLoading: isLoading);
+
+  Future<String?> uploadImage({
+    bool isLoading = false,
+    required String image,
+  }) async =>
+      await tripUsecases.uploadImage(image: image, isLoading: isLoading);
+  Future<String?> uploadExpenseImage({
+    bool isLoading = false,
+    required String image,
+  }) async =>
+      await tripUsecases.uploadExpenseImage(image: image, isLoading: isLoading);
 }

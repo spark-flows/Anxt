@@ -24,8 +24,8 @@ abstract class RouteManagement {
   static void goToTripScreen() => Get.toNamed<void>(Routes.tripscreen);
   static void goToTripDetailsScreen({required String tripid}) =>
       Get.toNamed<void>(Routes.tripDetailsScreen, arguments: tripid);
-  static void goToAddExpenseTripScreen() =>
-      Get.toNamed<void>(Routes.addExpenseTripScreen);
+  static void goToAddExpenseTripScreen(String? id) =>
+      Get.toNamed<void>(Routes.addExpenseTripScreen,arguments: id);
   static void goToAddTripScreen() => Get.toNamed<void>(Routes.addTripScreen);
 
   static void goToOrderHistoryDetailsScreen({required String orderId}) =>

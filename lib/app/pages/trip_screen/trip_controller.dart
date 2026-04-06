@@ -7,11 +7,9 @@ import 'package:a_nxt/domain/models/get_one_expences.dart';
 import 'package:a_nxt/domain/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
-import 'package:mime/mime.dart';
 
 class TripController extends GetxController {
   TripController(this.tripPresenter);
@@ -34,8 +32,6 @@ class TripController extends GetxController {
   ];
 
   /// ============================================ TripDetailsScreen =======================
-  int selectExpense = 0;
-
   List<String> expenseType = ['All', 'Food', 'Travel', "Accommodation"];
 
   List<GetAllTripDoc> getAllTripList = [];
@@ -55,8 +51,9 @@ class TripController extends GetxController {
     if (response?.data != null) {
       if (pageKey == 1) {
         getAllTripList.clear();
+        tripPagingController.itemList?.clear();
       }
-      getAllTripList = response?.data.docs ?? [];
+      getAllTripList = response?.data?.docs ?? [];
 
       final isLastPage = getAllTripList.length < 10;
       if (isLastPage) {
@@ -147,7 +144,10 @@ class TripController extends GetxController {
       tripname: nameController.text,
       purpose: purposeController.text,
       status: selectStatus ?? "",
-      budget: budgetController.text,
+      budget:
+          budgetController.text.isNotEmpty
+              ? int.parse(budgetController.text)
+              : 0,
       start:
           startDateController.text.isNotEmpty
               ? DateFormat(
@@ -164,15 +164,7 @@ class TripController extends GetxController {
       remark: remarkAddController.text,
       participants: participantsList.map((e) => e.selectMember ?? "").toList(),
       currency: selectCurrency ?? "",
-      mediaFileList: [
-        ImageFormData(
-          fieldName: "image",
-          filePath: selectFile?.path ?? "",
-          mediaType: MediaType.parse(
-            lookupMimeType(selectFile?.path ?? "") ?? "",
-          ),
-        ),
-      ],
+      image: selectImage ?? "",
       isLoading: true,
     );
 
@@ -224,6 +216,12 @@ class TripController extends GetxController {
 
     if (pickedFile != null) {
       selectFile = File(pickedFile.path);
+
+      selectImage = await tripPresenter.uploadImage(
+        image: selectFile?.path ?? "",
+        isLoading: true,
+      );
+
       update();
     }
   }
@@ -241,6 +239,91 @@ class TripController extends GetxController {
         jsonDecode(response?.data.toString() ?? "")['Message'],
       );
     }
+    update();
+  }
+
+  String selectExpense = "All";
+
+  List<ExpenseDoc> expenseList = [];
+  List<ExpenseDoc> expenseALlList = [];
+  List<ExpenseDoc> filterExpenseList = [];
+  final Set<String> seenTitles = {};
+
+  Future<void> postExpenseList() async {
+    var response = await tripPresenter.postAllExpense(
+      page: 1,
+      limit: 300,
+      tripid: tripid ?? "",
+      isLoading: false,
+    );
+    filterExpenseList.clear();
+    expenseALlList.clear();
+    seenTitles.clear();
+    if (response?.status == 200) {
+      categorySummary(response?.data?.docs ?? []);
+      for (var item in response?.data?.docs ?? <ExpenseDoc>[]) {
+        if (seenTitles.add(item.expCategory?.name ?? "")) {
+          filterExpenseList.add(item);
+        }
+      }
+      expenseALlList = response?.data?.docs ?? [];
+      filterExpenseList.insert(
+        0,
+        ExpenseDoc(expCategory: ExpCategory(name: "All")),
+      );
+      applyFilter();
+
+      update();
+    }
+  }
+
+  Future<void> postExpenseDelete(ExpenseDoc? expenseid) async {
+    var response = await tripPresenter.postExpenseDelete(
+      isLoading: true,
+      expenseid: expenseid?.id ?? "",
+    );
+    if (response?.statusCode == 200) {
+      expenseList.remove(expenseid);
+      postExpenseList();
+    } else {
+      Utility.errorMessage(
+        jsonDecode(response?.data.toString() ?? "")['Message'],
+      );
+    }
+    update();
+  }
+
+  void applyFilter() {
+    expenseList.clear();
+    update();
+    if (selectExpense == 'All') {
+      expenseList = expenseALlList.where((e) => e.id != null).toList();
+    } else {
+      expenseList =
+          expenseALlList.where((item) {
+            return item.expCategory?.name == selectExpense;
+          }).toList();
+    }
+    update();
+  }
+
+  List<CategorySummary> categorySummaryList = [];
+
+  categorySummary(List<ExpenseDoc> list) {
+    categorySummaryList.clear();
+    final map = <String, CategorySummary>{};
+
+    for (var e in list) {
+      final name = e.expCategory?.name;
+      final amount = double.parse(e.amount ?? "");
+
+      map.update(
+        name ?? "",
+        (v) => CategorySummary(name ?? "", v.count + 1, v.total + amount),
+        ifAbsent: () => CategorySummary(name ?? "", 1, amount),
+      );
+    }
+    categorySummaryList = map.values.toList();
     update();
   }
 
@@ -269,13 +352,18 @@ class TripController extends GetxController {
 
     if (pickedFile != null) {
       selectFileInvoice = File(pickedFile.path);
+      selectInvoice = await tripPresenter.uploadImage(
+        image: selectFileInvoice?.path ?? "",
+        isLoading: true,
+      );
       update();
     }
   }
 
+  String? expenseid;
   Future<void> postExpenseCreate() async {
     var response = await tripPresenter.postExpenseCreate(
-      expenseid: "",
+      expenseid: expenseid ?? "",
       tripid: tripid ?? "",
       title: titleController.text,
       date:
@@ -288,26 +376,30 @@ class TripController extends GetxController {
       userid: selectExpenseUser ?? "",
       amount: amountController.text,
       remark: "",
-      mediaFileList: [
-        ImageFormData(
-          fieldName: "receipt",
-          filePath: selectFile?.path ?? "",
-          mediaType: MediaType.parse(
-            lookupMimeType(selectFile?.path ?? "") ?? "",
-          ),
-        ),
-      ],
+      receipt: selectInvoice ?? "",
       isLoading: true,
     );
     if (response?.statusCode == 200) {
       Get.back();
       postGetOneTripDetail(tripId: tripid ?? "");
+      postExpenseList();
+      clearExpenseData();
       update();
     } else {
       Utility.errorMessage(
-        jsonDecode(response?.data?.toString() ?? "")['Message'],
+        jsonDecode(response?.data.toString() ?? "")['Message'],
       );
     }
+  }
+
+  clearExpenseData() {
+    titleController.clear();
+    dateController.clear();
+    selectExpenseCategory = null;
+    selectExpenseUser = null;
+    amountController.clear();
+    selectInvoice = null;
+    update();
   }
 }
 
@@ -322,4 +414,11 @@ class ParticipantsModel {
   String? selectMember;
 
   ParticipantsModel({this.selectMember});
+}
+
+class CategorySummary {
+  String name;
+  int count;
+  double total;
+  CategorySummary(this.name, this.count, this.total);
 }

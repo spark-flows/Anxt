@@ -5,6 +5,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class TripDetailsScreen extends StatelessWidget {
   const TripDetailsScreen({super.key});
@@ -17,7 +18,7 @@ class TripDetailsScreen extends StatelessWidget {
         controller.tripid = Get.arguments;
         controller.getOneTripData = null;
         controller.postGetOneTripDetail(tripId: controller.tripid ?? "");
-        controller.getExpenseCategory();
+        controller.postExpenseList();
       },
       builder: (controller) {
         return Scaffold(
@@ -29,91 +30,103 @@ class TripDetailsScreen extends StatelessWidget {
             title: "Trip",
             isCenter: true,
           ),
-          bottomNavigationBar: SafeArea(
-            child: Container(
-              margin: Dimens.edgeInsets20_00_20_10,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: Dimens.one,
-                  color: ColorsValue.greyColor,
-                ),
-                color: ColorsValue.textFieldBg,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ExpansionTile(
-                    tilePadding: Dimens.edgeInsets20_00_20_00,
-                    childrenPadding: Dimens.edgeInsets20_00_20_00,
-                    minTileHeight: Dimens.fourtyFive,
-                    title: Text(
-                      "Expanse Summary",
-                      style: Styles.txtBlackColorW60014,
-                    ),
-                    shape: RoundedRectangleBorder(),
-                    children: [
-                      Divider(
-                        height: Dimens.one,
-                        color: ColorsValue.greyCBD5E1,
+          bottomNavigationBar:
+              controller.getOneTripData != null
+                  ? SafeArea(
+                    child: Container(
+                      margin: Dimens.edgeInsets20_00_20_10,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: Dimens.one,
+                          color: ColorsValue.greyColor,
+                        ),
+                        color: ColorsValue.textFieldBg,
                       ),
-                      Dimens.boxHeight10,
-                      Wrap(
-                        children:
-                            controller.statusCandidateList.map((e) {
-                              return Padding(
-                                padding: Dimens.edgeInsetsBottom10,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      spacing: Dimens.five,
-                                      children: [
-                                        Text(
-                                          "Food",
-                                          style: Styles.txtBlackColorW50014,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ExpansionTile(
+                            tilePadding: Dimens.edgeInsets20_00_20_00,
+                            childrenPadding: Dimens.edgeInsets20_00_20_00,
+                            minTileHeight: Dimens.fourtyFive,
+                            title: Text(
+                              "Expanse Summary",
+                              style: Styles.txtBlackColorW60014,
+                            ),
+                            shape: RoundedRectangleBorder(),
+                            children: [
+                              Divider(
+                                height: Dimens.one,
+                                color: ColorsValue.greyCBD5E1,
+                              ),
+                              Dimens.boxHeight10,
+                              Wrap(
+                                children:
+                                    controller.categorySummaryList.map((e) {
+                                      return Padding(
+                                        padding: Dimens.edgeInsetsBottom10,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              spacing: Dimens.five,
+                                              children: [
+                                                Text(
+                                                  e.name,
+                                                  style:
+                                                      Styles
+                                                          .txtBlackColorW50014,
+                                                ),
+                                                Text(
+                                                  "(${e.count} item)",
+                                                  style:
+                                                      Styles.txtGreyColorW50014,
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              "\$ ${e.total}",
+                                              style: Styles.txtBlackColorW50014,
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "(1 item)",
-                                          style: Styles.txtGreyColorW50014,
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "\$400.00",
-                                      style: Styles.txtBlackColorW50014,
-                                    ),
-                                  ],
+                                      );
+                                    }).toList(),
+                              ),
+                            ],
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            alignment: WrapAlignment.center,
+                            lineLength: double.infinity,
+                          ),
+                          Dimens.boxHeight10,
+                          Container(
+                            height: Dimens.fourtyFive,
+                            padding: Dimens.edgeInsets20_00_20_10,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total",
+                                  style: Styles.txtBlackColorW60014,
                                 ),
-                              );
-                            }).toList(),
+                                Text(
+                                  "\$ ${controller.categorySummaryList.fold(0.0, (previousValue, element) => previousValue + element.total)}",
+                                  style: Styles.txtBlackColorW60014,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    alignment: WrapAlignment.center,
-                    lineLength: double.infinity,
-                  ),
-                  Dimens.boxHeight10,
-                  Container(
-                    height: Dimens.fourtyFive,
-                    padding: Dimens.edgeInsets20_00_20_10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Total", style: Styles.txtBlackColorW60014),
-                        Text("\$1018.20", style: Styles.txtBlackColorW60014),
-                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                  )
+                  : SizedBox.shrink(),
           body:
               controller.getOneTripData != null
                   ? ListView(
@@ -387,27 +400,57 @@ class TripDetailsScreen extends StatelessWidget {
                                   child: CustomButton(
                                     heightBtn: Dimens.fourtyFour,
                                     onPressed: () {
-                                      controller.titleController.text =
+                                      controller.nameController.text =
                                           controller.getOneTripData?.tripname ??
                                           "";
                                       controller.purposeController.text =
                                           controller.getOneTripData?.purpose ??
                                           "";
+                                      controller.selectStatus =
+                                          controller.getOneTripData?.status;
+                                      controller.selectCurrency =
+                                          controller.getOneTripData?.currency;
                                       controller.budgetController.text =
                                           controller.getOneTripData?.budget
                                               ?.toString() ??
                                           "";
                                       controller.startDateController.text =
-                                          controller.getOneTripData?.start ??
-                                          "";
+                                          controller
+                                                      .getOneTripData
+                                                      ?.start
+                                                      ?.isNotEmpty ??
+                                                  false
+                                              ? DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(
+                                                  controller
+                                                          .getOneTripData
+                                                          ?.start ??
+                                                      "",
+                                                ),
+                                              )
+                                              : "";
                                       controller.endDateController.text =
-                                          controller.getOneTripData?.end ?? "";
+                                          controller
+                                                      .getOneTripData
+                                                      ?.end
+                                                      ?.isNotEmpty ??
+                                                  false
+                                              ? DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(
+                                                  controller
+                                                          .getOneTripData
+                                                          ?.end ??
+                                                      "",
+                                                ),
+                                              )
+                                              : "";
                                       controller.locationController.text =
                                           controller.getOneTripData?.location ??
                                           "";
                                       controller.remarkAddController.text =
                                           controller.getOneTripData?.remark ??
                                           "";
+                                      controller.participantsList.clear();
                                       for (var i
                                           in controller
                                                   .getOneTripData
@@ -447,34 +490,33 @@ class TripDetailsScreen extends StatelessWidget {
                                           return Dialog(
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(16),
+                                                  BorderRadius.circular(
+                                                    Dimens.sixteen,
+                                                  ),
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(20),
+                                              padding: Dimens.edgeInsets20,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Delete Trip",
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
+                                                    style:
+                                                        Styles
+                                                            .txtBlackColorW70018,
                                                   ),
 
-                                                  const SizedBox(height: 12),
+                                                  Dimens.boxHeight10,
 
-                                                  const Text(
-                                                    "Are you sure you want to delete this trip?",
+                                                  Text(
+                                                    "Are you sure you want to delete this Trip?",
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.black87,
-                                                    ),
+                                                    style:
+                                                        Styles
+                                                            .txtGreyColorW40014,
                                                   ),
 
-                                                  const SizedBox(height: 25),
+                                                  Dimens.boxHeight20,
 
                                                   Row(
                                                     mainAxisAlignment:
@@ -482,40 +524,31 @@ class TripDetailsScreen extends StatelessWidget {
                                                             .spaceEvenly,
                                                     children: [
                                                       Expanded(
-                                                        child: OutlinedButton(
+                                                        child: CustomButton(
                                                           onPressed: () {
                                                             Get.back();
                                                           },
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  vertical: 12,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    10,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                          child: Text(
-                                                            "No",
-                                                            style: Styles
-                                                                .appColorW50016
-                                                                .copyWith(
-                                                                  color:
-                                                                      ColorsValue
-                                                                          .blackColor,
-                                                                ),
-                                                          ),
+                                                          text: "Cancel",
+                                                          textStyle:
+                                                              Styles
+                                                                  .txtBlackColorW60016,
+                                                          backgroundColor:
+                                                              ColorsValue
+                                                                  .transparent,
+                                                          isBorder: true,
+                                                          borderColor:
+                                                              ColorsValue
+                                                                  .txtBlackColor,
+                                                          heightBtn:
+                                                              Dimens.fourty,
                                                         ),
                                                       ),
-
-                                                      const SizedBox(width: 12),
-
+                                                      Dimens.boxWidth10,
                                                       // Confirm Button
                                                       Expanded(
-                                                        child: ElevatedButton(
+                                                        child: CustomButton(
+                                                          heightBtn:
+                                                              Dimens.fourty,
                                                           onPressed: () {
                                                             Get.back();
                                                             controller
@@ -526,27 +559,13 @@ class TripDetailsScreen extends StatelessWidget {
                                                                       "",
                                                                 );
                                                           },
-                                                          style: ElevatedButton.styleFrom(
-                                                            padding:
-                                                                const EdgeInsets.symmetric(
-                                                                  vertical: 12,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    10,
-                                                                  ),
-                                                            ),
-                                                            backgroundColor:
-                                                                ColorsValue
-                                                                    .redColor,
-                                                          ),
-                                                          child: Text(
-                                                            "Yes",
-                                                            style:
-                                                                Styles
-                                                                    .whiteColorW60016,
-                                                          ),
+                                                          text: "Delete",
+                                                          textStyle:
+                                                              Styles
+                                                                  .whiteColorW60016,
+                                                          backgroundColor:
+                                                              ColorsValue
+                                                                  .redColor,
                                                         ),
                                                       ),
                                                     ],
@@ -582,7 +601,7 @@ class TripDetailsScreen extends StatelessWidget {
                           Text("Expanse", style: Styles.txtBlackColorW70018),
                           GestureDetector(
                             onTap: () {
-                              RouteManagement.goToAddExpenseTripScreen();
+                              RouteManagement.goToAddExpenseTripScreen(null);
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -602,177 +621,325 @@ class TripDetailsScreen extends StatelessWidget {
                         ],
                       ),
                       Dimens.boxHeight15,
-                      SizedBox(
-                        height: Dimens.thirty,
-                        child: ListView.builder(
-                          itemCount: controller.expanceCategoryList.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            var item = controller.expanceCategoryList[index];
-                            return GestureDetector(
-                              onTap: () {
-                                controller.selectExpense = index;
-                                controller.update();
-                              },
-                              child: Container(
-                                margin: Dimens.edgeInsetsRight6,
-                                alignment: Alignment.center,
-                                padding: Dimens.edgeInsets16_04_16_04,
-                                decoration: BoxDecoration(
-                                  color:
-                                      controller.selectExpense == index
-                                          ? ColorsValue.appColor
-                                          : ColorsValue.greyColor,
-                                  borderRadius: BorderRadius.circular(
-                                    Dimens.six,
+                      if (controller.filterExpenseList.isNotEmpty) ...[
+                        SizedBox(
+                          height: Dimens.thirty,
+                          child: ListView.builder(
+                            itemCount: controller.filterExpenseList.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              var item = controller.filterExpenseList[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.selectExpense =
+                                      item.expCategory?.name ?? "";
+                                  controller.applyFilter();
+                                  controller.update();
+                                },
+                                child: Container(
+                                  margin: Dimens.edgeInsetsRight6,
+                                  alignment: Alignment.center,
+                                  padding: Dimens.edgeInsets16_04_16_04,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        controller.selectExpense ==
+                                                (item.expCategory?.name ?? "")
+                                            ? ColorsValue.appColor
+                                            : ColorsValue.greyColor,
+                                    borderRadius: BorderRadius.circular(
+                                      Dimens.six,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    item.expCategory?.name ?? "",
+                                    style:
+                                        controller.selectExpense ==
+                                                (item.expCategory?.name ?? "")
+                                            ? Styles.whiteColorW70016
+                                            : Styles.txtBlackColorW70016,
                                   ),
                                 ),
-                                child: Text(
-                                  item.name,
-                                  style:
-                                      controller.selectExpense == index
-                                          ? Styles.whiteColorW70016
-                                          : Styles.txtBlackColorW70016,
-                                ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      Dimens.boxHeight15,
-                      ListView.builder(
-                        itemCount: 3,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: Dimens.edgeInsetsTop10,
-                            padding: Dimens.edgeInsets14,
-                            decoration: BoxDecoration(
-                              color: ColorsValue.textFieldBg,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
+                        Dimens.boxHeight15,
+                        ListView.builder(
+                          itemCount: controller.expenseList.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            var item = controller.expenseList[index];
+                            return Container(
+                              margin: Dimens.edgeInsetsTop10,
+                              padding: Dimens.edgeInsets14,
+                              decoration: BoxDecoration(
+                                color: ColorsValue.textFieldBg,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        item.title ?? "",
+                                        style: Styles.txtBlackColorW70016,
+                                      ),
+                                      Text(
+                                        "${item.trip?.currency} ${item.amount ?? "0"}",
+                                        style: Styles.txtBlackColorW70016,
+                                      ),
+                                    ],
+                                  ),
+                                  Dimens.boxHeight6,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Date :- ",
+                                        style: Styles.txtBlackColorW50014,
+                                      ),
+                                      Text(
+                                        item.date?.isNotEmpty ?? false
+                                            ? Utility.getFormatedTime(
+                                              item.date ?? "",
+                                              "dd-MM-yyyy",
+                                            )
+                                            : "",
+                                        style: Styles.txtGreyColorW40014,
+                                      ),
+                                    ],
+                                  ),
+                                  Dimens.boxHeight6,
+                                  if (item.receipt?.isNotEmpty ?? false) ...[
                                     Text(
-                                      "Traveling",
-                                      style: Styles.txtBlackColorW70016,
-                                    ),
-                                    Text(
-                                      "€250",
-                                      style: Styles.txtBlackColorW70016,
-                                    ),
-                                  ],
-                                ),
-                                Dimens.boxHeight6,
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Date :- ",
+                                      "Receipt/Invoice",
                                       style: Styles.txtBlackColorW50014,
                                     ),
-                                    Text(
-                                      "23-12-2002",
-                                      style: Styles.txtGreyColorW40014,
-                                    ),
-                                  ],
-                                ),
-                                Dimens.boxHeight6,
-                                Text(
-                                  "Receipt/Invoice",
-                                  style: Styles.txtBlackColorW50014,
-                                ),
-                                Dimens.boxHeight6,
-                                SizedBox(
-                                  height: Dimens.ninty,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        AssetConstants.placeholder,
-                                        width: double.infinity,
+                                    Dimens.boxHeight6,
+                                    GestureDetector(
+                                      onTap: () {
+                                        RouteManagement.goToShowFullScareenImage(
+                                          item.receipt ?? "",
+                                          "image",
+                                        );
+                                      },
+                                      child: SizedBox(
                                         height: Dimens.ninty,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Container(
-                                        color: ColorsValue.blackColor.withAlpha(
-                                          80,
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Row(
-                                          spacing: Dimens.six,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                        child: Stack(
+                                          alignment: Alignment.center,
                                           children: [
-                                            SvgPicture.asset(
-                                              AssetConstants.ic_view,
+                                            Image.network(
+                                              item.receipt ?? "",
+                                              width: double.infinity,
+                                              height: Dimens.ninty,
+                                              fit: BoxFit.cover,
                                             ),
-                                            Text(
-                                              "View",
-                                              style: Styles.whiteColorW50014
-                                                  .copyWith(
-                                                    fontSize: Dimens.sixteen,
+                                            Container(
+                                              color: ColorsValue.blackColor
+                                                  .withAlpha(80),
+                                            ),
+                                            Center(
+                                              child: Row(
+                                                spacing: Dimens.six,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    AssetConstants.ic_view,
                                                   ),
+                                                  Text(
+                                                    "View",
+                                                    style: Styles
+                                                        .whiteColorW50014
+                                                        .copyWith(
+                                                          fontSize:
+                                                              Dimens.sixteen,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Dimens.boxHeight10,
-                                Row(
-                                  spacing: Dimens.ten,
-                                  children: [
-                                    Expanded(
-                                      child: CustomButton(
-                                        heightBtn: Dimens.fourtyFour,
-                                        radius: Dimens.six,
-                                        onPressed: () {},
-                                        text: "Delete",
-                                        textStyle: Styles.redColorW50014,
-                                        backgroundColor: ColorsValue.whiteColor,
-                                        borderColor: ColorsValue.redColor,
-                                        isBorder: true,
-                                        leading: SvgPicture.asset(
-                                          AssetConstants.ic_delete,
-                                          height: Dimens.twenty,
-                                          width: Dimens.twenty,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: CustomButton(
-                                        heightBtn: Dimens.fourtyFour,
-                                        onPressed: () {},
-                                        text: "Edit Trip",
-                                        textStyle: Styles.txtBlackColorW50014,
-                                        backgroundColor: ColorsValue.whiteColor,
-                                        borderColor: ColorsValue.txtBlackColor,
-                                        isBorder: true,
-                                        leading: SvgPicture.asset(
-                                          AssetConstants.ic_edit,
-                                          height: Dimens.twenty,
-                                          width: Dimens.twenty,
-                                        ),
-                                        radius: Dimens.six,
-                                      ),
                                     ),
                                   ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                  Dimens.boxHeight10,
+                                  Row(
+                                    spacing: Dimens.ten,
+                                    children: [
+                                      Expanded(
+                                        child: CustomButton(
+                                          heightBtn: Dimens.fourtyFour,
+                                          radius: Dimens.six,
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          Dimens.sixteen,
+                                                        ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        Dimens.edgeInsets20,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          "Delete Expense",
+                                                          style:
+                                                              Styles
+                                                                  .txtBlackColorW70018,
+                                                        ),
+
+                                                        Dimens.boxHeight10,
+
+                                                        Text(
+                                                          "Are you sure you want to delete this Expense?",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              Styles
+                                                                  .txtGreyColorW40014,
+                                                        ),
+
+                                                        Dimens.boxHeight20,
+
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Expanded(
+                                                              child: CustomButton(
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                },
+                                                                text: "Cancel",
+                                                                textStyle:
+                                                                    Styles
+                                                                        .txtBlackColorW60016,
+                                                                backgroundColor:
+                                                                    ColorsValue
+                                                                        .transparent,
+                                                                isBorder: true,
+                                                                borderColor:
+                                                                    ColorsValue
+                                                                        .txtBlackColor,
+                                                                heightBtn:
+                                                                    Dimens
+                                                                        .fourty,
+                                                              ),
+                                                            ),
+                                                            Dimens.boxWidth10,
+                                                            // Confirm Button
+                                                            Expanded(
+                                                              child: CustomButton(
+                                                                heightBtn:
+                                                                    Dimens
+                                                                        .fourty,
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                  controller
+                                                                      .postExpenseDelete(
+                                                                        item,
+                                                                      );
+                                                                },
+                                                                text: "Delete",
+                                                                textStyle:
+                                                                    Styles
+                                                                        .whiteColorW60016,
+                                                                backgroundColor:
+                                                                    ColorsValue
+                                                                        .redColor,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          text: "Delete",
+                                          textStyle: Styles.redColorW50014,
+                                          backgroundColor:
+                                              ColorsValue.whiteColor,
+                                          borderColor: ColorsValue.redColor,
+                                          isBorder: true,
+                                          leading: SvgPicture.asset(
+                                            AssetConstants.ic_delete,
+                                            height: Dimens.twenty,
+                                            width: Dimens.twenty,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: CustomButton(
+                                          heightBtn: Dimens.fourtyFour,
+                                          onPressed: () async {
+                                            controller.titleController.text =
+                                                item.title ?? "";
+                                            controller.dateController.text =
+                                                item.date?.isNotEmpty ?? false
+                                                    ? DateFormat(
+                                                      'yyyy-MM-dd',
+                                                    ).format(
+                                                      DateTime.parse(
+                                                        item.date ?? "",
+                                                      ),
+                                                    )
+                                                    : "";
+                                            controller.selectExpenseCategory =
+                                                item.expCategory?.id;
+                                            controller.selectExpenseUser =
+                                                item.expBy?.id;
+                                            controller.amountController.text =
+                                                item.amount?.toString() ?? "";
+                                            controller.selectInvoice =
+                                                item.receipt ?? "";
+
+                                            controller.update();
+                                            RouteManagement.goToAddExpenseTripScreen(
+                                              item.id ?? "",
+                                            );
+                                          },
+                                          text: "Edit Trip",
+                                          textStyle: Styles.txtBlackColorW50014,
+                                          backgroundColor:
+                                              ColorsValue.whiteColor,
+                                          borderColor:
+                                              ColorsValue.txtBlackColor,
+                                          isBorder: true,
+                                          leading: SvgPicture.asset(
+                                            AssetConstants.ic_edit,
+                                            height: Dimens.twenty,
+                                            width: Dimens.twenty,
+                                          ),
+                                          radius: Dimens.six,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ],
                   )
                   : Center(child: CircularProgressIndicator()),

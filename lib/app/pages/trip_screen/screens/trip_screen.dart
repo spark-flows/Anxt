@@ -785,7 +785,7 @@ class TripScreen extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             RouteManagement.goToTripDetailsScreen(
-                              tripid: item.id,
+                              tripid: item.id ?? "",
                             );
                           },
                           child: Container(
@@ -802,7 +802,7 @@ class TripScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      item.tripname,
+                                      item.tripname ?? "",
                                       style: Styles.txtBlackColorW70014
                                           .copyWith(fontSize: Dimens.sixteen),
                                     ),
@@ -821,7 +821,7 @@ class TripScreen extends StatelessWidget {
                                         ),
                                       ),
                                       child: Text(
-                                        item.status,
+                                        item.status?.capitalizeFirst ?? "",
                                         style: Styles.whiteColorW50010,
                                       ),
                                     ),
@@ -835,7 +835,7 @@ class TripScreen extends StatelessWidget {
                                       style: Styles.txtBlackColorW50014,
                                     ),
                                     Text(
-                                      item.purpose,
+                                      item.purpose ?? "",
                                       style: Styles.txtGreyColorW40014,
                                     ),
                                   ],
@@ -866,7 +866,7 @@ class TripScreen extends StatelessWidget {
                                     ),
                                     Flexible(
                                       child: Text(
-                                        item.location,
+                                        item.location ?? "",
                                         style: Styles.txtGreyColorW40014,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
