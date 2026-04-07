@@ -1,6 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/app/pages/sales_analytics/screens/newFlow/cart_screen.dart';
-import 'package:a_nxt/app/widgets/custom_listtileView.dart';
 import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/add_to_cart_model.dart';
@@ -10,7 +11,13 @@ import 'package:a_nxt/domain/models/get_one_cart_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 
 class SalesAnalyticsController extends GetxController {
@@ -19,25 +26,25 @@ class SalesAnalyticsController extends GetxController {
   final SalesAnalyticsPresenter salesAnalyticsPresenter;
 
   void initCustomer({GetOneUserData? customer}) {
-    if (customer != null) {
-      nameController.text = customer.name!;
-      mobileController.text = customer.mobile!;
-      emailController.text = customer.email!;
-      adressController.text = customer.address!;
-      stateController.text = customer.state!;
-      cityController.text = customer.city!;
-      areaController.text = customer.area!;
-      zipCodeController.text = customer.zipcode!;
-    } else {
-      nameController.clear();
-      mobileController.clear();
-      emailController.clear();
-      adressController.clear();
-      stateController.clear();
-      cityController.clear();
-      areaController.clear();
-      zipCodeController.clear();
-    }
+    // if (customer != null) {
+    //   nameController.text = customer.name!;
+    //   mobileController.text = customer.mobile!;
+    //   emailController.text = customer.email!;
+    //   adressController.text = customer.address!;
+    //   stateController.text = customer.state!;
+    //   cityController.text = customer.city!;
+    //   areaController.text = customer.area!;
+    //   zipCodeController.text = customer.zipcode!;
+    // } else {
+    //   nameController.clear();
+    //   mobileController.clear();
+    //   emailController.clear();
+    //   adressController.clear();
+    //   stateController.clear();
+    //   cityController.clear();
+    //   areaController.clear();
+    //   zipCodeController.clear();
+    // }
   }
 
   int filterOnboardValue = 0;
@@ -57,69 +64,54 @@ class SalesAnalyticsController extends GetxController {
   DateTime? nextDate;
   TextEditingController nextDateController = TextEditingController();
 
-  GlobalKey<FormState> salesKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController adressController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController areaController = TextEditingController();
-  TextEditingController zipCodeController = TextEditingController();
-
   TextEditingController jobNoController = TextEditingController();
 
-  int pageCount = 1;
-  bool isLastPage = false;
-  bool isLoading = false;
-  List<GetAllUsesDoc> getAllUserList = [];
-  final ScrollController scrollController = ScrollController();
+  PagingController<int, GetAllUsesDoc> customerPagingController =
+      PagingController(firstPageKey: 1);
 
-  Future<void> postAllUserList(
-    int pageKey, {
-    String? salesPersonId,
-    String? fromDate,
-    String? toDate,
-  }) async {
-    if (pageKey == 1) {
-      pageCount = 1;
-    }
-    isLoading = true;
+  List<GetAllUsesDoc> customersDocList = [];
+
+  int filterInterValue = 0;
+  List<String> filterInterType = ['Date'];
+
+  Future<void> postAllUserList(pageKey) async {
     var response = await salesAnalyticsPresenter.postAllUserList(
       page: pageKey,
-      limit: 1000,
+      limit: 15,
       search: SearchModel(),
-      salesPersonId: salesPersonId ?? "",
-      fromDate: fromDate ?? '',
-      toDate: toDate ?? '',
-      isLoading: false,
+      salesPersonId: Get.find<Repository>().getStringValue(
+        LocalKeys.salesPersonId,
+      ),
+      fromDate:
+          fromOnboardController.text.isNotEmpty
+              ? DateFormat(
+                "yyyy-MM-dd",
+              ).format(DateTime.parse(fromOnboardController.text))
+              : DateFormat("yyyy-MM-dd").format(DateTime.now()),
+      toDate:
+          toOnboardController.text.isNotEmpty
+              ? DateFormat(
+                "yyyy-MM-dd",
+              ).format(DateTime.parse(toOnboardController.text))
+              : DateFormat("yyyy-MM-dd").format(DateTime.now()),
+      isLoading: true,
     );
-    getAllUserList.clear();
     if (response?.data != null) {
-      isLoading = false;
       if (pageKey == 1) {
-        isLastPage = false;
-        getAllUserList.clear();
+        customersDocList.clear();
+        customerPagingController.itemList?.clear();
       }
-      if ((response?.data?.docs?.length ?? 0) < 20) {
-        isLastPage = true;
-        getAllUserList.addAll(response?.data?.docs ?? []);
+      customersDocList = response?.data?.docs ?? [];
+
+      final isLastPage = customersDocList.length < 10;
+      if (isLastPage) {
+        customerPagingController.appendLastPage(customersDocList);
       } else {
-        pageCount++;
-        getAllUserList.addAll(response?.data?.docs ?? []);
+        var nextPageKey = pageKey + 1;
+        customerPagingController.appendPage(customersDocList, nextPageKey);
       }
-      if (pageKey == 1) {
-        if (scrollController.positions.isNotEmpty) {
-          scrollController.jumpTo(0);
-        }
-      }
-    } else {
-      isLoading = false;
-      Utility.errorMessage(
-        response?.message ?? 'Getting error while fetching data',
-      );
+      update();
     }
-    update();
   }
 
   List<String> filterList = ['Date'];
@@ -194,33 +186,103 @@ class SalesAnalyticsController extends GetxController {
 
   CreateCustomerData? customerDetail;
 
-  Future<void> postCreateCustomer({String? customerId}) async {
+  GlobalKey<FormState> salesKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController zipcodeController = TextEditingController();
+
+  TextEditingController ownernameController = TextEditingController();
+  TextEditingController ownermobileController = TextEditingController();
+  TextEditingController managernameController = TextEditingController();
+  TextEditingController managermobileController = TextEditingController();
+
+  String? selectCustomerCate;
+
+  List<String> categoriesList = ['1', '2', '3'];
+
+  String dialCode = "91";
+  bool isValid = false;
+
+  String dialOwnerCode = "91";
+  bool isOwnerValid = false;
+
+  String dialManagerCode = "91";
+  bool isManagerValid = false;
+
+  Future<void> postCreateCustomer() async {
     var response = await salesAnalyticsPresenter.postCreateCustomer(
-      isLoading: true,
-      salesperson: getOneUser?.sales?.first.salesperson?.id ?? '',
-      customerId: customerId ?? '',
+      customerid: "",
+      salesperson: Get.find<Repository>().getStringValue(
+        LocalKeys.salesPersonId,
+      ),
       name: nameController.text,
+      countrycode: dialCode,
       mobile: mobileController.text,
       email: emailController.text,
-      address: adressController.text,
+      address: addressController.text,
       state: stateController.text,
       city: cityController.text,
       area: areaController.text,
-      zipcode: zipCodeController.text,
-      ownername: '',
-      ownermobile: '',
-      managername: '',
-      managermobile: '',
+      zipcode: zipcodeController.text,
+      ownername: ownernameController.text,
+      ownermobile: ownermobileController.text,
+      managername: managernameController.text,
+      managermobile: managermobileController.text,
+      custcategory: selectCustomerCate,
+      isLoading: true,
     );
     customerDetail = null;
-    if (response?.status == 200) {
-      customerDetail = response?.data;
+    if (response?.statusCode == 200) {
       Get.back();
-      Utility.getRawSnackBar(response?.message ?? "", ColorsValue.appColor);
+      postAllUserList(1);
     } else {
-      Utility.errorMessage(response?.message ?? "");
+      Utility.errorMessage(
+        jsonDecode(response?.data.toString() ?? "")['Message'],
+      );
     }
     update();
+  }
+
+  List<CustomerListDoc> customerList = [];
+
+  Future<void> postCustomerList() async {
+    var response = await salesAnalyticsPresenter.postCustomerList(
+      page: 1,
+      limit: 10000,
+      isLoading: true,
+    );
+    customerList.clear();
+    if (response?.data != null) {
+      customerList = response?.data?.docs ?? [];
+      update();
+    }
+  }
+
+  Future<void> postCustomerAsssign() async {
+    var response = await salesAnalyticsPresenter.postCustomerAsssign(
+      categoryid:
+          customerList
+              .where((e) {
+                return e.checkbox == true;
+              })
+              .map((e) => e.id ?? "")
+              .toList(),
+      salesperson: Get.find<Repository>().getStringValue(
+        LocalKeys.salesPersonId,
+      ),
+      isLoading: false,
+    );
+    if (response?.data != null) {
+      customerPagingController.refresh();
+      Get.back();
+      Get.back();
+      update();
+    }
   }
 
   Future<void> postSalesCreate({
@@ -265,8 +327,9 @@ class SalesAnalyticsController extends GetxController {
       'customerNeeds': '',
       'nextPurchase': '',
       'customerReason': '',
-      'customerFeedback': '',
+      'customerFeedback': remarkController.text,
       'customerCategory': '',
+      'location': Utility.currentLocation,
     });
 
     var response = await salesAnalyticsPresenter.postSalesCreate(
@@ -289,6 +352,7 @@ class SalesAnalyticsController extends GetxController {
       customerReason: body['customerReason'] ?? '',
       customerFeedback: body['customerFeedback'] ?? '',
       customerCategory: body['customerCategory'] ?? '',
+      location: body['location'] ?? '',
     );
     if (response?.status == 200) {
       if (mode != "all") {
@@ -314,34 +378,90 @@ class SalesAnalyticsController extends GetxController {
     update();
   }
 
-  ////// New Flow ///
+  GlobalKey<FormState> remarkKey = GlobalKey<FormState>();
+  TextEditingController remarkController = TextEditingController();
 
-  final List<MetalDetail> metalList = [
-    MetalDetail(
-      code: "G14KTR",
-      gw: 6.381,
-      nw: 6.220,
-      purity: 74.00,
-      fine: 4.603,
-      rate: 7450,
-    ),
-    MetalDetail(
-      code: "G18K",
-      gw: 3.250,
-      nw: 3.100,
-      purity: 75.00,
-      fine: 2.325,
-      rate: 8200,
-    ),
-    MetalDetail(
-      code: "G22K",
-      gw: 2.150,
-      nw: 2.050,
-      purity: 91.60,
-      fine: 1.878,
-      rate: 9100,
-    ),
-  ];
+  showRemarkModel(BuildContext context, bool isStore) {
+    remarkController.clear();
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: ColorsValue.whiteColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(Dimens.thirty),
+          topRight: Radius.circular(Dimens.thirty),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom, // 🔥 KEY FIX
+          ),
+          child: Form(
+            key: remarkKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      isStore ? "Store In Remark" : "Store Out Remark",
+                      style: Styles.txtBlackColorW70018,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: SvgPicture.asset(AssetConstants.ic_close),
+                    ),
+                  ],
+                ),
+                Dimens.boxHeight10,
+                CustomTextFormField(
+                  controller: remarkController,
+                  isTitle: true,
+                  title: "Remark",
+                  titleStyle: Styles.txtBlackColorW70014,
+                  hintText: 'Enter Remark',
+                  hintStyle: Styles.txtGreyColorW50012,
+                  filled: true,
+                  fillColor: ColorsValue.textFieldBg,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.text,
+                ),
+                Dimens.boxHeight20,
+                CustomButton(
+                  onPressed: () {
+                    if (remarkKey.currentState!.validate()) {
+                      Get.back();
+                      postSalesCreate(
+                        storeOutDate: DateTime.now(),
+                        mode: 'storeOut',
+                      );
+                      update();
+                    }
+                  },
+                  text: isStore ? 'Store In' : 'Store Out',
+                  heightBtn: Dimens.fifty,
+                  backgroundColor: ColorsValue.appColor,
+                  textStyle: Styles.whiteColorW50014,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  ////// New Flow ///
 
   bool is18KSelected = false;
   bool is14KSelected = false;
@@ -366,42 +486,6 @@ class SalesAnalyticsController extends GetxController {
   bool productSummaryExpanded = true;
   bool invoiceSummaryExpanded = true;
   bool discountChecked = false;
-
-  // List<CartItem> cartItems = [
-  //   CartItem(
-  //     jobNo: '175987',
-  //     quality: '14 KT',
-  //     nw: 120,
-  //     amount: 165000,
-  //     quantity: 1,
-  //     totalAmount: 165000,
-  //     designNo: '',
-  //     imageUrl:
-  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-  //   ),
-  //   CartItem(
-  //     jobNo: '175987',
-  //     quality: '15 KT',
-  //     nw: 120,
-  //     amount: 165000,
-  //     quantity: 2,
-  //     totalAmount: 165000,
-  //     designNo: '',
-  //     imageUrl:
-  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-  //   ),
-  //   CartItem(
-  //     jobNo: '175987',
-  //     quality: '16 KT',
-  //     nw: 120,
-  //     amount: 165000,
-  //     quantity: 12,
-  //     totalAmount: 1980000,
-  //     designNo: '',
-  //     imageUrl:
-  //         'https://thrivenextgen.com/wp-content/uploads/AdobeStock_162765779_45-scaled.webp',
-  //   ),
-  // ];
 
   void updateQuantity(int quantity, int delta) {
     if (quantity + delta > 0) {
@@ -524,6 +608,196 @@ class SalesAnalyticsController extends GetxController {
       Utility.errorMessage(response?.message ?? "");
     }
     update();
+  }
+
+  /// ==================================== MApScreen ================================
+
+  GoogleMapController? mapSelectController;
+  LatLng? selectedLocation;
+  LatLng? mapPosition;
+
+  Future<void> onMapTapped(LatLng latLng) async {
+    selectedLocation = latLng;
+    update();
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        latLng.latitude,
+        latLng.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        addressController.text =
+            "${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+        debugPrint("Location:$place");
+        mapSelectController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(latLng.latitude, latLng.longitude),
+              zoom: 11,
+            ),
+          ),
+        );
+        update();
+      }
+    } catch (e) {
+      print("Error getting address: $e");
+    }
+  }
+
+  String? locationAddress;
+
+  @override
+  onInit() {
+    super.onInit();
+    getCurrentLocation();
+  }
+
+  Future<void> getCurrentLocation() async {
+    try {
+      if (await Utility.locationPermissionCheack()) {
+        Position position = await Geolocator.getCurrentPosition(
+          locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+        );
+
+        LatLng currentLatLng = LatLng(position.latitude, position.longitude);
+
+        selectedLocation = currentLatLng;
+        update();
+
+        mapSelectController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(currentLatLng.latitude, currentLatLng.longitude),
+              zoom: 11,
+            ),
+          ),
+        );
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentLatLng.latitude,
+          currentLatLng.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          addressController.text =
+              "${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+
+          locationAddress =
+              "${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+          stateController.text = place.administrativeArea ?? "";
+          cityController.text = place.locality ?? "";
+          areaController.text = place.subLocality ?? "";
+          zipcodeController.text = place.postalCode ?? "";
+
+          update();
+        }
+      }
+      update();
+    } catch (e) {
+      update();
+    }
+  }
+
+  List<Map<String, dynamic>> predictions = [];
+  Timer? debounce;
+
+  /// 🔹 Google Autocomplete API
+  Future<void> searchPlaces(String query) async {
+    if (query.isEmpty) {
+      predictions = [];
+      update();
+      return;
+    }
+
+    final url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+        '?input=$query'
+        '&key=AIzaSyDLgr8YB5IK8dBIEWClexZGzXaB7UlVm7Q';
+
+    final response = await http.get(Uri.parse(url));
+    final data = json.decode(response.body);
+
+    predictions = List<Map<String, dynamic>>.from(data['predictions']);
+    print(predictions);
+    update();
+  }
+
+  Future<void> getPlaceDetails(String placeId) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/place/details/json'
+        '?place_id=$placeId'
+        '&key=AIzaSyDLgr8YB5IK8dBIEWClexZGzXaB7UlVm7Q';
+
+    final response = await http.get(Uri.parse(url));
+    final data = json.decode(response.body);
+
+    if (data['status'] != 'OK') {
+      debugPrint("Place details error: ${data['status']}");
+      return;
+    }
+
+    final result = data['result'];
+
+    final lat = result['geometry']['location']['lat'];
+    final lng = result['geometry']['location']['lng'];
+    final address = result['formatted_address'];
+
+    String? city;
+    String? state;
+    String? area;
+    String? pincode;
+    String? country;
+
+    final List components = result['address_components'];
+
+    for (var component in components) {
+      final List types = component['types'];
+
+      if (types.contains('locality')) {
+        city = component['long_name'];
+      }
+
+      if (types.contains('administrative_area_level_1')) {
+        state = component['long_name'];
+      }
+
+      if (types.contains('sublocality') ||
+          types.contains('sublocality_level_1')) {
+        area = component['long_name'];
+      }
+
+      if (types.contains('postal_code')) {
+        pincode = component['long_name'];
+      }
+
+      if (types.contains('country')) {
+        country = component['long_name'];
+      }
+    }
+
+    stateController.text = state ?? "";
+    cityController.text = city ?? "";
+    areaController.text = area ?? "";
+    zipcodeController.text = pincode ?? "";
+
+    debugPrint("Address : $address");
+    debugPrint("Lat     : $lat");
+    debugPrint("Lng     : $lng");
+    debugPrint("City    : $city");
+    debugPrint("State   : $state");
+    debugPrint("Area    : $area");
+    debugPrint("Pincode : $pincode");
+    debugPrint("Country : $country");
+  }
+
+  /// 🔹 Debounce to reduce API calls
+  void onSearchChanged(String value) {
+    debounce?.cancel();
+    debounce = Timer(const Duration(milliseconds: 400), () {
+      searchPlaces(value);
+    });
   }
 }
 

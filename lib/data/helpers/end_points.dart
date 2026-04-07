@@ -38,4 +38,6 @@ class EndPoints {
   static String uploadImage = 'api/trip/upload';
   static String uploadExpenseImage = 'api/expense/upload';
   static String postGetPDF = 'api/order/pdf?orderno=';
+  static String postCustomerList = 'api/customer';
+  static String postCustomerAsssign = 'api/customer/assign';
 }

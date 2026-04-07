@@ -18,6 +18,7 @@ abstract class AssetConstants {
   static const String ic_reset_password = "assets/svg/ic_reset_password.svg";
   static const String scan = "assets/json/scan.json";
   static const String scanner = "assets/json/scanner.json";
+  static const String ic_search = "assets/svg/ic_search.svg";
   static const String ic_fill_sales_analytics =
       "assets/svg/ic_fill_sales_analytics.svg";
   static const String ic_sales_analytics = "assets/svg/ic_sales_analytics.svg";
@@ -44,4 +45,5 @@ abstract class AssetConstants {
   static const String ic_view_img = "assets/svg/ic_view_img.svg";
   static const String srjo_img = "assets/image/srjo_number.png";
   static const String ic_fill_catalogue = "assets/svg/ic_fill_catalogue.svg";
+  static const String ic_location = "assets/svg/ic_location.svg";
 }

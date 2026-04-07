@@ -16,7 +16,7 @@ abstract class Routes {
   static const tripDetailsScreen = _Paths.tripDetailsScreen;
   static const addTripScreen = _Paths.addTripScreen;
   static const addExpenseTripScreen = _Paths.addExpenseTripScreen;
-
+  static const mapScreen = _Paths.mapScreen;
   static const documentScreen = _Paths.documentScreen;
   static const documentDetailScreen = _Paths.documentDetailScreen;
   static const stockCatalogueScreen = _Paths.stockCatalogueScreen;
@@ -29,6 +29,7 @@ abstract class Routes {
   static const productDetailScreen = _Paths.productDetailScreen;
   static const orderDetailScreen = _Paths.orderDetailScreen;
   static const cartScreen = _Paths.cartScreen;
+  static const addOldCustomerScreen = _Paths.addOldCustomerScreen;
 }
 
 abstract class _Paths {
@@ -36,6 +37,7 @@ abstract class _Paths {
   static const homeScreen = '/homeScreen';
   static const authScreen = '/authScreen';
   static const registerScreen = '/registerScreen';
+  static const mapScreen = '/mapScreen';
   static const forgotScreen = '/forgotScreen';
   static const resetPasswordScreen = '/resetPasswordScreen';
   static const salesAnalyticsScreen = '/salesAnalyticsScreen';
@@ -59,4 +61,5 @@ abstract class _Paths {
   static const productDetailScreen = '/productDetailScreen';
   static const orderDetailScreen = '/orderDetailScreen';
   static const cartScreen = '/cartScreen';
+  static const addOldCustomerScreen = '/addOldCustomerScreen';
 }

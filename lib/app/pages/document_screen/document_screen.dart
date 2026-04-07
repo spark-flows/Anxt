@@ -37,7 +37,7 @@ class DocumentScreen extends StatelessWidget {
           backgroundColor: ColorsValue.whiteColor,
           appBar: AppBarWidget(
             onTapBack: controller.goBack,
-            title: 'Catlogues',
+            title: 'Catalogue',
             isVisible: true,
             isCenter: true,
           ),

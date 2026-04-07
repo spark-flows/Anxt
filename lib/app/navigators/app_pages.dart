@@ -13,6 +13,8 @@ import 'package:a_nxt/app/pages/stock_catalogue_screen/stock_catalogue_detail_sc
 import 'package:a_nxt/app/pages/stock_catalogue_screen/stock_catalogue_screen.dart';
 import 'package:get/get.dart';
 
+import '../pages/sales_analytics/screens/map_screen.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -32,6 +34,13 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: HomeScreen.new,
       binding: HomeBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<MapScreen>(
+      name: _Paths.mapScreen,
+      transitionDuration: transitionDuration,
+      page: MapScreen.new,
+      binding: SalesAnalyticsBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage<SalesAnalyticsScreen>(
@@ -214,6 +223,13 @@ class AppPages {
       transitionDuration: transitionDuration,
       page: StockCatalogueDetailScreen.new,
       binding: StockCatalogueBindings(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage<AddOldCustomerScreen>(
+      name: _Paths.addOldCustomerScreen,
+      transitionDuration: transitionDuration,
+      page: AddOldCustomerScreen.new,
+      binding: SalesAnalyticsBinding(),
       transition: Transition.fadeIn,
     ),
   ];

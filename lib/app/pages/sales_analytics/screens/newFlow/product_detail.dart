@@ -346,7 +346,7 @@ class ProductDetailScreen extends StatelessWidget {
                                     child: _buildOptionTile(
                                       label: '18K :-',
                                       price:
-                                          '\$${productDetail?.labGrownDiamondRates?['18kt'] ?? 0}',
+                                          '₹${productDetail?.labGrownDiamondRates?['18kt'] ?? 0}',
                                       isSelected: controller.is18KSelected,
                                       onTap: () {
                                         controller.is18KSelected =
@@ -363,7 +363,7 @@ class ProductDetailScreen extends StatelessWidget {
                                     child: _buildOptionTile(
                                       label: '14K :-',
                                       price:
-                                          '\$${productDetail?.labGrownDiamondRates?['14kt'] ?? 0}',
+                                          '₹${productDetail?.labGrownDiamondRates?['14kt'] ?? 0}',
                                       isSelected: controller.is14KSelected,
                                       onTap: () {
                                         controller.is14KSelected =
@@ -395,7 +395,7 @@ class ProductDetailScreen extends StatelessWidget {
                     //         Expanded(
                     //           child: _buildOptionTile(
                     //             label: '18K :-',
-                    //             price: '\$1500',
+                    //             price: '₹1500',
                     //             isSelected: controller.is18KSelected,
                     //             onTap: () {
                     //               controller.is18KSelected =
@@ -415,7 +415,7 @@ class ProductDetailScreen extends StatelessWidget {
                     //         Expanded(
                     //           child: _buildOptionTile(
                     //             label: '14K :-',
-                    //             price: '\$1000',
+                    //             price: '₹1000',
                     //             isSelected: controller.is14KSelected,
                     //             onTap: () {
                     //               controller.is14KSelected =

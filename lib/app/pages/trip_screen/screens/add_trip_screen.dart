@@ -308,7 +308,7 @@ class AddTripScreen extends StatelessWidget {
                   hintStyle: Styles.txtGreyColorW50012,
                   filled: true,
                   fillColor: ColorsValue.textFieldBg,
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.text,
                 ),
                 Dimens.boxHeight20,

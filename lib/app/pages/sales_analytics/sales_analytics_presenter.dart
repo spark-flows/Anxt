@@ -1,11 +1,9 @@
 import 'package:a_nxt/data/helpers/connect_helper.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/add_to_cart_model.dart';
-import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
 import 'package:a_nxt/domain/models/get_one_cart_model.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/priceMaster_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:a_nxt/domain/models/reqmove_from_cart_model.dart';
@@ -41,27 +39,29 @@ class SalesAnalyticsPresenter {
     salesid: salesid,
   );
 
-  Future<CreateCustomerModel?> postCreateCustomer({
+  Future<ResponseModel?> postCreateCustomer({
     bool isLoading = false,
-    required String customerId,
-    required String salesperson,
-    required String name,
-    required String mobile,
-    required String email,
-    required String address,
-    required String state,
-    required String city,
-    required String area,
-    required String zipcode,
-    required String ownername,
-    required String ownermobile,
-    required String managername,
-    required String managermobile,
+    required String? customerid,
+    required String? salesperson,
+    required String? name,
+    required String? countrycode,
+    required String? mobile,
+    required String? email,
+    required String? address,
+    required String? state,
+    required String? city,
+    required String? area,
+    required String? zipcode,
+    required String? ownername,
+    required String? ownermobile,
+    required String? managername,
+    required String? managermobile,
+    required String? custcategory,
   }) async => await salesAnalyticsUsecases.postCreateCustomer(
-    isLoading: isLoading,
-    customerId: customerId,
+    customerid: customerid,
     salesperson: salesperson,
     name: name,
+    countrycode: countrycode,
     mobile: mobile,
     email: email,
     address: address,
@@ -73,6 +73,28 @@ class SalesAnalyticsPresenter {
     ownermobile: ownermobile,
     managername: managername,
     managermobile: managermobile,
+    custcategory: custcategory,
+    isLoading: isLoading,
+  );
+
+  Future<CustomerListModel?> postCustomerList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async => await salesAnalyticsUsecases.postCustomerList(
+    page: page,
+    limit: limit,
+    isLoading: isLoading,
+  );
+
+  Future<ResponseModel?> postCustomerAsssign({
+    bool isLoading = false,
+    required List<String> categoryid,
+    required String? salesperson,
+  }) async => await salesAnalyticsUsecases.postCustomerAsssign(
+    isLoading: isLoading,
+    categoryid: categoryid,
+    salesperson: salesperson,
   );
 
   Future<CreateSalesModel?> postSalesCreate({
@@ -93,6 +115,7 @@ class SalesAnalyticsPresenter {
     required String customerReason,
     required String customerFeedback,
     required String customerCategory,
+    required String location,
   }) async => await salesAnalyticsUsecases.postSalesCreate(
     isLoading: isLoading,
     salesId: salesId,
@@ -111,6 +134,7 @@ class SalesAnalyticsPresenter {
     customerReason: customerReason,
     customerFeedback: customerFeedback,
     customerCategory: customerCategory,
+    location: location,
   );
 
   Future<ProductListModel?> postGetProductList({

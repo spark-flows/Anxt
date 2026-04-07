@@ -752,7 +752,7 @@ class OrderHistoryScreen extends StatelessWidget {
                                               style: Styles.txtBlackColorW60014,
                                             ),
                                             Text(
-                                              '\$${item.summary?.finalamount.toString()}',
+                                              '₹ ${item.summary?.finalamount.toString()}',
                                               style: Styles.txtGreyColorW60014,
                                             ),
                                           ],

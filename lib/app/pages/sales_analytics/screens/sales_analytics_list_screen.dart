@@ -1,10 +1,9 @@
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/models/getAllUsers_model.dart';
-import 'package:a_nxt/domain/repositories/local_storage_keys.dart';
-import 'package:a_nxt/domain/repositories/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 
 class SalesAnalyticsListScreen extends StatelessWidget {
@@ -15,39 +14,14 @@ class SalesAnalyticsListScreen extends StatelessWidget {
     return GetBuilder<SalesAnalyticsController>(
       initState: (state) async {
         var controller = Get.find<SalesAnalyticsController>();
-        final salesPersonId = Get.find<Repository>().getSecureValue(
-          LocalKeys.salesPersonId,
-        );
-        controller.postAllUserList(
-          1,
-          fromDate: controller.fromOnboardController.text,
-          toDate: controller.toOnboardController.text,
-          salesPersonId: await salesPersonId,
-        );
-        controller.scrollController.addListener(() async {
-          if (controller.scrollController.position.pixels ==
-              controller.scrollController.position.maxScrollExtent) {
-            if (controller.isLoading == false) {
-              controller.isLoading = true;
-              controller.update();
-              if (controller.isLastPage == false) {
-                await controller.postAllUserList(
-                  controller.pageCount,
-                  fromDate: controller.fromOnboardController.text,
-                  toDate: controller.toOnboardController.text,
-                  salesPersonId: await salesPersonId,
-                );
-              }
-              controller.isLoading = false;
-              controller.update();
-            }
-          }
+        controller.customerPagingController = PagingController(firstPageKey: 1);
+        controller.customerPagingController.addPageRequestListener((
+          pageKey,
+        ) async {
+          await controller.postAllUserList(pageKey);
         });
       },
       builder: (controller) {
-        final salesPersonId = Get.find<Repository>().getSecureValue(
-          LocalKeys.salesPersonId,
-        );
         return Scaffold(
           backgroundColor: ColorsValue.appBg,
           appBar: AppBarWidget(
@@ -57,6 +31,64 @@ class SalesAnalyticsListScreen extends StatelessWidget {
             title: "All Customer Details",
             isCenter: true,
           ),
+          // floatingActionButton: Column(
+          //   spacing: Dimens.ten,
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     GestureDetector(
+          //       onTap: () {
+          //         RouteManagement.goToSalesAnalyticsScreen();
+          //       },
+          //       child: Container(
+          //         height: Dimens.fourtyFive,
+          //         width: Dimens.ninty,
+          //         decoration: BoxDecoration(
+          //           color: ColorsValue.appColor,
+          //           borderRadius: BorderRadius.circular(Dimens.ten),
+          //         ),
+          //         child: Row(
+          //           spacing: Dimens.ten,
+          //           mainAxisSize: MainAxisSize.min,
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Icon(
+          //               Icons.add,
+          //               color: ColorsValue.whiteColor,
+          //               size: Dimens.twentyFour,
+          //             ),
+          //             Text("New", style: Styles.whiteColorW60014),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //     GestureDetector(
+          //       onTap: () {
+          //         RouteManagement.goToAddOldCustomerScreen();
+          //       },
+          //       child: Container(
+          //         height: Dimens.fourtyFive,
+          //         width: Dimens.ninty,
+          //         decoration: BoxDecoration(
+          //           color: ColorsValue.appColor,
+          //           borderRadius: BorderRadius.circular(Dimens.ten),
+          //         ),
+          //         child: Row(
+          //           spacing: Dimens.ten,
+          //           mainAxisSize: MainAxisSize.min,
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Icon(
+          //               Icons.add,
+          //               color: ColorsValue.whiteColor,
+          //               size: Dimens.twentyFour,
+          //             ),
+          //             Text("Old", style: Styles.whiteColorW60014),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           floatingActionButton: GestureDetector(
             onTap: () {
               RouteManagement.goToSalesAnalyticsScreen();
@@ -96,10 +128,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                               (context) => StatefulBuilder(
                                 builder:
                                     (context, setState) => Container(
-                                      height:
-                                          Utility.isTablet()
-                                              ? Get.height * 0.72
-                                              : Get.height * 0.80,
+                                      height: Get.height * 0.80,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
@@ -131,11 +160,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                       .txtBlackColorW70018
                                                       .copyWith(
                                                         fontSize:
-                                                            Utility.isTablet()
-                                                                ? Dimens
-                                                                    .twentyFour
-                                                                : Dimens
-                                                                    .eighteen,
+                                                            Dimens.eighteen,
                                                       ),
                                                 ),
                                                 InkWell(
@@ -144,14 +169,8 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                   },
                                                   child: SvgPicture.asset(
                                                     AssetConstants.ic_close,
-                                                    height:
-                                                        Utility.isTablet()
-                                                            ? Dimens.thirty
-                                                            : Dimens.twentyFour,
-                                                    width:
-                                                        Utility.isTablet()
-                                                            ? Dimens.thirty
-                                                            : Dimens.twentyFour,
+                                                    height: Dimens.twentyFour,
+                                                    width: Dimens.twentyFour,
                                                     colorFilter:
                                                         ColorFilter.mode(
                                                           ColorsValue
@@ -214,14 +233,14 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                         runAlignment:
                                                             WrapAlignment.start,
                                                         children:
-                                                            controller.filterList.asMap().entries.map((
+                                                            controller.filterInterType.asMap().entries.map((
                                                               e,
                                                             ) {
                                                               var index = e.key;
                                                               return InkWell(
                                                                 onTap: () {
                                                                   controller
-                                                                          .filterOnboardValue =
+                                                                          .filterInterValue =
                                                                       index;
                                                                   setState(
                                                                     () {},
@@ -239,28 +258,27 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     height:
-                                                                        Utility.isTablet()
-                                                                            ? Dimens.fiftyFive
-                                                                            : Dimens.thirtySix,
+                                                                        Dimens
+                                                                            .thirtySix,
                                                                     width:
                                                                         double
                                                                             .maxFinite,
                                                                     decoration: BoxDecoration(
                                                                       color:
-                                                                          controller.filterOnboardValue ==
+                                                                          controller.filterInterValue ==
                                                                                   index
                                                                               ? ColorsValue.greyColor
                                                                               : Colors.transparent,
                                                                     ),
                                                                     child: Text(
                                                                       controller
-                                                                          .filterList[index],
-                                                                      style: Styles.txtBlackColorW70016.copyWith(
-                                                                        fontSize:
-                                                                            Utility.isTablet()
-                                                                                ? Dimens.twenty
-                                                                                : Dimens.sixteen,
-                                                                      ),
+                                                                          .filterInterType[index],
+                                                                      style: Styles
+                                                                          .txtBlackColorW70016
+                                                                          .copyWith(
+                                                                            fontSize:
+                                                                                Dimens.sixteen,
+                                                                          ),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -282,7 +300,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                         index,
                                                       ) {
                                                         switch (controller
-                                                            .filterOnboardValue) {
+                                                            .filterInterValue) {
                                                           case 0:
                                                             return Padding(
                                                               padding:
@@ -302,17 +320,13 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                         .txtBlackColorW70014
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              Utility.isTablet()
-                                                                                  ? Dimens.twenty
-                                                                                  : Dimens.fourteen,
+                                                                              Dimens.fourteen,
                                                                         ),
                                                                     hintStyle: Styles
                                                                         .txtGreyColorW50012
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              Utility.isTablet()
-                                                                                  ? Dimens.eighteen
-                                                                                  : Dimens.twelve,
+                                                                              Dimens.twelve,
                                                                         ),
                                                                     hintText:
                                                                         'From Date'
@@ -400,17 +414,13 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                         .txtBlackColorW70014
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              Utility.isTablet()
-                                                                                  ? Dimens.twenty
-                                                                                  : Dimens.fourteen,
+                                                                              Dimens.fourteen,
                                                                         ),
                                                                     hintStyle: Styles
                                                                         .txtGreyColorW50012
                                                                         .copyWith(
                                                                           fontSize:
-                                                                              Utility.isTablet()
-                                                                                  ? Dimens.eighteen
-                                                                                  : Dimens.twelve,
+                                                                              Dimens.twelve,
                                                                         ),
                                                                     hintText:
                                                                         'To Date'
@@ -522,85 +532,24 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                     Expanded(
                                                       child: InkWell(
                                                         onTap: () async {
-                                                          Utility.isFilter =
-                                                              false;
                                                           controller
                                                               .toOnboardController
-                                                              .text = DateFormat(
-                                                            "yyyy-MM-dd",
-                                                          ).format(
-                                                            DateTime.now(),
-                                                          );
+                                                              .clear();
                                                           controller
                                                               .fromOnboardController
-                                                              .text = DateFormat(
-                                                            "yyyy-MM-dd",
-                                                          ).format(
-                                                            DateTime.now(),
-                                                          );
-                                                          controller.postAllUserList(
-                                                            1,
-                                                            salesPersonId:
-                                                                await salesPersonId,
-                                                            fromDate:
-                                                                controller
-                                                                    .toOnboardController
-                                                                    .text,
-                                                            toDate:
-                                                                controller
-                                                                    .fromOnboardController
-                                                                    .text,
-                                                          );
-                                                          controller.scrollController.addListener(() async {
-                                                            if (controller
-                                                                    .scrollController
-                                                                    .position
-                                                                    .pixels ==
-                                                                controller
-                                                                    .scrollController
-                                                                    .position
-                                                                    .maxScrollExtent) {
-                                                              if (controller
-                                                                      .isLoading ==
-                                                                  false) {
-                                                                controller
-                                                                        .isLoading =
-                                                                    true;
-                                                                controller
-                                                                    .update();
-                                                                if (controller
-                                                                        .isLastPage ==
-                                                                    false) {
-                                                                  await controller.postAllUserList(
-                                                                    controller
-                                                                        .pageCount,
-                                                                    salesPersonId:
-                                                                        await salesPersonId,
-                                                                  );
-                                                                }
-                                                                controller
-                                                                        .isLoading =
-                                                                    false;
-                                                                controller
-                                                                    .update();
-                                                              }
-                                                            }
-                                                          });
-
+                                                              .clear();
                                                           controller
-                                                              .filterOnboardValue = 0;
+                                                              .filterInterValue = 0;
                                                           controller.update();
+                                                          controller
+                                                              .customerPagingController
+                                                              .refresh();
                                                           Get.back();
                                                         },
                                                         child: Container(
                                                           alignment:
                                                               Alignment.center,
-                                                          height:
-                                                              Utility.isTablet()
-                                                                  ? Dimens
-                                                                      .fiftyFive
-                                                                  : Dimens
-                                                                      .fifty,
+                                                          height: Dimens.fifty,
                                                           width:
                                                               double.maxFinite,
                                                           decoration: BoxDecoration(
@@ -624,11 +573,8 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                 .txtBlackColorW50014
                                                                 .copyWith(
                                                                   fontSize:
-                                                                      Utility.isTablet()
-                                                                          ? Dimens
-                                                                              .twenty
-                                                                          : Dimens
-                                                                              .fourteen,
+                                                                      Dimens
+                                                                          .fourteen,
                                                                 ),
                                                           ),
                                                         ),
@@ -639,32 +585,15 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                       child: InkWell(
                                                         onTap: () async {
                                                           Get.back();
-                                                          Utility.isFilter =
-                                                              true;
-                                                          await controller.postAllUserList(
-                                                            1,
-                                                            fromDate:
-                                                                controller
-                                                                    .fromOnboardController
-                                                                    .text,
-                                                            toDate:
-                                                                controller
-                                                                    .toOnboardController
-                                                                    .text,
-                                                            salesPersonId:
-                                                                await salesPersonId,
-                                                          );
+                                                          controller
+                                                              .customerPagingController
+                                                              .refresh();
                                                           controller.update();
                                                         },
                                                         child: Container(
                                                           alignment:
                                                               Alignment.center,
-                                                          height:
-                                                              Utility.isTablet()
-                                                                  ? Dimens
-                                                                      .fiftyFive
-                                                                  : Dimens
-                                                                      .fifty,
+                                                          height: Dimens.fifty,
                                                           width:
                                                               double.maxFinite,
                                                           decoration: BoxDecoration(
@@ -682,11 +611,8 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                 .whiteColorW50014
                                                                 .copyWith(
                                                                   fontSize:
-                                                                      Utility.isTablet()
-                                                                          ? Dimens
-                                                                              .twenty
-                                                                          : Dimens
-                                                                              .fourteen,
+                                                                      Dimens
+                                                                          .fourteen,
                                                                 ),
                                                           ),
                                                         ),
@@ -739,80 +665,28 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                 ),
                 Dimens.boxHeight20,
                 Expanded(
-                  child:
-                      !controller.isLoading
-                          ? controller.getAllUserList.isEmpty
-                              ? Center(child: Text('Data Not Found...'))
-                              : ListView.builder(
-                                itemCount: controller.getAllUserList.length,
-                                itemBuilder: (context, index) {
-                                  final element =
-                                      controller.getAllUserList[index];
-                                  return CustomerCard(element: element);
-                                  // return GestureDetector(
-                                  //   onTap: () {
-                                  //     RouteManagement.goToSalesAnalyticsDetailsScreen(element.id);
-                                  //   },
-                                  //   child: Container(
-                                  //     color: ColorsValue.textFieldBg,
-                                  //     padding: Dimens.edgeInsets20_00_20_10,
-                                  //     margin: Dimens.edgeInsetsBottom10,
-                                  //     child: Column(
-                                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                                  //       children: [
-                                  //         ListTile(
-                                  //           dense: true,
-                                  //           visualDensity: VisualDensity(vertical: Dimens.zero, horizontal: Dimens.zero),
-                                  //           contentPadding: Dimens.edgeInsets0,
-                                  //           minVerticalPadding: Dimens.zero,
-                                  //           title: Row(
-                                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //             children: [
-                                  //               Text(element.name ?? "Sagar Miyani", style: Styles.txtBlackColorW70018),
-                                  //               Container(
-                                  //                 padding: Dimens.edgeInsets06_04_06_04,
-                                  //                 decoration: BoxDecoration(
-                                  //                   color: ColorsValue.appColorEBBD87,
-                                  //                   borderRadius: BorderRadius.circular(Dimens.four),
-                                  //                 ),
-                                  //                 child: Text(element.status.toString(), style: Styles.whiteColorW50010),
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //           subtitle: Padding(
-                                  //             padding: Dimens.edgeInsetsTop05,
-                                  //             child: Row(
-                                  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  //               children: [
-                                  //                 Row(
-                                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  //                   children: [
-                                  //                     Text("Mobile Number :- ", style: Styles.txtBlackColorW60014),
-                                  //                     Text(
-                                  //                       element.mobile ?? " - ",
-                                  //                       style: Styles.txtBlackColorW40014,
-                                  //                     ),
-                                  //                   ],
-                                  //                 ),
-                                  //                 Container(
-                                  //                   padding: Dimens.edgeInsets06_04_06_04,
-                                  //                   decoration: BoxDecoration(
-                                  //                     color: ColorsValue.appColor,
-                                  //                     borderRadius: BorderRadius.circular(Dimens.four),
-                                  //                   ),
-                                  //                   child: Text("ATT :- 12", style: Styles.whiteColorW50010),
-                                  //                 ),
-                                  //               ],
-                                  //             ),
-                                  //           ),
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //   ),
-                                  // );
-                                },
-                              )
-                          : Center(child: CircularProgressIndicator()),
+                  child: RefreshIndicator(
+                    onRefresh:
+                        () => Future.sync(
+                          () => controller.customerPagingController.refresh(),
+                        ),
+                    child: PagedListView<int, GetAllUsesDoc>(
+                      pagingController: controller.customerPagingController,
+                      builderDelegate: PagedChildBuilderDelegate<GetAllUsesDoc>(
+                        noItemsFoundIndicatorBuilder: (context) {
+                          return Center(
+                            child: Text(
+                              "Sales Analytics data not found...!",
+                              style: Styles.txtBlackColorW50014,
+                            ),
+                          );
+                        },
+                        itemBuilder: (context, element, index) {
+                          return CustomerCard(element: element);
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

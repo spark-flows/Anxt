@@ -5,7 +5,6 @@ import 'package:a_nxt/data/data.dart';
 import 'package:a_nxt/device/device.dart';
 import 'package:a_nxt/domain/domain.dart';
 import 'package:a_nxt/domain/models/add_to_cart_model.dart';
-import 'package:a_nxt/domain/models/create_customer_model.dart';
 import 'package:a_nxt/domain/models/create_sales_model.dart';
 import 'package:a_nxt/domain/models/downlaod_invoice_model.dart';
 import 'package:a_nxt/domain/models/getAll_product_model.dart';
@@ -221,6 +220,30 @@ class Repository {
     }
   }
 
+  Future<CustomerListModel?> postCustomerList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      var response = await _dataRepository.postCustomerList(
+        page: page,
+        limit: limit,
+        isLoading: isLoading,
+      );
+      var getAllUserModel = customerListModelFromJson(response.data);
+      if (getAllUserModel.data != null) {
+        return getAllUserModel;
+      } else {
+        return getAllUserModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
   Future<GetOneUser?> postGetOneUser({
     bool isLoading = false,
     required String salesid,
@@ -306,6 +329,25 @@ class Repository {
       } else {
         return getOneExpenseCategory;
       }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<ResponseModel?> postCustomerAsssign({
+    bool isLoading = false,
+    required List<String> categoryid,
+    required String? salesperson,
+  }) async {
+    try {
+      var response = await _dataRepository.postCustomerAsssign(
+        isLoading: isLoading,
+        categoryid: categoryid,
+        salesperson: salesperson,
+      );
+      return response;
     } catch (e) {
       Utility.closeDialog();
       UnimplementedError();
@@ -399,29 +441,31 @@ class Repository {
     }
   }
 
-  Future<CreateCustomerModel?> postCreateCustomer({
+  Future<ResponseModel?> postCreateCustomer({
     bool isLoading = false,
-    required String customerId,
-    required String salesperson,
-    required String name,
-    required String mobile,
-    required String email,
-    required String address,
-    required String state,
-    required String city,
-    required String area,
-    required String zipcode,
-    required String ownername,
-    required String ownermobile,
-    required String managername,
-    required String managermobile,
+    required String? customerid,
+    required String? salesperson,
+    required String? name,
+    required String? countrycode,
+    required String? mobile,
+    required String? email,
+    required String? address,
+    required String? state,
+    required String? city,
+    required String? area,
+    required String? zipcode,
+    required String? ownername,
+    required String? ownermobile,
+    required String? managername,
+    required String? managermobile,
+    required String? custcategory,
   }) async {
     try {
       var response = await _dataRepository.postCreateCustomer(
-        isLoading: isLoading,
+        customerid: customerid,
         salesperson: salesperson,
-        customerId: customerId,
         name: name,
+        countrycode: countrycode,
         mobile: mobile,
         email: email,
         address: address,
@@ -433,13 +477,10 @@ class Repository {
         ownermobile: ownermobile,
         managername: managername,
         managermobile: managermobile,
+        custcategory: custcategory,
+        isLoading: isLoading,
       );
-      var createCustomerModel = createCustomerModelFromJson(response.data);
-      if (createCustomerModel.data != null) {
-        return createCustomerModel;
-      } else {
-        return createCustomerModel;
-      }
+      return response;
     } catch (e) {
       Utility.closeDialog();
       UnimplementedError();
@@ -465,6 +506,7 @@ class Repository {
     required String customerFeedback,
     required String salesId,
     required String customerCategory,
+    required String location,
   }) async {
     try {
       var response = await _dataRepository.postSalesCreate(
@@ -485,6 +527,7 @@ class Repository {
         customerReason: customerReason,
         customerFeedback: customerFeedback,
         customerCategory: customerCategory,
+        location: location,
       );
       var createSalesModel = createSalesModelFromJson(response.data);
       if (createSalesModel.data != null) {

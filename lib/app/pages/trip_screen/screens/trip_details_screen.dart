@@ -89,7 +89,7 @@ class TripDetailsScreen extends StatelessWidget {
                                               ],
                                             ),
                                             Text(
-                                              "\$ ${e.total}",
+                                              "₹ ${e.total}",
                                               style: Styles.txtBlackColorW50014,
                                             ),
                                           ],
@@ -116,7 +116,7 @@ class TripDetailsScreen extends StatelessWidget {
                                   style: Styles.txtBlackColorW60014,
                                 ),
                                 Text(
-                                  "\$ ${controller.categorySummaryList.fold(0.0, (previousValue, element) => previousValue + element.total)}",
+                                  "₹ ${controller.categorySummaryList.fold(0.0, (previousValue, element) => previousValue + element.total)}",
                                   style: Styles.txtBlackColorW60014,
                                 ),
                               ],
@@ -334,9 +334,7 @@ class TripDetailsScreen extends StatelessWidget {
                                       style: Styles.txtBlackColorW40012,
                                     ),
                                     Text(
-                                      controller.getOneTripData?.budget
-                                              .toString() ??
-                                          " - ",
+                                      "₹ ${controller.getOneTripData?.budget.toString() ?? "0"}",
                                       style: Styles.txtBlackColorW60012,
                                     ),
                                   ],
@@ -688,7 +686,7 @@ class TripDetailsScreen extends StatelessWidget {
                                         style: Styles.txtBlackColorW70016,
                                       ),
                                       Text(
-                                        "${item.trip?.currency} ${item.amount ?? "0"}",
+                                        "₹ ${item.amount ?? "0"}",
                                         style: Styles.txtBlackColorW70016,
                                       ),
                                     ],

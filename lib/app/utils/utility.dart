@@ -22,6 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class Utility {
   static bool isFilter = false;
   static GetProfileData? profileData;
+  static String? currentLocation;
 
   static Future<bool> isNetworkAvailable() async {
     var connectivityResult = await Connectivity().checkConnectivity();

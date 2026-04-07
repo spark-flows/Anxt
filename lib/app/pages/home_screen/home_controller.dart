@@ -1,10 +1,19 @@
 import 'package:a_nxt/app/app.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeController extends GetxController {
   HomeController(this.bottomBarPresenter);
 
   final HomePresenter bottomBarPresenter;
+
+  @override
+  onInit() {
+    getCurrentLocation();
+    super.onInit();
+  }
 
   String selectItem = "";
 
@@ -56,6 +65,36 @@ class HomeController extends GetxController {
         break;
       default:
         RouteManagement.goToSalesAnalyticsListScreen();
+    }
+  }
+
+  Future<void> getCurrentLocation() async {
+    try {
+      if (await Utility.locationPermissionCheack()) {
+        Position position = await Geolocator.getCurrentPosition(
+          locationSettings: LocationSettings(accuracy: LocationAccuracy.high),
+        );
+
+        LatLng currentLatLng = LatLng(position.latitude, position.longitude);
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentLatLng.latitude,
+          currentLatLng.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+
+          Utility.currentLocation =
+              "${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
+
+          Get.forceAppUpdate();
+        }
+      }
+    } catch (e) {
+      update();
+    } finally {
+      Get.forceAppUpdate();
     }
   }
 }

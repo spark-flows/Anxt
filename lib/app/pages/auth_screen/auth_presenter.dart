@@ -1,3 +1,4 @@
+import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:a_nxt/domain/models/models.dart';
 import 'package:a_nxt/domain/usecases/usecases.dart';
 
@@ -18,6 +19,9 @@ class AuthPresenter {
     fcmToken: fcmToken,
     isLoading: isLoading,
   );
+
+  Future<GetProfileModel?> getProfileApi({bool isLoading = false}) async =>
+      await authUsecases.getProfileApi(isLoading: isLoading);
 
   Future<ResponseModel?> postRegisterApi({
     bool isLoading = false,

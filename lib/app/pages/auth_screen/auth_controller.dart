@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:a_nxt/app/app.dart';
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getProfile_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -37,13 +38,30 @@ class AuthController extends GetxController {
       isLoading: false,
     );
     if (response?.data != null) {
-      RouteManagement.goToHomeScreen();
+      getProfileApi();
       Utility.closeLoader();
     } else {
       Utility.closeLoader();
       Utility.errorMessage(response?.message ?? "");
     }
     update();
+  }
+
+  GetProfileData? profileData;
+
+  Future<void> getProfileApi() async {
+    var response = await authPresenter.getProfileApi(isLoading: false);
+    profileData = null;
+    if (response?.data != null) {
+      profileData = response?.data;
+      Get.find<Repository>().saveValue(
+        LocalKeys.salesPersonId,
+        response?.data?.userData?.id ?? "",
+      );
+      RouteManagement.goToHomeScreen();
+
+      update();
+    }
   }
 
   ///========================================== RegisterScreen =========================================

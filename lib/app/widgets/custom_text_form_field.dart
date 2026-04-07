@@ -105,6 +105,9 @@ class CustomTextFormField extends StatelessWidget {
             textAlign: textAlign ?? TextAlign.start,
             validator: validator,
             onChanged: onChanged,
+            onTapOutside: (event) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
               contentPadding: Dimens.edgeInsets20_10_20_10,

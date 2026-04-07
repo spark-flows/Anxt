@@ -1,7 +1,7 @@
 import 'package:a_nxt/domain/domain.dart';
-import 'package:a_nxt/domain/models/get_stock_product_model.dart';
 import 'package:a_nxt/domain/models/product_detail_model.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'app_pages.dart';
 
@@ -18,6 +18,8 @@ abstract class RouteManagement {
       Get.toNamed<void>(Routes.salesAnalyticsDetailsScreen, arguments: salesid);
   static void goToSalesAnalyticsListScreen() =>
       Get.toNamed<void>(Routes.salesAnalyticsListScreen);
+  static Future<dynamic>? goToMapScreen(LatLng latLng) =>
+      Get.toNamed(Routes.mapScreen, arguments: latLng);
   static void goToSalesAnalyticsProductScreen() =>
       Get.toNamed<void>(Routes.salesAnalyticsProductScreen);
   static void goToProfileScreen() => Get.toNamed<void>(Routes.profileScreen);
@@ -25,7 +27,7 @@ abstract class RouteManagement {
   static void goToTripDetailsScreen({required String tripid}) =>
       Get.toNamed<void>(Routes.tripDetailsScreen, arguments: tripid);
   static void goToAddExpenseTripScreen(String? id) =>
-      Get.toNamed<void>(Routes.addExpenseTripScreen,arguments: id);
+      Get.toNamed<void>(Routes.addExpenseTripScreen, arguments: id);
   static void goToAddTripScreen() => Get.toNamed<void>(Routes.addTripScreen);
 
   static void goToOrderHistoryDetailsScreen({required String orderId}) =>
@@ -41,6 +43,9 @@ abstract class RouteManagement {
 
   static void goToStockCatalogueScreen() =>
       Get.toNamed<void>(Routes.stockCatalogueScreen);
+
+  static void goToAddOldCustomerScreen() =>
+      Get.toNamed<void>(Routes.addOldCustomerScreen);
 
   static void goToStockCatalogueDetailScreen(String id) =>
       Get.toNamed<void>(Routes.stockCatalogueDetailScreen, arguments: id);

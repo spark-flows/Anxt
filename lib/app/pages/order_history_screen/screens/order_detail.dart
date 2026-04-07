@@ -223,7 +223,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   Expanded(
                                     child: _buildOptionTile(
                                       label: '18K :-',
-                                      price: '\$1500',
+                                      price: '₹ 1500',
                                       isSelected: controller.is18KSelected,
                                       onTap: () {
                                         controller.is18KSelected =
@@ -236,7 +236,7 @@ class OrderDetailScreen extends StatelessWidget {
                                   Expanded(
                                     child: _buildOptionTile(
                                       label: '14K :-',
-                                      price: '\$1000',
+                                      price: '₹ 1000',
                                       isSelected: controller.is14KSelected,
                                       onTap: () {
                                         controller.is14KSelected =
@@ -268,7 +268,7 @@ class OrderDetailScreen extends StatelessWidget {
                     //         Expanded(
                     //           child: _buildOptionTile(
                     //             label: '18K :-',
-                    //             price: '\$1500',
+                    //             price: '₹1500',
                     //             isSelected: controller.is18KSelected,
                     //             onTap: () {
                     //               controller.is18KSelected =
@@ -288,7 +288,7 @@ class OrderDetailScreen extends StatelessWidget {
                     //         Expanded(
                     //           child: _buildOptionTile(
                     //             label: '14K :-',
-                    //             price: '\$1000',
+                    //             price: '₹1000',
                     //             isSelected: controller.is14KSelected,
                     //             onTap: () {
                     //               controller.is14KSelected =

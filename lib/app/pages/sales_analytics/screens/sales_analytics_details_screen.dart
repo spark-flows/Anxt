@@ -75,11 +75,7 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          controller.postSalesCreate(
-                            storeInDate: DateTime.now(),
-                            mode: 'storeIn',
-                          );
-                          controller.update();
+                          controller.showRemarkModel(context, true);
                         },
                         child: Container(
                           height: Dimens.fifty,
@@ -96,11 +92,7 @@ class SalesAnalyticsDetailsScreen extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          controller.postSalesCreate(
-                            storeOutDate: DateTime.now(),
-                            mode: 'storeOut',
-                          );
-                          controller.update();
+                          controller.showRemarkModel(context, false);
                         },
                         child: Container(
                           height: Dimens.fifty,

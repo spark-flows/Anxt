@@ -100,6 +100,26 @@ class DataRepository extends DomainRepository {
     todate: todate,
   );
 
+  Future<ResponseModel> postCustomerAsssign({
+    bool isLoading = false,
+    required List<String> categoryid,
+    required String? salesperson,
+  }) async => await connectHelper.postCustomerAsssign(
+    isLoading: isLoading,
+    categoryid: categoryid,
+    salesperson: salesperson,
+  );
+
+  Future<ResponseModel> postCustomerList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async => await connectHelper.postCustomerList(
+    isLoading: isLoading,
+    limit: limit,
+    page: page,
+  );
+
   Future<ResponseModel> postGetOneUser({
     bool isLoading = false,
     required String salesid,
@@ -177,25 +197,27 @@ class DataRepository extends DomainRepository {
 
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
-    required String customerId,
-    required String salesperson,
-    required String name,
-    required String mobile,
-    required String email,
-    required String address,
-    required String state,
-    required String city,
-    required String area,
-    required String zipcode,
-    required String ownername,
-    required String ownermobile,
-    required String managername,
-    required String managermobile,
+    required String? customerid,
+    required String? salesperson,
+    required String? name,
+    required String? countrycode,
+    required String? mobile,
+    required String? email,
+    required String? address,
+    required String? state,
+    required String? city,
+    required String? area,
+    required String? zipcode,
+    required String? ownername,
+    required String? ownermobile,
+    required String? managername,
+    required String? managermobile,
+    required String? custcategory,
   }) async => await connectHelper.postCreateCustomer(
-    isLoading: isLoading,
+    customerid: customerid,
     salesperson: salesperson,
-    customerId: customerId,
     name: name,
+    countrycode: countrycode,
     mobile: mobile,
     email: email,
     address: address,
@@ -207,6 +229,8 @@ class DataRepository extends DomainRepository {
     ownermobile: ownermobile,
     managername: managername,
     managermobile: managermobile,
+    custcategory: custcategory,
+    isLoading: isLoading,
   );
 
   Future<ResponseModel> postSalesCreate({
@@ -227,6 +251,7 @@ class DataRepository extends DomainRepository {
     required String customerReason,
     required String customerFeedback,
     required String customerCategory,
+    required String location,
   }) async => await connectHelper.postSalesCreate(
     isLoading: isLoading,
     salesId: salesId,
@@ -244,6 +269,7 @@ class DataRepository extends DomainRepository {
     storeIn: storeIn,
     storeOut: storeOut,
     weight: weight,
+    location: location,
     product: product,
   );
 

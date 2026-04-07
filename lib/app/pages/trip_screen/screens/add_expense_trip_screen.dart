@@ -242,7 +242,7 @@ class AddExpenseTripScreen extends StatelessWidget {
                   hintStyle: Styles.txtGreyColorW50012,
                   filled: true,
                   fillColor: ColorsValue.textFieldBg,
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.number,
                 ),
                 // Dimens.boxHeight20,

@@ -38,7 +38,7 @@ class StockCatalogueScreen extends StatelessWidget {
           backgroundColor: ColorsValue.whiteColor,
           appBar: AppBarWidget(
             onTapBack: controller.goBack,
-            title: 'Stock Catlogues',
+            title: 'Stock Catalogue',
             isVisible: true,
             isCenter: true,
           ),

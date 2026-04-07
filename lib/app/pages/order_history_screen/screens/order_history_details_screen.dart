@@ -219,9 +219,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
                     children: [
                       Text("Total Amount", style: Styles.whiteColorW70018),
                       Text(
-                        Utility.formatIndianCurrency(
-                          controller.getOneOrderData?.summary?.totalamount ?? 0,
-                        ),
+                        "₹ ${Utility.formatIndianCurrency(controller.getOneOrderData?.summary?.totalamount ?? 0)}",
                         style: Styles.whiteColorW70018,
                       ),
                     ],
@@ -279,7 +277,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
               //                 "Total Amount :- ",
               //                 style: Styles.txtBlackColorW60014,
               //               ),
-              //               Text("\$1100", style: Styles.txtGreyColorW60014),
+              //               Text("₹1100", style: Styles.txtGreyColorW60014),
               //             ],
               //           ),
               //           Row(
@@ -288,7 +286,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
               //                 "R. Amount :- ",
               //                 style: Styles.txtBlackColorW60014,
               //               ),
-              //               Text("\$600", style: Styles.txtGreyColorW60014),
+              //               Text("₹600", style: Styles.txtGreyColorW60014),
               //             ],
               //           ),
               //         ],
@@ -303,7 +301,7 @@ class OrderHistoryDetailsScreen extends StatelessWidget {
               //                 "Due Amount :- ",
               //                 style: Styles.txtBlackColorW60014,
               //               ),
-              //               Text("\$1100", style: Styles.txtGreyColorW60014),
+              //               Text("₹1100", style: Styles.txtGreyColorW60014),
               //             ],
               //           ),
               //           Row(

@@ -29,7 +29,7 @@ class ProfileController extends GetxController {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "${'log_out'.tr} ?",
+                  "${'Log Out'.tr} ?",
                   style: Styles.txtBlackColorW70020.copyWith(
                     fontSize:
                         Utility.isTablet() ? Dimens.twentyFour : Dimens.twenty,
@@ -37,7 +37,7 @@ class ProfileController extends GetxController {
                 ),
                 Dimens.boxHeight20,
                 Text(
-                  "logout_des".tr,
+                  "Are you sure want to Logout".tr,
                   style: Styles.txtBlackColorW60016.copyWith(
                     fontSize:
                         Utility.isTablet() ? Dimens.twenty : Dimens.sixteen,
@@ -54,7 +54,7 @@ class ProfileController extends GetxController {
                           Get.back();
                         },
                         heightBtn: Dimens.fourtyEight,
-                        text: 'cancle'.tr,
+                        text: 'Cancle'.tr,
                         textStyle: Styles.txtBlackColorW70016.copyWith(
                           fontSize:
                               Utility.isTablet()
@@ -75,7 +75,7 @@ class ProfileController extends GetxController {
                         },
                         isBorder: false,
                         heightBtn: Dimens.fourtyEight,
-                        text: 'log_out'.tr,
+                        text: 'Logout'.tr,
                         textStyle: Styles.whiteColorW60016.copyWith(
                           fontSize:
                               Utility.isTablet()

@@ -131,6 +131,22 @@ class ConnectHelper {
     return response;
   }
 
+  Future<ResponseModel> postCustomerAsssign({
+    bool isLoading = false,
+    required List<String> categoryid,
+    required String? salesperson,
+  }) async {
+    var data = {"customerid": categoryid, "salesperson": salesperson};
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCustomerAsssign,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
   Future<ResponseModel> postAllUserList({
     bool isLoading = false,
     required int page,
@@ -165,6 +181,29 @@ class ConnectHelper {
 
     var response = await apiWrapper.makeRequest(
       EndPoints.postAllUsers,
+      Request.post,
+      data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postCustomerList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+  }) async {
+    var data = {
+      "page": page,
+      "limit": limit,
+      "search": "",
+      "sortfield": "name",
+      "sortoption": 1,
+    };
+
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCustomerList,
       Request.post,
       data,
       isLoading,
@@ -305,25 +344,28 @@ class ConnectHelper {
 
   Future<ResponseModel> postCreateCustomer({
     bool isLoading = false,
-    required String customerId,
-    required String salesperson,
-    required String name,
-    required String mobile,
-    required String email,
-    required String address,
-    required String state,
-    required String city,
-    required String area,
-    required String zipcode,
-    required String ownername,
-    required String ownermobile,
-    required String managername,
-    required String managermobile,
+    required String? customerid,
+    required String? salesperson,
+    required String? name,
+    required String? countrycode,
+    required String? mobile,
+    required String? email,
+    required String? address,
+    required String? state,
+    required String? city,
+    required String? area,
+    required String? zipcode,
+    required String? ownername,
+    required String? ownermobile,
+    required String? managername,
+    required String? managermobile,
+    required String? custcategory,
   }) async {
     var data = {
+      "customerid": customerid,
       "salesperson": salesperson,
-      "customerid": customerId,
       "name": name,
+      "countrycode": countrycode,
       "mobile": mobile,
       "email": email,
       "address": address,
@@ -335,6 +377,7 @@ class ConnectHelper {
       "ownermobile": ownermobile,
       "managername": managername,
       "managermobile": managermobile,
+      "custcategory": custcategory,
     };
     var response = await apiWrapper.makeRequest(
       EndPoints.postCreateCustomer,
@@ -364,6 +407,7 @@ class ConnectHelper {
     required String customerReason,
     required String customerFeedback,
     required String customerCategory,
+    required String location,
   }) async {
     var data = {
       "salesid": salesId,
@@ -383,6 +427,7 @@ class ConnectHelper {
       "customerreason": customerReason,
       "customerfeedback": customerFeedback,
       "customercategory": customerCategory,
+      "location": location,
     };
     var response = await apiWrapper.makeRequest(
       EndPoints.postCreateSales,

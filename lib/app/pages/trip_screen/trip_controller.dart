@@ -42,7 +42,7 @@ class TripController extends GetxController {
 
   Future<void> postGetAllTripList(int pageKey) async {
     var response = await tripPresenter.postGetAllTripList(
-      page: 1,
+      page: pageKey,
       limit: 10,
       location: "",
       search: searchController.text,

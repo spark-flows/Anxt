@@ -1,4 +1,5 @@
 import 'package:a_nxt/domain/domain.dart';
+import 'package:a_nxt/domain/models/getProfile_model.dart';
 
 class AuthUsecases {
   AuthUsecases(this.repository);
@@ -16,6 +17,9 @@ class AuthUsecases {
     fcmToken: fcmToken,
     isLoading: isLoading,
   );
+
+  Future<GetProfileModel?> getProfileApi({bool isLoading = false}) async =>
+      await repository.getProfileApi(isLoading: isLoading);
 
   Future<ForgotModel?> postForgotApi({
     bool isLoading = false,
