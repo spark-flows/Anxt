@@ -100,6 +100,20 @@ class DataRepository extends DomainRepository {
     todate: todate,
   );
 
+  Future<ResponseModel> postSalesList({
+    bool isLoading = false,
+    required int page,
+    required int limit,
+    required String fromDate,
+    required String todate,
+  }) async => await connectHelper.postSalesList(
+    isLoading: isLoading,
+    limit: limit,
+    page: page,
+    fromDate: fromDate,
+    todate: todate,
+  );
+
   Future<ResponseModel> postCustomerAsssign({
     bool isLoading = false,
     required List<String> categoryid,
@@ -110,15 +124,8 @@ class DataRepository extends DomainRepository {
     salesperson: salesperson,
   );
 
-  Future<ResponseModel> postCustomerList({
-    bool isLoading = false,
-    required int page,
-    required int limit,
-  }) async => await connectHelper.postCustomerList(
-    isLoading: isLoading,
-    limit: limit,
-    page: page,
-  );
+  Future<ResponseModel> postCustomerList({bool isLoading = false}) async =>
+      await connectHelper.postCustomerList(isLoading: isLoading);
 
   Future<ResponseModel> postGetOneUser({
     bool isLoading = false,

@@ -4,6 +4,7 @@ class EndPoints {
   static String postForgotApi = 'api/candidateapplication/forgotpassword';
   static String postResetApi = 'api/candidateapplication/resetpassword';
   static String postAllUsers = 'api/customer';
+  static String postSalesList = 'api/sales';
   static String postGetOneUsers = 'api/customer/getone';
   static String postAddCustomer = 'api/customer/create';
   static String postGetProductList = 'api/product';

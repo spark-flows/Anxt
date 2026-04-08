@@ -66,29 +66,25 @@ class SalesAnalyticsController extends GetxController {
 
   TextEditingController jobNoController = TextEditingController();
 
-  PagingController<int, GetAllUsesDoc> customerPagingController =
+  PagingController<int, SalesListDoc> customerPagingController =
       PagingController(firstPageKey: 1);
 
-  List<GetAllUsesDoc> customersDocList = [];
+  List<SalesListDoc> customersDocList = [];
 
   int filterInterValue = 0;
   List<String> filterInterType = ['Date'];
 
-  Future<void> postAllUserList(pageKey) async {
-    var response = await salesAnalyticsPresenter.postAllUserList(
+  Future<void> postSalesList(pageKey) async {
+    var response = await salesAnalyticsPresenter.postSalesList(
       page: pageKey,
       limit: 15,
-      search: SearchModel(),
-      salesPersonId: Get.find<Repository>().getStringValue(
-        LocalKeys.salesPersonId,
-      ),
       fromDate:
           fromOnboardController.text.isNotEmpty
               ? DateFormat(
                 "yyyy-MM-dd",
               ).format(DateTime.parse(fromOnboardController.text))
               : DateFormat("yyyy-MM-dd").format(DateTime.now()),
-      toDate:
+      todate:
           toOnboardController.text.isNotEmpty
               ? DateFormat(
                 "yyyy-MM-dd",
@@ -103,7 +99,7 @@ class SalesAnalyticsController extends GetxController {
       }
       customersDocList = response?.data?.docs ?? [];
 
-      final isLastPage = customersDocList.length < 10;
+      final isLastPage = customersDocList.length < 15;
       if (isLastPage) {
         customerPagingController.appendLastPage(customersDocList);
       } else {
@@ -239,7 +235,7 @@ class SalesAnalyticsController extends GetxController {
     customerDetail = null;
     if (response?.statusCode == 200) {
       Get.back();
-      postAllUserList(1);
+      postSalesList(1);
     } else {
       Utility.errorMessage(
         jsonDecode(response?.data.toString() ?? "")['Message'],
@@ -248,17 +244,15 @@ class SalesAnalyticsController extends GetxController {
     update();
   }
 
-  List<CustomerListDoc> customerList = [];
+  List<CustomerListData> customerList = [];
 
   Future<void> postCustomerList() async {
     var response = await salesAnalyticsPresenter.postCustomerList(
-      page: 1,
-      limit: 10000,
       isLoading: true,
     );
     customerList.clear();
     if (response?.data != null) {
-      customerList = response?.data?.docs ?? [];
+      customerList = response?.data ?? [];
       update();
     }
   }

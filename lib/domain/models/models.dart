@@ -10,3 +10,4 @@ export 'getoneUser_Model.dart';
 export 'image_form_data_model.dart';
 export 'response_model.dart';
 export 'user_model.dart';
+export 'sales_list_model.dart';

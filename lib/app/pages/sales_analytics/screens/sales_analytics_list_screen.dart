@@ -1,5 +1,5 @@
 import 'package:a_nxt/app/app.dart';
-import 'package:a_nxt/domain/models/getAllUsers_model.dart';
+import 'package:a_nxt/domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -18,7 +18,7 @@ class SalesAnalyticsListScreen extends StatelessWidget {
         controller.customerPagingController.addPageRequestListener((
           pageKey,
         ) async {
-          await controller.postAllUserList(pageKey);
+          await controller.postSalesList(pageKey);
         });
       },
       builder: (controller) {
@@ -31,82 +31,82 @@ class SalesAnalyticsListScreen extends StatelessWidget {
             title: "All Customer Details",
             isCenter: true,
           ),
-          // floatingActionButton: Column(
-          //   spacing: Dimens.ten,
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: [
-          //     GestureDetector(
-          //       onTap: () {
-          //         RouteManagement.goToSalesAnalyticsScreen();
-          //       },
-          //       child: Container(
-          //         height: Dimens.fourtyFive,
-          //         width: Dimens.ninty,
-          //         decoration: BoxDecoration(
-          //           color: ColorsValue.appColor,
-          //           borderRadius: BorderRadius.circular(Dimens.ten),
-          //         ),
-          //         child: Row(
-          //           spacing: Dimens.ten,
-          //           mainAxisSize: MainAxisSize.min,
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: [
-          //             Icon(
-          //               Icons.add,
-          //               color: ColorsValue.whiteColor,
-          //               size: Dimens.twentyFour,
-          //             ),
-          //             Text("New", style: Styles.whiteColorW60014),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //     GestureDetector(
-          //       onTap: () {
-          //         RouteManagement.goToAddOldCustomerScreen();
-          //       },
-          //       child: Container(
-          //         height: Dimens.fourtyFive,
-          //         width: Dimens.ninty,
-          //         decoration: BoxDecoration(
-          //           color: ColorsValue.appColor,
-          //           borderRadius: BorderRadius.circular(Dimens.ten),
-          //         ),
-          //         child: Row(
-          //           spacing: Dimens.ten,
-          //           mainAxisSize: MainAxisSize.min,
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: [
-          //             Icon(
-          //               Icons.add,
-          //               color: ColorsValue.whiteColor,
-          //               size: Dimens.twentyFour,
-          //             ),
-          //             Text("Old", style: Styles.whiteColorW60014),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          floatingActionButton: GestureDetector(
-            onTap: () {
-              RouteManagement.goToSalesAnalyticsScreen();
-            },
-            child: Container(
-              height: Utility.isTablet() ? Dimens.eighty : Dimens.sixty,
-              width: Utility.isTablet() ? Dimens.eighty : Dimens.sixty,
-              decoration: BoxDecoration(
-                color: ColorsValue.appColor,
-                borderRadius: BorderRadius.circular(Dimens.fiveHundred),
+          floatingActionButton: Column(
+            spacing: Dimens.ten,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  RouteManagement.goToSalesAnalyticsScreen();
+                },
+                child: Container(
+                  height: Dimens.fourtyFive,
+                  width: Dimens.ninty,
+                  decoration: BoxDecoration(
+                    color: ColorsValue.appColor,
+                    borderRadius: BorderRadius.circular(Dimens.ten),
+                  ),
+                  child: Row(
+                    spacing: Dimens.ten,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: ColorsValue.whiteColor,
+                        size: Dimens.twentyFour,
+                      ),
+                      Text("New", style: Styles.whiteColorW60014),
+                    ],
+                  ),
+                ),
               ),
-              child: Icon(
-                Icons.add,
-                color: ColorsValue.whiteColor,
-                size: Dimens.thirty,
+              GestureDetector(
+                onTap: () {
+                  RouteManagement.goToAddOldCustomerScreen();
+                },
+                child: Container(
+                  height: Dimens.fourtyFive,
+                  width: Dimens.ninty,
+                  decoration: BoxDecoration(
+                    color: ColorsValue.appColor,
+                    borderRadius: BorderRadius.circular(Dimens.ten),
+                  ),
+                  child: Row(
+                    spacing: Dimens.ten,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: ColorsValue.whiteColor,
+                        size: Dimens.twentyFour,
+                      ),
+                      Text("Old", style: Styles.whiteColorW60014),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
+          // floatingActionButton: GestureDetector(
+          //   onTap: () {
+          //     RouteManagement.goToSalesAnalyticsScreen();
+          //   },
+          //   child: Container(
+          //     height: Utility.isTablet() ? Dimens.eighty : Dimens.sixty,
+          //     width: Utility.isTablet() ? Dimens.eighty : Dimens.sixty,
+          //     decoration: BoxDecoration(
+          //       color: ColorsValue.appColor,
+          //       borderRadius: BorderRadius.circular(Dimens.fiveHundred),
+          //     ),
+          //     child: Icon(
+          //       Icons.add,
+          //       color: ColorsValue.whiteColor,
+          //       size: Dimens.thirty,
+          //     ),
+          //   ),
+          // ),
           body: Padding(
             padding: Dimens.edgeInsets20_10_20_20,
             child: Column(
@@ -670,9 +670,9 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                         () => Future.sync(
                           () => controller.customerPagingController.refresh(),
                         ),
-                    child: PagedListView<int, GetAllUsesDoc>(
+                    child: PagedListView<int, SalesListDoc>(
                       pagingController: controller.customerPagingController,
-                      builderDelegate: PagedChildBuilderDelegate<GetAllUsesDoc>(
+                      builderDelegate: PagedChildBuilderDelegate<SalesListDoc>(
                         noItemsFoundIndicatorBuilder: (context) {
                           return Center(
                             child: Text(
@@ -681,8 +681,8 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        itemBuilder: (context, element, index) {
-                          return CustomerCard(element: element);
+                        itemBuilder: (context, item, index) {
+                          return CustomerCard(element: item);
                         },
                       ),
                     ),
@@ -698,12 +698,12 @@ class SalesAnalyticsListScreen extends StatelessWidget {
 }
 
 class CustomerCard extends StatelessWidget {
-  final GetAllUsesDoc element;
+  final SalesListDoc element;
 
   const CustomerCard({super.key, required this.element});
 
   Color getStatusColor() {
-    switch (element.salestatus.toString().toLowerCase()) {
+    switch (element.status.toString().toLowerCase()) {
       case 'pending':
         return const Color(0xFFE8C08C);
       case 'pipeline':
@@ -765,7 +765,7 @@ class CustomerCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    element.name ?? '',
+                    element.customer?.name ?? '',
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -775,8 +775,8 @@ class CustomerCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (element.salestatus?.isNotEmpty ??
-                    false || element.salestatus != null)
+                if (element.status?.isNotEmpty ??
+                    false || element.status != null)
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -787,7 +787,7 @@ class CustomerCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      element.salestatus ?? '',
+                      element.status ?? '',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -807,8 +807,8 @@ class CustomerCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Dimens.boxHeight0,
-                    if ((element.mobile?.isNotEmpty ?? false) ||
-                        element.mobile != "")
+                    if ((element.customer?.mobile?.isNotEmpty ?? false) ||
+                        element.customer?.mobile != "")
                       RichText(
                         text: TextSpan(
                           children: [
@@ -821,7 +821,7 @@ class CustomerCard extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: element.mobile ?? '',
+                              text: element.customer?.mobile ?? '',
                               style: const TextStyle(
                                 color: Color(0xFF748CA0),
                                 fontWeight: FontWeight.w500,

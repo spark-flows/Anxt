@@ -220,15 +220,37 @@ class Repository {
     }
   }
 
-  Future<CustomerListModel?> postCustomerList({
+  Future<SalesListModel?> postSalesList({
     bool isLoading = false,
     required int page,
     required int limit,
+    required String fromDate,
+    required String todate,
   }) async {
     try {
-      var response = await _dataRepository.postCustomerList(
-        page: page,
+      var response = await _dataRepository.postSalesList(
+        isLoading: isLoading,
         limit: limit,
+        page: page,
+        fromDate: fromDate,
+        todate: todate,
+      );
+      var getAllUserModel = salesListModelFromJson(response.data);
+      if (getAllUserModel.data != null) {
+        return getAllUserModel;
+      } else {
+        return getAllUserModel;
+      }
+    } catch (e) {
+      Utility.closeDialog();
+      UnimplementedError();
+      return null;
+    }
+  }
+
+  Future<CustomerListModel?> postCustomerList({bool isLoading = false}) async {
+    try {
+      var response = await _dataRepository.postCustomerList(
         isLoading: isLoading,
       );
       var getAllUserModel = customerListModelFromJson(response.data);

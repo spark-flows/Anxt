@@ -45,7 +45,7 @@ class AddOldCustomerScreen extends StatelessWidget {
                 ),
                 Dimens.boxHeight5,
 
-                DropdownSearch<CustomerListDoc>.multiSelection(
+                DropdownSearch<CustomerListData>.multiSelection(
                   items: (filter, _) => controller.customerList,
                   itemAsString: (item) => "${item.name}",
                   selectedItems:
@@ -108,7 +108,7 @@ class AddOldCustomerScreen extends StatelessWidget {
                     ),
                     itemBuilder: (
                       BuildContext context,
-                      CustomerListDoc item,
+                      CustomerListData item,
                       bool isSelected,
                       bool isDisabled,
                     ) {
@@ -178,7 +178,7 @@ class AddOldCustomerScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onChanged: (List<CustomerListDoc> selectedList) {
+                  onChanged: (List<CustomerListData> selectedList) {
                     for (var item in controller.customerList) {
                       item.checkbox = selectedList.contains(item);
                     }

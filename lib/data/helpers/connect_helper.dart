@@ -159,23 +159,10 @@ class ConnectHelper {
     var data = {
       "page": page,
       "limit": limit,
-      "search": search,
       "fromDate": fromDate,
       "toDate": todate,
-      "code": "",
-      "name": "",
-      "email": "",
-      "mobile": "",
-      "address": "",
-      "state": "",
-      "city": "",
-      "area": "",
-      "zipcode": "",
-      "assignby": "",
-      "salesperson": "",
-      "type": "assign",
       "salespersonid": salesPersonId,
-      "sortfield": "name",
+      "sortfield": "customer",
       "sortoption": 1,
     };
 
@@ -189,23 +176,37 @@ class ConnectHelper {
     return response;
   }
 
-  Future<ResponseModel> postCustomerList({
+  Future<ResponseModel> postSalesList({
     bool isLoading = false,
     required int page,
     required int limit,
+    required String fromDate,
+    required String todate,
   }) async {
     var data = {
       "page": page,
       "limit": limit,
-      "search": "",
-      "sortfield": "name",
+      "fromDate": fromDate,
+      "toDate": todate,
+      "sortfield": "customer",
       "sortoption": 1,
     };
 
     var response = await apiWrapper.makeRequest(
-      EndPoints.postCustomerList,
+      EndPoints.postSalesList,
       Request.post,
       data,
+      isLoading,
+      Utility.commonHeader(),
+    );
+    return response;
+  }
+
+  Future<ResponseModel> postCustomerList({bool isLoading = false}) async {
+    var response = await apiWrapper.makeRequest(
+      EndPoints.postCustomerList,
+      Request.get,
+      null,
       isLoading,
       Utility.commonHeader(),
     );
