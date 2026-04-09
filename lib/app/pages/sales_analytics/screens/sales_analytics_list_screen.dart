@@ -869,7 +869,9 @@ class CustomerCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
-                        "ATT:- ${element.attempt}",
+                        element.attempt != null
+                            ? "ATT:- ${element.attempt}"
+                            : "ATT:- 0",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,

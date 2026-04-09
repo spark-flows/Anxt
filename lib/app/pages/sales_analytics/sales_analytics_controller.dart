@@ -274,7 +274,6 @@ class SalesAnalyticsController extends GetxController {
     if (response?.data != null) {
       customerPagingController.refresh();
       Get.back();
-      Get.back();
       update();
     }
   }
