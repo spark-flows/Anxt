@@ -1065,41 +1065,68 @@ abstract class Utility {
   }
 
   /// Location Permission
-  static Future<bool> locationPermissionCheack() async {
-    final status = await Permission.locationWhenInUse.request().isDenied;
-    var permanentlyDenied =
-        await Permission.locationWhenInUse.request().isPermanentlyDenied;
-    if (status || permanentlyDenied) {
-      // ignore: use_build_context_synchronously
+  static Future<bool> checkLocationPermission() async {
+    final permission = Permission.locationWhenInUse;
+
+    final status = await permission.request();
+
+    if (status.isGranted) {
+      return true;
+    }
+
+    if (status.isDenied) {
+      // User denied (but can ask again)
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
           title: Text("Permission Needed!", style: Styles.blackW50018),
           content: Text(
-            "Please give the Location Permission for Current Location.",
+            "Please allow location permission to continue.",
             style: Styles.redColorW50014,
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
-              child: Text("Allow", style: Styles.redColorW50014),
-              onPressed: () async {
-                Get.back();
-                await openAppSettings();
-              },
-            ),
-            TextButton(
-              child: Text("Deny", style: Styles.blackW50014),
               onPressed: () {
                 Get.back();
               },
+              child: Text("OK", style: Styles.blackW50014),
             ),
           ],
         ),
       );
       return false;
-    } else {
-      return true;
     }
+
+    if (status.isPermanentlyDenied) {
+      // User selected "Don't ask again"
+      Get.dialog(
+        barrierDismissible: false,
+        AlertDialog(
+          title: Text("Permission Required", style: Styles.blackW50018),
+          content: Text(
+            "Location permission is permanently denied. Please enable it from settings.",
+            style: Styles.redColorW50014,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Get.back();
+                await openAppSettings();
+              },
+              child: Text("Open Settings", style: Styles.redColorW50014),
+            ),
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text("Cancel", style: Styles.blackW50014),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+    return false;
   }
 
   /// Contact Permission

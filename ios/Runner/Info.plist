@@ -28,10 +28,14 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires camera access to capture photos and scan content for better user experience.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs location access to provide location-based features.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your location to show nearby services and improve your app experience.</string>
+    <string>This app needs location access to show your position on the map.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs location access in the background to track your route.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs location access in the background to track your route.</string>
+	<key>GMSApiKey</key>
+	<string>AIzaSyBq3LTyHu5CBg1uSXfk8xnqa8TUiR7QxMc</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

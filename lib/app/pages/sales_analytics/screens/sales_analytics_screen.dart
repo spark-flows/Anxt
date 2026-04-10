@@ -198,17 +198,15 @@ class SalesAnalyticsScreen extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       suffixIcon: InkWell(
                         onTap: () async {
-                          if (await Utility.locationPermissionCheack()) {
-                            controller.getCurrentLocation();
-                            await RouteManagement.goToMapScreen(
-                              controller.selectedLocation ??
-                                  LatLng(21.170240, 72.831062),
-                            );
-                            // Sync map-selected address back to the Autocomplete text field
-                            textController.text =
-                                controller.addressController.text;
-                            controller.update();
-                          }
+                          controller.getCurrentLocation();
+                          await RouteManagement.goToMapScreen(
+                            controller.selectedLocation ??
+                                LatLng(21.170240, 72.831062),
+                          );
+                          // Sync map-selected address back to the Autocomplete text field
+                          textController.text =
+                              controller.addressController.text;
+                          controller.update();
                         },
                         child: Padding(
                           padding: Dimens.edgeInsets10,
