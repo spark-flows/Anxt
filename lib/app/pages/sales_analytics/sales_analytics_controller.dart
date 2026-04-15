@@ -57,8 +57,8 @@ class SalesAnalyticsController extends GetxController {
     text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
   );
 
-  DateTime fromOnboardDate = DateTime.now();
-  DateTime toOnboardDate = DateTime.now();
+  DateTime? fromOnboardDate;
+  DateTime? toOnboardDate;
 
   ProductListDoc? selectProduct;
   DateTime? nextDate;
@@ -83,14 +83,14 @@ class SalesAnalyticsController extends GetxController {
               ? DateFormat(
                 "yyyy-MM-dd",
               ).format(DateTime.parse(fromOnboardController.text))
-              : DateFormat("yyyy-MM-dd").format(DateTime.now()),
+              : "",
       todate:
           toOnboardController.text.isNotEmpty
               ? DateFormat(
                 "yyyy-MM-dd",
               ).format(DateTime.parse(toOnboardController.text))
-              : DateFormat("yyyy-MM-dd").format(DateTime.now()),
-      isLoading: true,
+              : "",
+      isLoading: false,
     );
     if (response?.data != null) {
       if (pageKey == 1) {

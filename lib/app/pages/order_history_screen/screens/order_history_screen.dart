@@ -277,7 +277,7 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                     CustomTextFormField(
                                                                       controller:
                                                                           controller
-                                                                              .selectDateController,
+                                                                              .fromOnboardController,
                                                                       isTitle:
                                                                           true,
                                                                       readOnly:
@@ -316,12 +316,13 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                             Dimens.edgeInsets8,
                                                                         child: GestureDetector(
                                                                           onTap: () async {
-                                                                            final DateTime?
-                                                                            picked = await showDatePicker(
+                                                                            controller.fromOnboardDate =
+                                                                                null;
+                                                                            controller.fromOnboardDate = await showDatePicker(
                                                                               context:
                                                                                   context,
                                                                               initialDate:
-                                                                                  controller.fromInterDate,
+                                                                                  controller.fromOnboardDate,
                                                                               firstDate: DateTime(
                                                                                 1920,
                                                                               ),
@@ -331,15 +332,13 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                               initialEntryMode:
                                                                                   DatePickerEntryMode.calendarOnly,
                                                                             );
-                                                                            if (picked !=
-                                                                                    null &&
-                                                                                picked !=
-                                                                                    controller.fromInterDate) {
-                                                                              controller.fromInterDate = picked;
-                                                                              controller.selectDateController.text = DateFormat(
+                                                                            if (controller.fromOnboardDate !=
+                                                                                null) {
+                                                                              controller.fromOnboardController.text = DateFormat(
                                                                                 "yyyy-MM-dd",
                                                                               ).format(
-                                                                                controller.fromInterDate,
+                                                                                controller.fromOnboardDate ??
+                                                                                    DateTime.now(),
                                                                               );
                                                                               setState(
                                                                                 () {},
@@ -364,11 +363,11 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                       },
                                                                     ),
                                                                     Dimens
-                                                                        .boxHeight10,
+                                                                        .boxHeight20,
                                                                     CustomTextFormField(
                                                                       controller:
                                                                           controller
-                                                                              .selectToDateController,
+                                                                              .toOnboardController,
                                                                       isTitle:
                                                                           true,
                                                                       readOnly:
@@ -407,12 +406,13 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                             Dimens.edgeInsets8,
                                                                         child: GestureDetector(
                                                                           onTap: () async {
-                                                                            final DateTime?
-                                                                            picked = await showDatePicker(
+                                                                            controller.toOnboardDate =
+                                                                                null;
+                                                                            controller.toOnboardDate = await showDatePicker(
                                                                               context:
                                                                                   context,
                                                                               initialDate:
-                                                                                  controller.fromInterDate,
+                                                                                  controller.toOnboardDate,
                                                                               firstDate: DateTime(
                                                                                 1920,
                                                                               ),
@@ -422,15 +422,13 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                               initialEntryMode:
                                                                                   DatePickerEntryMode.calendarOnly,
                                                                             );
-                                                                            if (picked !=
-                                                                                    null &&
-                                                                                picked !=
-                                                                                    controller.fromInterDate) {
-                                                                              controller.fromInterDate = picked;
-                                                                              controller.selectToDateController.text = DateFormat(
+                                                                            if (controller.toOnboardDate !=
+                                                                                null) {
+                                                                              controller.toOnboardController.text = DateFormat(
                                                                                 "yyyy-MM-dd",
                                                                               ).format(
-                                                                                controller.fromInterDate,
+                                                                                controller.toOnboardDate ??
+                                                                                    DateTime.now(),
                                                                               );
                                                                               setState(
                                                                                 () {},
@@ -448,7 +446,7 @@ class OrderHistoryScreen extends StatelessWidget {
                                                                       ) {
                                                                         if (val!
                                                                             .isEmpty) {
-                                                                          return 'Select To Date'
+                                                                          return 'Select From Date'
                                                                               .tr;
                                                                         }
                                                                         return null;
@@ -493,24 +491,17 @@ class OrderHistoryScreen extends StatelessWidget {
                                                         child: InkWell(
                                                           onTap: () async {
                                                             controller
-                                                                .selectDateController
+                                                                .toOnboardController
+                                                                .clear();
+                                                            controller
+                                                                .fromOnboardController
                                                                 .clear();
                                                             controller
                                                                 .filterInterValue = 0;
-
                                                             controller.update();
-                                                            await controller
-                                                                .postGetAllTripList(
-                                                                  1,
-                                                                  fromDate:
-                                                                      controller
-                                                                          .selectDateController
-                                                                          .text,
-                                                                  toDate:
-                                                                      controller
-                                                                          .selectToDateController
-                                                                          .text,
-                                                                );
+                                                            controller
+                                                                .orderHistoryPagingController
+                                                                .refresh();
                                                             Get.back();
                                                           },
                                                           child: Container(
@@ -555,23 +546,11 @@ class OrderHistoryScreen extends StatelessWidget {
                                                       Expanded(
                                                         child: InkWell(
                                                           onTap: () async {
-                                                            await controller
-                                                                .postGetAllTripList(
-                                                                  1,
-                                                                  fromDate:
-                                                                      controller
-                                                                          .selectDateController
-                                                                          .text,
-                                                                  toDate:
-                                                                      controller
-                                                                          .selectToDateController
-                                                                          .text,
-                                                                );
                                                             Get.back();
-                                                            // controller
-                                                            //     .orderHistoryPagingController
-                                                            //     .refresh();
-                                                            // controller.update();
+                                                            controller
+                                                                .orderHistoryPagingController
+                                                                .refresh();
+                                                            controller.update();
                                                           },
                                                           child: Container(
                                                             alignment:

@@ -13,12 +13,18 @@ class TripPresenter {
     required int limit,
     required String search,
     required String location,
+    required String toYear,
+    required String fromYear,
+    required dynamic status,
   }) async => await tripUsecases.postGetAllTripList(
     isLoading: isLoading,
     limit: limit,
     page: page,
-    search: search,
     location: location,
+    search: search,
+    toYear: toYear,
+    fromYear: fromYear,
+    status: status,
   );
 
   Future<GetOneTripModel?> postGetOneTripDetail({

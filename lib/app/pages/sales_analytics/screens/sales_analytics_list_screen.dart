@@ -351,8 +351,10 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                               .edgeInsets8,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          final DateTime?
-                                                                          picked = await showDatePicker(
+                                                                          controller.fromOnboardDate =
+                                                                              null;
+                                                                          controller
+                                                                              .fromOnboardDate = await showDatePicker(
                                                                             context:
                                                                                 context,
                                                                             initialDate:
@@ -366,16 +368,13 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                             initialEntryMode:
                                                                                 DatePickerEntryMode.calendarOnly,
                                                                           );
-                                                                          if (picked !=
-                                                                                  null &&
-                                                                              picked !=
-                                                                                  controller.fromOnboardDate) {
-                                                                            controller.fromOnboardDate =
-                                                                                picked;
+                                                                          if (controller.fromOnboardDate !=
+                                                                              null) {
                                                                             controller.fromOnboardController.text = DateFormat(
                                                                               "yyyy-MM-dd",
                                                                             ).format(
-                                                                              controller.fromOnboardDate,
+                                                                              controller.fromOnboardDate ??
+                                                                                  DateTime.now(),
                                                                             );
                                                                             setState(
                                                                               () {},
@@ -445,8 +444,10 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                               .edgeInsets8,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          final DateTime?
-                                                                          picked = await showDatePicker(
+                                                                          controller.toOnboardDate =
+                                                                              null;
+                                                                          controller
+                                                                              .toOnboardDate = await showDatePicker(
                                                                             context:
                                                                                 context,
                                                                             initialDate:
@@ -460,16 +461,13 @@ class SalesAnalyticsListScreen extends StatelessWidget {
                                                                             initialEntryMode:
                                                                                 DatePickerEntryMode.calendarOnly,
                                                                           );
-                                                                          if (picked !=
-                                                                                  null &&
-                                                                              picked !=
-                                                                                  controller.toOnboardDate) {
-                                                                            controller.toOnboardDate =
-                                                                                picked;
+                                                                          if (controller.toOnboardDate !=
+                                                                              null) {
                                                                             controller.toOnboardController.text = DateFormat(
                                                                               "yyyy-MM-dd",
                                                                             ).format(
-                                                                              controller.toOnboardDate,
+                                                                              controller.toOnboardDate ??
+                                                                                  DateTime.now(),
                                                                             );
                                                                             setState(
                                                                               () {},

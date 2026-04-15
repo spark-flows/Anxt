@@ -34,12 +34,12 @@ class SalesListModel {
 
 class SalesListData {
   List<SalesListDoc>? docs;
-  int? totalDocs;
-  int? totalWeight;
-  int? limit;
-  int? totalPages;
-  int? page;
-  int? pagingCounter;
+  num? totalDocs;
+  num? totalWeight;
+  num? limit;
+  num? totalPages;
+  num? page;
+  num? pagingCounter;
   bool? hasPrevPage;
   bool? hasNextPage;
   dynamic prevPage;

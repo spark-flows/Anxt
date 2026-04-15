@@ -343,7 +343,7 @@ class GetOrderListItem {
 
 class GetOrderListComponent {
   String? material;
-  double? purity;
+  num? purity;
   String? grosswt;
   String? netwt;
   dynamic fine;
@@ -354,7 +354,7 @@ class GetOrderListComponent {
   String? color;
   String? size;
   num? pcs;
-  double? weight;
+  num? weight;
   String? makingtype;
 
   GetOrderListComponent({

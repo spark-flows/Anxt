@@ -15,13 +15,20 @@ class OrderHistoryController extends GetxController {
 
   final OrderHistoryPresenter orderHistoryPresenter;
 
-  DateTime fromInterDate = DateTime.now();
   int filterInterValue = 0;
   List<String> filterInterType = ['Date'];
 
   TextEditingController searchController = TextEditingController();
-  TextEditingController selectDateController = TextEditingController();
-  TextEditingController  selectToDateController = TextEditingController();
+
+  TextEditingController fromOnboardController = TextEditingController(
+    text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  );
+  TextEditingController toOnboardController = TextEditingController(
+    text: DateFormat("yyyy-MM-dd").format(DateTime.now()),
+  );
+
+  DateTime? fromOnboardDate;
+  DateTime? toOnboardDate;
   TextEditingController nextDateController = TextEditingController();
 
   // TextEditingController fromOnboardController = TextEditingController(
@@ -60,18 +67,29 @@ class OrderHistoryController extends GetxController {
   }) async {
     var response = await orderHistoryPresenter.postOrderHistoryList(
       page: pageKey,
-      limit: 40,
-      fromDate: fromDate,
-      toDate: toDate,
+      limit: 15,
+      fromDate:
+          fromOnboardController.text.isNotEmpty
+              ? DateFormat(
+                "yyyy-MM-dd",
+              ).format(DateTime.parse(fromOnboardController.text))
+              : "",
+      toDate:
+          toOnboardController.text.isNotEmpty
+              ? DateFormat(
+                "yyyy-MM-dd",
+              ).format(DateTime.parse(toOnboardController.text))
+              : "",
       isLoading: false,
     );
     if (response?.data != null) {
       if (pageKey == 1) {
         getAllOrderHistoryList.clear();
+        orderHistoryPagingController.itemList?.clear();
       }
       getAllOrderHistoryList = response?.data?.docs ?? [];
 
-      final isLastPage = getAllOrderHistoryList.length < 10;
+      final isLastPage = getAllOrderHistoryList.length < 15;
       if (isLastPage) {
         orderHistoryPagingController.appendLastPage(getAllOrderHistoryList);
       } else {

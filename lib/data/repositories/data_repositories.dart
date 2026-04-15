@@ -304,11 +304,17 @@ class DataRepository extends DomainRepository {
     required int limit,
     required String location,
     required String search,
+    required String toYear,
+    required String fromYear,
+    required dynamic status,
   }) async => await connectHelper.postGetAllTripList(
     isLoading: isLoading,
     limit: limit,
     page: page,
     location: location,
+    toYear: toYear,
+    fromYear: fromYear,
+    status: status,
     search: search,
   );
 

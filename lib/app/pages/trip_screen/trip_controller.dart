@@ -16,8 +16,8 @@ class TripController extends GetxController {
 
   final TripPresenter tripPresenter;
 
-  DateTime fromDate = DateTime.now();
-  DateTime toDate = DateTime.now();
+  DateTime? fromDate;
+  DateTime? toDate;
 
   int filterValue = 0;
   List<String> filterType = ['Date', 'Status'];
@@ -46,6 +46,22 @@ class TripController extends GetxController {
       limit: 10,
       location: "",
       search: searchController.text,
+      fromYear:
+          fromCandidateController.text.isNotEmpty
+              ? fromCandidateController.text
+              : "",
+      toYear:
+          toCandidateController.text.isNotEmpty
+              ? toCandidateController.text
+              : "",
+      status:
+          statusCandidateList.any((element) => element.isSelect == true)
+              ? statusCandidateList.map((e) {
+                if (e.isSelect ?? false) {
+                  return e.title;
+                }
+              }).toList()
+              : "",
       isLoading: false,
     );
     if (response?.data != null) {

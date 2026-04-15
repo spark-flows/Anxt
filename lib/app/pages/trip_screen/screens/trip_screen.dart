@@ -342,8 +342,10 @@ class TripScreen extends StatelessWidget {
                                                                               .edgeInsets8,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          final DateTime?
-                                                                          picked = await showDatePicker(
+                                                                          controller.fromDate =
+                                                                              null;
+                                                                          controller
+                                                                              .fromDate = await showDatePicker(
                                                                             context:
                                                                                 context,
                                                                             initialDate:
@@ -357,16 +359,13 @@ class TripScreen extends StatelessWidget {
                                                                             initialEntryMode:
                                                                                 DatePickerEntryMode.calendarOnly,
                                                                           );
-                                                                          if (picked !=
-                                                                                  null &&
-                                                                              picked !=
-                                                                                  controller.fromDate) {
-                                                                            controller.fromDate =
-                                                                                picked;
+                                                                          if (controller.fromDate !=
+                                                                              null) {
                                                                             controller.fromCandidateController.text = DateFormat(
-                                                                              "yyyy-MM-dd",
+                                                                              "yyyy-MM",
                                                                             ).format(
-                                                                              controller.fromDate,
+                                                                              controller.fromDate ??
+                                                                                  DateTime.now(),
                                                                             );
                                                                             setState(
                                                                               () {},
@@ -440,8 +439,10 @@ class TripScreen extends StatelessWidget {
                                                                               .edgeInsets8,
                                                                       child: GestureDetector(
                                                                         onTap: () async {
-                                                                          final DateTime?
-                                                                          picked = await showDatePicker(
+                                                                          controller.toDate =
+                                                                              null;
+                                                                          controller
+                                                                              .toDate = await showDatePicker(
                                                                             context:
                                                                                 context,
                                                                             initialDate:
@@ -455,16 +456,13 @@ class TripScreen extends StatelessWidget {
                                                                             initialEntryMode:
                                                                                 DatePickerEntryMode.calendarOnly,
                                                                           );
-                                                                          if (picked !=
-                                                                                  null &&
-                                                                              picked !=
-                                                                                  controller.toDate) {
-                                                                            controller.toDate =
-                                                                                picked;
+                                                                          if (controller.toDate !=
+                                                                              null) {
                                                                             controller.toCandidateController.text = DateFormat(
-                                                                              "yyyy-MM-dd",
+                                                                              "yyyy-MM",
                                                                             ).format(
-                                                                              controller.toDate,
+                                                                              controller.toDate ??
+                                                                                  DateTime.now(),
                                                                             );
                                                                             setState(
                                                                               () {},
@@ -630,9 +628,9 @@ class TripScreen extends StatelessWidget {
                                                               .filterValue = 0;
 
                                                           controller.update();
-                                                          // controller
-                                                          //     .candidatePagingController
-                                                          //     .refresh();
+                                                          controller
+                                                              .tripPagingController
+                                                              .refresh();
                                                           Get.back();
                                                         },
                                                         child: Container(
@@ -684,9 +682,9 @@ class TripScreen extends StatelessWidget {
                                                           Get.back();
                                                           Utility.isFilter =
                                                               true;
-                                                          // controller
-                                                          //     .candidatePagingController
-                                                          //     .refresh();
+                                                          controller
+                                                              .tripPagingController
+                                                              .refresh();
                                                           controller.update();
                                                         },
                                                         child: Container(

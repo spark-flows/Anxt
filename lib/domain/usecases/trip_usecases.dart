@@ -12,14 +12,20 @@ class TripUsecases {
     bool isLoading = false,
     required int page,
     required int limit,
-    required String search,
     required String location,
+    required String search,
+    required String toYear,
+    required String fromYear,
+    required dynamic status,
   }) async => await repository.postGetAllTripList(
     isLoading: isLoading,
-    page: page,
     limit: limit,
-    search: search,
+    page: page,
     location: location,
+    search: search,
+    toYear: toYear,
+    fromYear: fromYear,
+    status: status,
   );
 
   Future<GetOneTripModel?> postGetOneTripDetail({

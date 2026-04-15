@@ -602,6 +602,9 @@ class Repository {
     required int limit,
     required String location,
     required String search,
+    required String toYear,
+    required String fromYear,
+    required dynamic status,
   }) async {
     try {
       var response = await _dataRepository.postGetAllTripList(
@@ -609,6 +612,9 @@ class Repository {
         page: page,
         location: location,
         search: search,
+        toYear: toYear,
+        fromYear: fromYear,
+        status: status,
         isLoading: isLoading,
       );
       var getAllTripListModel = getAllTripModelFromJson(response.data);

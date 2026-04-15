@@ -528,15 +528,21 @@ class ConnectHelper {
     required int page,
     required int limit,
     required String location,
+    required String toYear,
+    required String fromYear,
     required String search,
+    required dynamic status,
   }) async {
     var data = {
       "page": page,
       "limit": limit,
       "location": location,
+      "toYear": toYear,
+      "fromYear": fromYear,
       "search": {"tripname": search},
       "sortfield": 'start',
       "sortoption": 1,
+      "status": status,
     };
 
     var response = await apiWrapper.makeRequest(
