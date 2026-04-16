@@ -40,6 +40,8 @@ class TripController extends GetxController {
     firstPageKey: 1,
   );
 
+  String radioStatus = "Pending";
+
   Future<void> postGetAllTripList(int pageKey) async {
     var response = await tripPresenter.postGetAllTripList(
       page: pageKey,
@@ -54,14 +56,7 @@ class TripController extends GetxController {
           toCandidateController.text.isNotEmpty
               ? toCandidateController.text
               : "",
-      status:
-          statusCandidateList.any((element) => element.isSelect == true)
-              ? statusCandidateList.map((e) {
-                if (e.isSelect ?? false) {
-                  return e.title;
-                }
-              }).toList()
-              : "",
+      status: radioStatus,
       isLoading: false,
     );
     if (response?.data != null) {

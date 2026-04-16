@@ -181,10 +181,10 @@ packages:
     dependency: transitive
     description:
       name: dlibphonenumber
-      sha256: fca091232eca14fd0f323d943d45363fa257b5c3f9e93133caeb4095cc050c27
+      sha256: "0dfe6a48823a1624b00c4547ae3dbad53bec6e7fd6f5bc99e6e1d58cd2d37d18"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.60"
+    version: "1.1.61"
   dotted_border:
     dependency: "direct main"
     description:
@@ -777,10 +777,10 @@ packages:
     dependency: "direct main"
     description:
       name: lottie
-      sha256: "8ae0be46dbd9e19641791dc12ee480d34e1fd3f84c749adc05f3ad9342b71b95"
+      sha256: "8b6359a7422167014aa73ce763fa133fb832065dcc0ac4d1dec1f603a5cef7d0"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.2"
+    version: "3.3.3"
   matcher:
     dependency: transitive
     description:
@@ -1390,10 +1390,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "45caa6c5917fa127b5dbcfbd1fa60b14e583afdc08bfc96dda38886ca252eb60"
+      sha256: "046d3928e16fa4dc46e8350415661755ab759d9fc97fc21b5ab295f71e4f0499"
       url: "https://pub.dev"
     source: hosted
-    version: "15.0.2"
+    version: "15.1.0"
   web:
     dependency: transitive
     description:

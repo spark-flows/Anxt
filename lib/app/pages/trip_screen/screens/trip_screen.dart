@@ -502,74 +502,87 @@ class TripScreen extends StatelessWidget {
                                                                 padding:
                                                                     Dimens
                                                                         .edgeInsets16,
-                                                                child: ListView.builder(
-                                                                  itemCount:
+                                                                child: RadioGroup<
+                                                                  String
+                                                                >(
+                                                                  groupValue:
                                                                       controller
-                                                                          .statusCandidateList
-                                                                          .length,
-                                                                  itemBuilder: (
-                                                                    context,
-                                                                    index,
+                                                                          .radioStatus,
+                                                                  onChanged: (
+                                                                    String?
+                                                                    value,
                                                                   ) {
-                                                                    var item =
-                                                                        controller
-                                                                            .statusCandidateList[index];
-                                                                    return CheckboxListTile(
-                                                                      visualDensity: VisualDensity(
-                                                                        horizontal:
-                                                                            Dimens.zero,
-                                                                        vertical:
-                                                                            Dimens.zero,
-                                                                      ),
-                                                                      checkColor:
-                                                                          ColorsValue
-                                                                              .whiteColor,
-                                                                      fillColor: WidgetStatePropertyAll(
-                                                                        item.isSelect ??
-                                                                                false
-                                                                            ? ColorsValue.appColor
-                                                                            : ColorsValue.textFieldBg,
-                                                                      ),
-                                                                      shape: Border.all(
-                                                                        width:
-                                                                            Dimens.one,
-                                                                        color:
-                                                                            ColorsValue.appColor,
-                                                                      ),
-                                                                      materialTapTargetSize:
-                                                                          MaterialTapTargetSize
-                                                                              .shrinkWrap,
-                                                                      contentPadding:
-                                                                          Dimens
-                                                                              .edgeInsets0,
-                                                                      dense:
-                                                                          true,
-                                                                      value:
-                                                                          item.isSelect,
-                                                                      title: Text(
-                                                                        item.title?.capitalizeFirst ??
-                                                                            "",
-                                                                        style: Styles.txtBlackColorW50012.copyWith(
-                                                                          fontSize:
-                                                                              Utility.isTablet()
-                                                                                  ? Dimens.eighteen
-                                                                                  : Dimens.twelve,
-                                                                        ),
-                                                                      ),
-                                                                      onChanged: (
-                                                                        value,
-                                                                      ) {
-                                                                        item.isSelect =
-                                                                            value!;
-                                                                        setState(
-                                                                          () {},
-                                                                        );
-                                                                      },
-                                                                      activeColor:
-                                                                          ColorsValue
-                                                                              .txtBlackColor,
-                                                                    );
+                                                                    setState(() {
+                                                                      controller
+                                                                              .radioStatus =
+                                                                          value!;
+                                                                    });
                                                                   },
+                                                                  child: Column(
+                                                                    children: [
+                                                                      RadioListTile<
+                                                                        String
+                                                                      >(
+                                                                        contentPadding:
+                                                                            Dimens.edgeInsets0,
+                                                                        materialTapTargetSize:
+                                                                            MaterialTapTargetSize.shrinkWrap,
+                                                                        title: Text(
+                                                                          "Pending",
+                                                                          style:
+                                                                              Styles.txtBlackColorW40014,
+                                                                        ),
+
+                                                                        value:
+                                                                            "Pending",
+                                                                      ),
+                                                                      RadioListTile<
+                                                                        String
+                                                                      >(
+                                                                        contentPadding:
+                                                                            Dimens.edgeInsets0,
+                                                                        materialTapTargetSize:
+                                                                            MaterialTapTargetSize.shrinkWrap,
+                                                                        title: Text(
+                                                                          "Ongoing",
+                                                                          style:
+                                                                              Styles.txtBlackColorW40014,
+                                                                        ),
+                                                                        value:
+                                                                            "Ongoing",
+                                                                      ),
+                                                                      RadioListTile<
+                                                                        String
+                                                                      >(
+                                                                        contentPadding:
+                                                                            Dimens.edgeInsets0,
+                                                                        materialTapTargetSize:
+                                                                            MaterialTapTargetSize.shrinkWrap,
+                                                                        title: Text(
+                                                                          "Completed",
+                                                                          style:
+                                                                              Styles.txtBlackColorW40014,
+                                                                        ),
+                                                                        value:
+                                                                            "Completed",
+                                                                      ),
+                                                                      RadioListTile<
+                                                                        String
+                                                                      >(
+                                                                        contentPadding:
+                                                                            Dimens.edgeInsets0,
+                                                                        materialTapTargetSize:
+                                                                            MaterialTapTargetSize.shrinkWrap,
+                                                                        title: Text(
+                                                                          "Cancelled",
+                                                                          style:
+                                                                              Styles.txtBlackColorW40014,
+                                                                        ),
+                                                                        value:
+                                                                            "Cancelled",
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ),
                                                             );
@@ -617,12 +630,8 @@ class TripScreen extends StatelessWidget {
                                                               .fromCandidateController
                                                               .clear();
                                                           controller
-                                                              .statusCandidateList
-                                                              .map((e) {
-                                                                return e.isSelect =
-                                                                    false;
-                                                              })
-                                                              .toList();
+                                                                  .radioStatus =
+                                                              "Pending";
 
                                                           controller
                                                               .filterValue = 0;
